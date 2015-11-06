@@ -14,6 +14,12 @@ return [
 			'client_secret' => env('FACEBOOK_SECRET'),
 			'redirect_uri' => 'http://www.ng-abq.com/facebook/login',
 			'scope' => []
+		],
+		'google' => [
+			'client_id' => env('GOOGLE_ID'),
+			'client_secret' => env("GOOGLE_SECRET"),
+			'redirect_uri' => 'http://www.ng-abq.com/google/login',
+			'scope' => []
 		]
 	],
 ];
