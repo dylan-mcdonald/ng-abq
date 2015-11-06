@@ -20,8 +20,8 @@ Route::get("{provider}/authorize", function($provider) {
 });
 
 Route::get("{provider}/login", function($provider) {
-	OAuth::login($provider, function($user, $userDetails){
-		dd($userDetails);
+	OAuth::login($provider, function($user, $userDetails) {
+		$user->name = $userDetails->full_name;
 		$user->email = $userDetails->email;
 		$user->save();
 	});
