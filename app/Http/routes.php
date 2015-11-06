@@ -12,5 +12,17 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return view('welcome');
+});
+
+Route::get("{provider}/authorize", function($provider) {
+	return OAuth::authorize($provider);
+});
+
+Route::get("{provider}/login", function($provider) {
+	OAuth::login($provider, function($user, $userDetails){
+		dd($userDetails);
+		$user->email = $userDetails->email;
+		$user->save();
+	});
 });
