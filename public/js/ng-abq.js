@@ -1,0 +1,1 @@
+var app = angular.module("NgAbq", ["ngMessages", "ui.bootstrap"]);
