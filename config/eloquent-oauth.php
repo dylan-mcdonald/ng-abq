@@ -6,19 +6,19 @@ return [
 		'github' => [
 			'client_id' => env('GITHUB_ID'),
 			'client_secret' => env('GITHUB_SECRET'),
-			'redirect_uri' => 'http://www.ng-abq.com/github/login',
+			'redirect_uri' => 'https://www.ng-abq.com/github/login',
 			'scope' => []
 		],
 		'facebook' => [
 			'client_id' => env('FACEBOOK_ID'),
 			'client_secret' => env('FACEBOOK_SECRET'),
-			'redirect_uri' => 'http://www.ng-abq.com/facebook/login',
+			'redirect_uri' => 'https://www.ng-abq.com/facebook/login',
 			'scope' => []
 		],
 		'google' => [
 			'client_id' => env('GOOGLE_ID'),
 			'client_secret' => env("GOOGLE_SECRET"),
-			'redirect_uri' => 'http://www.ng-abq.com/google/login',
+			'redirect_uri' => 'https://www.ng-abq.com/google/login',
 			'scope' => []
 		]
 	],
