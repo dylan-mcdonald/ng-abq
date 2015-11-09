@@ -12,6 +12,7 @@
 		<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/0.14.3/ui-bootstrap-tpls.min.js"></script>
 
 		<!-- Site specific JavaScript -->
+		<script type="text/javascript" src="/js/angular-password.min.js"></script>
 		<script type="text/javascript" src="/js/ng-abq.js"></script>
 		<script type="text/javascript" src="/js/controllers/login-controller.js"></script>
 		<title>ng-abq | Albuquerque AngularJS Meetup Group</title>

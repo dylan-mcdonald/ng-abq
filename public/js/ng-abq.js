@@ -1,1 +1,1 @@
-var app = angular.module("NgAbq", ["ngMessages", "ui.bootstrap"]);
+var app = angular.module("NgAbq", ["ngMessages", "ngPassword", "ui.bootstrap"]);
