@@ -1,3 +1,6 @@
+/********************************************
+* Custom Colors
+********************************************/
 .facebook-color {
 	background-color: #3b5998;
 }
@@ -10,15 +13,51 @@
 	background-color: #dc4e41;
 }
 
-#ng-abq-logo {
-	width: 100%;
+/********************************************
+* Main Content Styles
+********************************************/
+main {
+	padding-bottom: 40px;
 }
 
+/********************************************
+* Footer Styles
+********************************************/
+
 .footer {
-	position: absolute;
-	bottom: 0;
-	width: 100%;
-	border-top: solid 1px black;
-	height: 3em;
 	background-color: #eeeeee;
+	border-top: solid 1px black;
+	padding: 15px 0;
+}
+
+@media only screen and (min-width:768px) {
+	.footer div[class="col-sm-8"] {
+		text-align: right;
+	}
+}
+
+/***
+* Flexbox Sticky Footer
+* http://philipwalton.github.io/solved-by-flexbox/demos/sticky-footer/
+***/
+
+/*corrects IE min-height bug*/
+html { display: flex;}
+body { width: 100%;}
+
+.sfooter {
+	display: flex;
+	flex-direction: column;
+	min-height: 100vh;
+}
+
+.sfooter-content {
+	flex: 1 0 auto;
+}
+
+/********************************************
+* Etc.
+********************************************/
+#ng-abq-logo {
+	width: 100%;
 }

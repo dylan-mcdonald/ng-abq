@@ -18,17 +18,19 @@
 		<script type="text/javascript" src="/js/controllers/login-controller.js"></script>
 		<title>ng-abq | Albuquerque AngularJS Meetup Group</title>
 	</head>
-	<body>
-		<main class="container">
-			@yield("content")
-		</main>
+	<body class="sfooter">
+		<div class="sfooter-content">
+			<main class="container">
+				@yield("content")
+			</main>
+		</div>
 		<footer class="footer">
 			<div class="container">
 				<div class="row">
-					<div class="col-xs-4">
-						&copy; 2015 Albuquerque Angular.
+					<div class="col-sm-4">
+						<p>&copy; 2015 Albuquerque Angular.</p>
 					</div>
-					<div class="col-xs-8">
+					<div class="col-sm-8">
 						<ul class="list-inline">
 							<li>Follow us:</li>
 							<li><a class="btn btn-sm btn-info github-color" href="https://github.com/ng-abq/"><i class="fa fa-github" aria-hidden="true"></i> GitHub</a></li>
