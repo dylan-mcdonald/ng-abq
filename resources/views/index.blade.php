@@ -19,7 +19,6 @@
 				</div>
 			</div>
 		</div>
-		<p>Join us for discussions on Angular JS in the Land of Enchantment!</p>
-		<p>Or, join us with one of the following social networks:</p>
+		<p>Join us for discussions on Angular JS in the Land of Enchantment! We will meet the first Monday of each month at <a href="http://getplowed.com/site/our-locations/wells-park/">Tractor Brewery, Wells Park</a> at 6:00 pm. All are welcome.</p>
 	</section>
 @endsection
