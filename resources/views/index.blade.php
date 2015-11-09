@@ -1,19 +1,25 @@
 @extends("ng-abq")
 @section("content")
-	<h1>ng-abq: Albuquerque AngularJS Meetup Group</h1>
-	<section class="row" ng-controller="LoginController">
-		<div class="col-md-3">
-			<img id="ng-abq-logo" class="img-responsive" src="/images/ng-abq-logo.svg" />
+	<section ng-controller="LoginController">
+		<div class="jumbotron">
+			<div class="row">
+				<div class="col-md-3">
+					<img id="ng-abq-logo" class="img-responsive" src="/images/ng-abq-logo.svg" />
+				</div>
+				<div class="col-md-9">
+					<h1>ng-abq</h1>
+					<p class="lead">Albuquerque AngularJS Meetup Group</p>
+					<p>A Casual Angular Discussion Group for the Land of Enchantment. Ready to join the fun?</p>
+					<ul class="list-inline">
+						<li><a class="btn btn-info btn-lg" ng-click="openSignupModal();"><i class="fa fa-check" aria-hidden="true"></i> Join Now</a></li>
+						<li><a class="btn btn-lg btn-info github-color" href="/github/authorize"><i class="fa fa-github" aria-hidden="true"></i> Join with GitHub</a></li>
+						<li><a class="btn btn-lg btn-info google-color" href="/google/authorize"><i class="fa fa-google" aria-hidden="true"></i> Join with Google</a></li>
+						<li><a class="btn btn-lg btn-info facebook-color" href="/facebook/authorize"><i class="fa fa-facebook" aria-hidden="true"></i> Join with Facebook</a></li>
+					</ul>
+				</div>
+			</div>
 		</div>
-		<div class="col-md-9">
-			<p>Join us for discussions on Angular JS in the Land of Enchantment!</p>
-			<p><button class="btn btn-info btn-lg" ng-click="openSignupModal();">Sign Up</button></p>
-			<p>Or, join us with one of the following social networks:</p>
-			<ul class="list-inline">
-				<li><a class="btn btn-lg btn-info github-color" href="/github/authorize"><i class="fa fa-github" aria-hidden="true"></i> GitHub</a></li>
-				<li><a class="btn btn-lg btn-info google-color" href="/google/authorize"><i class="fa fa-google" aria-hidden="true"></i> Google</a></li>
-				<li><a class="btn btn-lg btn-info facebook-color" href="/facebook/authorize"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a></li>
-			</ul>
-		</div>
+		<p>Join us for discussions on Angular JS in the Land of Enchantment!</p>
+		<p>Or, join us with one of the following social networks:</p>
 	</section>
 @endsection

@@ -15,7 +15,6 @@ app.controller("LoginController", ["$scope", "$uibModal", function($scope, $uibM
 			});
 			signupModalInstance.result.then(function (signupData) {
 				$scope.signupData = signupData;
-				console.log($scope.signupData);
 			}, function() {
 				$scope.signupData = {};
 			});
