@@ -73,28 +73,16 @@ class AuthController extends Controller {
 		$reply->message = "user logged in OK";
 
 		try {
-			// regroup the request and errors to a more Laravel native format so it can validate
-			$credentials = $request->json()->all();
-			$tempRequest = new Request();
-			$tempRequest->replace($credentials);
-			$errors = [];
-
 			// validate the form data
-			try {
-				$this->validate($tempRequest, ["email" => "required|email", "password" => "required"]);
-			} catch(\Exception $validateException) {
-				// for some awful reason, I can't get a Validator object without digging through these exceptions *sigh*
-				if(empty($validateException->getTrace()[0]["args"]) === false) {
-					foreach($validateException->getTrace()[0]["args"] as $embeddedObject) {
-						if(get_class($embeddedObject) === "Illuminate\Validation\Validator") {
-							$errors = $embeddedObject->errors()->all();
-							throw(new \UnexpectedValueException("invalid form parameters", 422));
-						}
-					}
-				}
+			$credentials = $request->json()->all();
+			$errors = [];
+			$validator = Validator::make($request->json()->all(), ["email" => "required|email", "password" => "required"]);
+			if($validator->fails()) {
+				$errors = $validator->errors()->all();
+				$this->throwValidationException($request, $validator);
 			}
 
-			// finally, authenticate the user
+			// authenticate the user
 			if (!Auth::attempt($credentials, $request->has("remember"))) {
 				throw(new \UnexpectedValueException("invalid username/password", 401));
 			}
