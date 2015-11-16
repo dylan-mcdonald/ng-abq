@@ -103,7 +103,7 @@ class AuthController extends Controller {
 			if($validator->fails()) {
 				$this->throwValidationException($request, $validator);
 			}
-			$this->create($request->json()->all());
+			Auth::login($this->create($request->json()->all()));
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $validator->errors()->all());
 		}
