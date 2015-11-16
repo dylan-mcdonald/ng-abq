@@ -14,10 +14,12 @@
 		<!-- Site specific JavaScript -->
 		<script type="text/javascript" src="/js/angular-password.min.js"></script>
 		<script type="text/javascript" src="/js/ng-abq.js"></script>
+		<script type="text/javascript" src="/js/services/alert-service.js"></script>
 		<script type="text/javascript" src="/js/services/login-service.js"></script>
 		<script type="text/javascript" src="/js/services/signup-service.js"></script>
+		<script type="text/javascript" src="/js/controllers/alert-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/nav-controller.js"></script>
-		<script type="text/javascript" src="/js/controllers/login-controller.js"></script>
+		<script type="text/javascript" src="/js/controllers/signup-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/signup-modal.js"></script>
 		<title>ng-abq | Albuquerque AngularJS Meetup Group</title>
 	</head>

@@ -1,6 +1,4 @@
-app.controller("LoginController", ["$scope", "$uibModal", "SignupService", function($scope, $uibModal, SignupService) {
-	$scope.alerts = [];
-	$scope.loginData = {};
+app.controller("SignupController", ["$scope", "$uibModal", "AlertService", "SignupService", function($scope, $uibModal, AlertService, SignupService) {
 	$scope.signupData = {};
 
 	$scope.openSignupModal = function () {
@@ -18,9 +16,9 @@ app.controller("LoginController", ["$scope", "$uibModal", "SignupService", funct
 				SignupService.signup(signupData)
 						.then(function(reply) {
 							if(reply.status === 200) {
-								$scope.alerts[0] = {type: "success", msg: reply.message};
+								AlertService.addAlert({type: "success", msg: reply.message});
 							} else {
-								$scope.alerts[0] = {type: "danger", msg: reply.message};
+								AlertService.addAlert({type: "danger", msg: reply.message});
 							}
 						});
 			}, function() {
