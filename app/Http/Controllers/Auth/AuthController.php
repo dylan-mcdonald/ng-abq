@@ -9,6 +9,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Foundation\Auth\ThrottlesLogins;
 use Illuminate\Foundation\Auth\AuthenticatesAndRegistersUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller {
 	/*
@@ -65,17 +66,56 @@ class AuthController extends Controller {
 		return redirect()->intended();
 	}
 
-	public function postRegister(Request $request, \stdClass $reply) {
+	public function postLogin(Request $request) {
+		// create template reply
+		$reply = new \stdClass();
+		$reply->status = 200;
+		$reply->message = "user logged in OK";
+
+		try {
+			// regroup the request and errors to a more Laravel native format so it can validate
+			$credentials = $request->json()->all();
+			$tempRequest = new Request();
+			$tempRequest->replace($credentials);
+			$errors = [];
+
+			// validate the form data
+			try {
+				$this->validate($tempRequest, ["email" => "required|email", "password" => "required"]);
+			} catch(\Exception $validateException) {
+				// for some awful reason, I can't get a Validator object without digging through these exceptions *sigh*
+				if(empty($validateException->getTrace()[0]["args"]) === false) {
+					foreach($validateException->getTrace()[0]["args"] as $embeddedObject) {
+						if(get_class($embeddedObject) === "Illuminate\Validation\Validator") {
+							$errors = $embeddedObject->errors()->all();
+							throw(new \UnexpectedValueException("invalid form parameters", 422));
+						}
+					}
+				}
+			}
+
+			// finally, authenticate the user
+			if (!Auth::attempt($credentials, $request->has("remember"))) {
+				throw(new \UnexpectedValueException("invalid username/password", 401));
+			}
+			$this->authenticated($request, Auth::user());
+		} catch(\Exception $exception) {
+			$reply = $this->formatException($exception, $errors);
+		}
+		return (response()->json($reply, $reply->status));
+	}
+
+	public function postRegister(Request $request) {
 		$reply = new \stdClass();
 		$reply->status = 200;
 		$reply->message = "user signed up OK";
 
 		try {
 			$validator = $this->validator($request->json()->all());
-			$this->create($request->json()->all());
 			if($validator->fails()) {
 				$this->throwValidationException($request, $validator);
 			}
+			$this->create($request->json()->all());
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $validator->errors()->all());
 		}

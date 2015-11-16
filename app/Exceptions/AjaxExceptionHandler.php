@@ -11,12 +11,11 @@ trait AjaxExceptionHandler {
 	 * @see https://github.com/illuminate/validation/blob/master/Validator.php Illuminate's Validator
 	 **/
 	protected function formatException(\Exception $exception, array $errors = []) {
-		$message = implode("<br />", $errors);
-		if(empty($message) === true) {
-			$message = $exception->getMessage();
-		}
+		$message = empty($errors) ? $exception->getMessage() : implode("<br />", $errors);
+		$status = empty($exception->getCode()) ? 422 : $exception->getCode();
+
 		$reply = new \stdClass();
-		$reply->status = 422;
+		$reply->status = $status;
 		$reply->message = $message;
 		return($reply);
 	}
