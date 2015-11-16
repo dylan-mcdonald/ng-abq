@@ -16,12 +16,12 @@ Route::get('/', function () {
 });
 
 // Authentication routes...
-Route::get("auth/login", "Auth\AuthController@getLogin");
-Route::post("auth/login", "Auth\AuthController@postLogin");
-Route::get("auth/logout", "Auth\AuthController@getLogout");
+//Route::get("auth/signin", "Auth\AuthController@getLogin");
+Route::post("auth/signin", "Auth\AuthController@postLogin");
+Route::get("auth/signout", "Auth\AuthController@getLogout");
 
 // Registration routes...
-Route::get("auth/signup", "Auth\AuthController@getRegister");
+//Route::get("auth/signup", "Auth\AuthController@getRegister");
 Route::post("auth/signup", "Auth\AuthController@postRegister");
 
 Route::get("{provider}/authorize", function($provider) {
@@ -34,4 +34,5 @@ Route::get("{provider}/login", function($provider) {
 		$user->email = $userDetails->email;
 		$user->save();
 	});
+	return(redirect("/"));
 });

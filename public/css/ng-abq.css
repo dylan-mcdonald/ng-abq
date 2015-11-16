@@ -61,3 +61,8 @@ body { width: 100%;}
 #ng-abq-logo {
 	width: 100%;
 }
+
+.navbar-brand > img {
+	display: inline;
+	height: 100%;
+}
