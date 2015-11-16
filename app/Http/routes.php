@@ -21,8 +21,8 @@ Route::post("auth/login", "Auth\AuthController@postLogin");
 Route::get("auth/logout", "Auth\AuthController@getLogout");
 
 // Registration routes...
-Route::get("auth/register", "Auth\AuthController@getRegister");
-Route::post("auth/register", "Auth\AuthController@postRegister");
+Route::get("auth/signup", "Auth\AuthController@getRegister");
+Route::post("auth/signup", "Auth\AuthController@postRegister");
 
 Route::get("{provider}/authorize", function($provider) {
 	return OAuth::authorize($provider);

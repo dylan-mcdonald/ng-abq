@@ -19,6 +19,7 @@
 				</div>
 			</div>
 		</div>
+		<uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="alerts.length = 0;">{{alert.msg}}</uib-alert>
 		<p>Join us for discussions on Angular JS in the Land of Enchantment! We will meet the first Monday of each month at <a href="http://getplowed.com/site/our-locations/wells-park/">Tractor Brewery, Wells Park</a> at 6:00 pm. All are welcome.</p>
 	</section>
 @endsection

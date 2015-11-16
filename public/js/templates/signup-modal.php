@@ -39,15 +39,15 @@
 			<p ng-message="required">Please enter your password.</p>
 		</div>
 	</div>
-	<div class="form-group" ng-class="{ 'has-error': signupForm.confirmPassword.$touched && signupForm.confirmPassword.$invalid }">
+	<div class="form-group" ng-class="{ 'has-error': signupForm.password_confirmation.$touched && signupForm.password_confirmation.$invalid }">
 		<label class="control-label">Confirm Password</label>
 		<div class="input-group">
 			<div class="input-group-addon">
 				<i class="fa fa-key" aria-hidden="true"></i>
 			</div>
-			<input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password&hellip;" match-password="password" ng-model="signupData.confirmPassword" ng-minlength="8" ng-required="true" />
+			<input type="password" class="form-control" id="password_confirmation" name="password_confirmation" placeholder="Confirm Password&hellip;" match-password="password" ng-model="signupData.password_confirmation" ng-minlength="8" ng-required="true" />
 		</div>
-		<div class="alert alert-danger" role="alert" ng-messages="signupForm.confirmPassword.$error" ng-if="signupForm.confirmPassword.$touched" ng-hide="signupForm.confirmPassword.$valid">
+		<div class="alert alert-danger" role="alert" ng-messages="signupForm.password_confirmation.$error" ng-if="signupForm.password_confirmation.$touched" ng-hide="signupForm.password_confirmation.$valid">
 			<p ng-message="minlength">Password must be at least 8 characters.</p>
 			<p ng-message="passwordMatch">Passwords do not match.</p>
 			<p ng-message="required">Please enter your password.</p>

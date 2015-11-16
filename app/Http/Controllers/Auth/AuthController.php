@@ -76,7 +76,7 @@ class AuthController extends Controller {
 			// validate the form data
 			$credentials = $request->json()->all();
 			$errors = [];
-			$validator = Validator::make($request->json()->all(), ["email" => "required|email", "password" => "required"]);
+			$validator = Validator::make($credentials, ["email" => "required|email", "password" => "required"]);
 			if($validator->fails()) {
 				$errors = $validator->errors()->all();
 				$this->throwValidationException($request, $validator);
@@ -90,7 +90,7 @@ class AuthController extends Controller {
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $errors);
 		}
-		return (response()->json($reply, $reply->status));
+		return (response()->json($reply, 200));
 	}
 
 	public function postRegister(Request $request) {
@@ -107,6 +107,6 @@ class AuthController extends Controller {
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $validator->errors()->all());
 		}
-		return (response()->json($reply, $reply->status));
+		return (response()->json($reply, 200));
 	}
 }
