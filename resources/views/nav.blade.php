@@ -1,8 +1,8 @@
 <ul class="nav navbar-nav">
-	<div class="navbar-header">
+	<div class="navbar-header hidden-xs">
 		<a href="/" role="button" class="navbar-brand">
-			<img src="/images/ng-abq-logo.svg" alt="" class="hidden-xs"/>
-			ng-abq test
+			<img src="/images/ng-abq-logo.svg" alt="" />
+			ng-abq
 		</a>
 	</div>
 	<li><a href="/about">About Us</a></li>

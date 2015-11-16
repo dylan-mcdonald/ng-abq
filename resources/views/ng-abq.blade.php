@@ -32,7 +32,7 @@
 	<body class="sfooter">
 		<header class="navbar navbar-default navbar-fixed-top navbar-inner" ng-controller="NavController">
 			<div class="container">
-				{{--<div class="navbar-header">
+				<div class="navbar-header">
 					<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapse" ng-click="isCollapsed = !isCollapsed">
 						<span class="sr-only">Toggle navigation</span>
 						<span class="icon-bar"></span>
@@ -40,7 +40,7 @@
 						<span class="icon-bar"></span>
 					</button>
 					<a class="navbar-brand visible-xs" href="/">ng-abq</a>
-				</div>--}}
+				</div>
 				<nav id="navbar-collapse" class="collapse navbar-collapse">
 					@include("nav")
 				</nav>
