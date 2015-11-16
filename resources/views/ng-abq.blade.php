@@ -41,43 +41,11 @@
 					</button>
 					<a class="navbar-brand visible-xs" href="/">ng-abq</a>
 				</div>
-				<nav id="navbar-collapse" class="collapse hidden-xs navbar-collapse">
-					<ul class="nav navbar-nav">
-						<a href="/" role="button" class="navbar-brand">
-							<img src="/images/ng-abq-logo.svg" alt="" />
-							ng-abq
-						</a>
-						<li><a href="/about">About Us</a></li>
-						<li><a href="/events">Upcoming Events</a></li>
-						<?php
-						if(Auth::check()) {
-						?>
-						<li><a href="/auth/signout"><i class="fa fa-sign-out" aria-hidden="true"></i> Sign Out</a></li>
-						<?php
-						} else {
-						?>
-						<li class="dropdown" uib-dropdown>
-							<a role="button" class="dropdown-toggle" uib-dropdown-toggle>
-								Sign In <b class="caret"></b>
-							</a>
-							<ul class="dropdown-menu">
-								<li ng-controller="SigninController"><a ng-click="openSigninModal();"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In Now</a></li>
-								<li role="separator" class="divider"></li>
-								<li><a href="/github/authorize"><i class="fa fa-github" aria-hidden="true"></i> Login with GitHub</a></li>
-								<li><a href="/google/authorize"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a></li>
-								<li><a href="/facebook/authorize"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a></li>
-							</ul>
-						</li>
-						<?php
-							}
-						?>
-					</ul>
+				<nav id="navbar-collapse" class="collapse navbar-collapse">
+					@include("nav")
 				</nav>
 				<nav class="visible-xs" uib-collapse="!isCollapsed" ng-show="isCollapsed">
-					<ul class="nav navbar-nav">
-						<li><a href="/about" ng-click="isCollapsed = !isCollapsed">About Us</a></li>
-						<li><a href="/events" ng-click="isCollapsed = !isCollapsed">Upcoming Events</a></li>
-					</ul>
+					@include("nav")
 				</nav>
 			</div>
 		</header>
