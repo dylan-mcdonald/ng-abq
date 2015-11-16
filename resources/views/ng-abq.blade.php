@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html ng-app="NgAbq">
 	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+
 		<!-- CSS stylesheets -->
 		<link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
 		<link type="text/css" rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css" />
@@ -15,10 +19,12 @@
 		<script type="text/javascript" src="/js/angular-password.min.js"></script>
 		<script type="text/javascript" src="/js/ng-abq.js"></script>
 		<script type="text/javascript" src="/js/services/alert-service.js"></script>
-		<script type="text/javascript" src="/js/services/login-service.js"></script>
+		<script type="text/javascript" src="/js/services/signin-service.js"></script>
 		<script type="text/javascript" src="/js/services/signup-service.js"></script>
 		<script type="text/javascript" src="/js/controllers/alert-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/nav-controller.js"></script>
+		<script type="text/javascript" src="/js/controllers/signin-controller.js"></script>
+		<script type="text/javascript" src="/js/controllers/signin-modal.js"></script>
 		<script type="text/javascript" src="/js/controllers/signup-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/signup-modal.js"></script>
 		<title>ng-abq | Albuquerque AngularJS Meetup Group</title>
@@ -52,9 +58,11 @@
 						?>
 						<li class="dropdown" uib-dropdown>
 							<a role="button" class="dropdown-toggle" uib-dropdown-toggle>
-								Login <b class="caret"></b>
+								Sign In <b class="caret"></b>
 							</a>
 							<ul class="dropdown-menu">
+								<li ng-controller="SigninController"><a ng-click="openSigninModal();"><i class="fa fa-sign-in" aria-hidden="true"></i> Sign In Now</a></li>
+								<li role="separator" class="divider"></li>
 								<li><a href="/github/authorize"><i class="fa fa-github" aria-hidden="true"></i> Login with GitHub</a></li>
 								<li><a href="/google/authorize"><i class="fa fa-google" aria-hidden="true"></i> Login with Google</a></li>
 								<li><a href="/facebook/authorize"><i class="fa fa-facebook" aria-hidden="true"></i> Login with Facebook</a></li>

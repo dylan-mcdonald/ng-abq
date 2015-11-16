@@ -13,5 +13,5 @@ app.service("AlertService", function($rootScope) {
 
 	this.getAlerts = function() {
 		return(this.alerts);
-	}
+	};
 });
