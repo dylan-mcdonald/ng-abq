@@ -15,6 +15,10 @@ Route::get('/', function () {
 	return view('index');
 });
 
+Route::get("/about", function() {
+	return(view("about"));
+});
+
 Route::resource("/event", "EventController", ["only" => ["destroy", "index", "show", "store", "update"]]);
 Route::post("/event/attend/{id}", "EventController@attend");
 Route::delete("/event/attend/{id}", "EventController@miss");
