@@ -15,13 +15,13 @@ Route::get('/', function () {
 	return view('index');
 });
 
-// Authentication routes...
-//Route::get("auth/signin", "Auth\AuthController@getLogin");
+Route::resource("/event", "EventController", ["only" => ["destroy", "index", "show", "store", "update"]]);
+
+// Authentication routes
 Route::post("auth/signin", "Auth\AuthController@postLogin");
 Route::get("auth/signout", "Auth\AuthController@getLogout");
 
-// Registration routes...
-//Route::get("auth/signup", "Auth\AuthController@getRegister");
+// Registration routes
 Route::post("auth/signup", "Auth\AuthController@postRegister");
 
 Route::get("{provider}/authorize", function($provider) {
