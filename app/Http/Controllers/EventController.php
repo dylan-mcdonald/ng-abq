@@ -153,4 +153,48 @@ class EventController extends Controller {
 
 		return(response()->json($reply));
 	}
+
+	public function attend($id) {
+		$reply = new \stdClass();
+		$reply->status = 200;
+		$reply->message = "Event attended OK";
+
+		try {
+			$errors = [];
+			if(empty(Auth::user()) === true) {
+				throw(new \RuntimeException("user is not logged in", 401));
+			}
+			$event = Event::find($id);
+			if(empty($event) === true) {
+				throw(new \RuntimeException("event does not exist", 404));
+			}
+			$event->attendees()->attach(Auth::user()->id);
+		} catch(\Exception $exception) {
+			$reply = $this->formatException($exception, $errors);
+		}
+
+		return(response()->json($reply));
+	}
+
+	public function miss($id) {
+		$reply = new \stdClass();
+		$reply->status = 200;
+		$reply->message = "Event missed OK";
+
+		try {
+			$errors = [];
+			if(empty(Auth::user()) === true) {
+				throw(new \RuntimeException("user is not logged in", 401));
+			}
+			$event = Event::find($id);
+			if(empty($event) === true) {
+				throw(new \RuntimeException("event does not exist", 404));
+			}
+			$event->attendees()->detach(Auth::user()->id);
+		} catch(\Exception $exception) {
+			$reply = $this->formatException($exception, $errors);
+		}
+
+		return(response()->json($reply));
+	}
 }

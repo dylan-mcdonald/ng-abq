@@ -16,6 +16,8 @@ Route::get('/', function () {
 });
 
 Route::resource("/event", "EventController", ["only" => ["destroy", "index", "show", "store", "update"]]);
+Route::post("/event/attend/{id}", "EventController@attend");
+Route::delete("/event/attend/{id}", "EventController@miss");
 
 // Authentication routes
 Route::post("auth/signin", "Auth\AuthController@postLogin");
