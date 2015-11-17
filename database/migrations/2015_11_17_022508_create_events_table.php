@@ -3,21 +3,20 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateUsersTable extends Migration {
+class CreateEventsTable extends Migration {
 	/**
 	 * Run the migrations.
 	 *
 	 * @return void
 	 */
 	public function up() {
-		Schema::create("users", function (Blueprint $table) {
+		Schema::create("events", function(Blueprint $table) {
 			$table->increments("id");
-			$table->string("name");
-			$table->string("email")->unique();
-			$table->string("password", 60);
-			$table->tinyInteger("admin")->unsigned()->default(0);
-			$table->rememberToken();
+			$table->integer("owner_id")->unsigned()->index();
+			$table->string("event_name", 64);
+			$table->string("even_description");
 			$table->timestamps();
+			$table->foreign("owner_id")->references("id")->on("users");
 		});
 	}
 
@@ -27,6 +26,6 @@ class CreateUsersTable extends Migration {
 	 * @return void
 	 */
 	public function down() {
-		Schema::drop("users");
+		Schema::drop("events");
 	}
 }
