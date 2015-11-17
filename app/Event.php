@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Event extends Model {
 	/**
+	 * fields modifiable en masse
+	 */
+	protected $fillable = ["event_name", "event_description"];
+
+	/**
 	 * get the users attending this event
 	 */
 	public function attendees() {
