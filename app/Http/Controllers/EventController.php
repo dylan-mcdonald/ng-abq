@@ -92,7 +92,7 @@ class EventController extends Controller {
 	public function update(Request $request, $id) {
 		$reply = new \stdClass();
 		$reply->status = 200;
-		$reply->message = "Event created OK";
+		$reply->message = "Event updated OK";
 
 		try {
 			$errors = [];
@@ -100,12 +100,12 @@ class EventController extends Controller {
 				throw(new \RuntimeException("user is not authorized to update events", 403));
 			}
 
-			$existingEvent = Event::find($id);
-			if(empty($existingEvent) === true) {
+			$event = Event::find($id);
+			if(empty($event) === true) {
 				throw(new \RuntimeException("event does not exist"));
 			}
 
-			if(Auth::user()->user_id !== $existingEvent->user_id) {
+			if(Auth::user()->id !== $event->user_id) {
 				throw(new \RuntimeException("this object does not belong to this user"));
 			}
 
@@ -115,7 +115,8 @@ class EventController extends Controller {
 				$errors = $validator->errors()->all();
 				$this->throwValidationException($request, $validator);
 			}
-			$event = new Event($request->json()->all());
+			$event->event_name = $input["event_name"];
+			$event->event_description = $input["event_description"];
 			$event->save();
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $errors);
@@ -145,7 +146,7 @@ class EventController extends Controller {
 			if(empty($event) === true) {
 				throw(new \RuntimeException("event does not exist", 404));
 			}
-			$event->destroy();
+			$event->delete();
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $errors);
 		}
