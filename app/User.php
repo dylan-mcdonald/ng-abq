@@ -40,7 +40,7 @@ class User extends Model implements AuthenticatableContract,
 	 * get the events the user is attending
 	 */
 	public function attendees() {
-		return($this->belongsToMany("App\\Attendee", "attendees"));
+		return($this->belongsToMany("App\\Attendee", "attendees")->withTimestamps());
 	}
 
 	/**
