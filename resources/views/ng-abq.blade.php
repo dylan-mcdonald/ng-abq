@@ -18,7 +18,9 @@
 		<!-- Site specific JavaScript -->
 		<script type="text/javascript" src="/js/angular-password.min.js"></script>
 		<script type="text/javascript" src="/js/ng-abq.js"></script>
+		<script type="text/javascript" src="/js/directives/abq-events.js"></script>
 		<script type="text/javascript" src="/js/services/alert-service.js"></script>
+		<script type="text/javascript" src="/js/services/event-service.js"></script>
 		<script type="text/javascript" src="/js/services/signin-service.js"></script>
 		<script type="text/javascript" src="/js/services/signup-service.js"></script>
 		<script type="text/javascript" src="/js/controllers/alert-controller.js"></script>
