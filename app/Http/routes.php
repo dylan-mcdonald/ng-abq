@@ -22,6 +22,7 @@ Route::get("/about", function() {
 Route::get("/contact", function() {
 	return(view("contact"));
 });
+Route::post("/contact", "ContactController@contact");
 
 Route::get("/events", function() {
 	return(view("events"));
