@@ -22,7 +22,22 @@ class EventController extends Controller {
 	public function index() {
 		$reply = new \stdClass();
 		$reply->status = 200;
-		$reply->data = Event::all();
+		$reply->data = [];
+
+		$user = Auth::user();
+		$events = Event::all();
+		foreach($events as $event) {
+			$attendees = $event->attendees->count();
+			$attending = null;
+			if(empty($user) === false) {
+				$attending = !empty($event->attendees->where("id", $user->id));
+			}
+			unset($event->attendees);
+			$event->attendees = $attendees;
+			$event->attending = $attending;
+		}
+		$reply->data = $events;
+
 		return(response()->json($reply));
 	}
 
@@ -43,7 +58,7 @@ class EventController extends Controller {
 				throw(new \RuntimeException("user is not authorized to create events", 403));
 			}
 			$input = $request->json()->all();
-			$validator = Validator::make($input, ["event_name" => "required|max:64", "event_description" => "required|max:255"]);
+			$validator = Validator::make($input, ["event_name" => "required|max:64", "event_description" => "required|max:255", "event_date" => "required|date_format:Y-m-d"]);
 			if($validator->fails()) {
 				$errors = $validator->errors()->all();
 				$this->throwValidationException($request, $validator);
@@ -110,13 +125,14 @@ class EventController extends Controller {
 			}
 
 			$input = $request->json()->all();
-			$validator = Validator::make($input, ["event_name" => "required|max:64", "event_description" => "required|max:255"]);
+			$validator = Validator::make($input, ["event_name" => "required|max:64", "event_description" => "required|max:255", "event_date" => "required|date_format:Y-m-d"]);
 			if($validator->fails()) {
 				$errors = $validator->errors()->all();
 				$this->throwValidationException($request, $validator);
 			}
 			$event->event_name = $input["event_name"];
 			$event->event_description = $input["event_description"];
+			$event->event_date = $input["event_date"];
 			$event->save();
 		} catch(\Exception $exception) {
 			$reply = $this->formatException($exception, $errors);
