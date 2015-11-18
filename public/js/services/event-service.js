@@ -45,14 +45,14 @@ app.service("EventService", function($http) {
 	};
 
 	this.attend = function(eventId) {
-		return($http.post(this.getUrl() + "/attend/" + eventId)
+		return($http.post(this.getUrl() + "attend/" + eventId)
 			.then(function(reply) {
 				return(reply.data);
 			}));
 	};
 
 	this.miss = function(eventId) {
-		return($http.delete(this.getUrl() + "/attend/" + eventId)
+		return($http.delete(this.getUrl() + "attend/" + eventId)
 			.then(function(reply) {
 				return(reply.data);
 			}));

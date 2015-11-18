@@ -30,7 +30,7 @@ class EventController extends Controller {
 			$attendees = $event->attendees->count();
 			$attending = null;
 			if(empty($user) === false) {
-				$attending = !empty($event->attendees->where("id", $user->id));
+				$attending = !$event->attendees->where("id", $user->id)->isEmpty();
 			}
 			unset($event->attendees);
 			$event->attendees = $attendees;
