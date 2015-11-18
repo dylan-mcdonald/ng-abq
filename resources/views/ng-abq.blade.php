@@ -24,6 +24,7 @@
 		<script type="text/javascript" src="/js/services/signin-service.js"></script>
 		<script type="text/javascript" src="/js/services/signup-service.js"></script>
 		<script type="text/javascript" src="/js/controllers/alert-controller.js"></script>
+		<script type="text/javascript" src="/js/controllers/event-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/nav-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/signin-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/signin-modal.js"></script>
