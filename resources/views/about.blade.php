@@ -14,7 +14,7 @@
 	<h1>Our Founders</h1>
 	<div class="row">
 		<div class="col-md-6">
-			<img class="img-circle img-responsive" src="/images/dylan-bowtie-bw-sm.png" alt="" />
+			<img class="img-circle img-responsive" src="/images/deepdivedylan.png" alt="" />
 			<h3>Dylan McDonald</h3>
 			<p><em>Developer, teacher, free thinker, scrum master, Trekkie, and lover of green chile.</em></p>
 			<p>
@@ -22,9 +22,14 @@
 			</p>
 		</div>
 		<div class="col-md-6">
-			<img class="img-circle img-responsive" src="http://placekitten.com/g/256/256" />
+			<img class="img-circle img-responsive" src="/images/skylarity.png" alt="" />
 			<h3>Skyler Rexroad</h3>
-			<p><em>Resistance is Futile.</em></p>
+			<p>
+				<em>Developer, musician. Makes things look pretty, and function well.</em>
+			</p>
+			<p>
+				Skyler creates websites, music, games, and all sorts of other stuff. He's also a full stack developer and instructor at the <a href="http://stemuluscenter.org/products/deep-dive-coding-bootcamp">CNM STEMulus Center Deep Dive Coding Bootcamp</a>.
+			</p>
 		</div>
 	</div>
 @endsection
