@@ -15,6 +15,7 @@ class CreateEventsTable extends Migration {
 			$table->integer("user_id")->unsigned()->index();
 			$table->string("event_name", 64);
 			$table->string("event_description");
+			$table->date("event_date");
 			$table->timestamps();
 			$table->foreign("user_id")->references("id")->on("users");
 		});

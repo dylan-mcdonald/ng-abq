@@ -8,13 +8,13 @@ class Event extends Model {
 	/**
 	 * fields modifiable en masse
 	 */
-	protected $fillable = ["event_name", "event_description"];
+	protected $fillable = ["event_name", "event_description", "event_date"];
 
 	/**
 	 * get the users attending this event
 	 */
 	public function attendees() {
-		return($this->belongsToMany("App\\User", "attendees"));
+		return($this->belongsToMany("App\\User", "attendees")->withTimestamps());
 	}
 
 	/**
