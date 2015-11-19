@@ -1,5 +1,5 @@
 app.service("ContactService", function($http) {
-	this.CONTACT_ENDPOINT = "/contact/";
+	this.CONTACT_ENDPOINT = "/contact";
 
 	this.getUrl = function() {
 		return(this.CONTACT_ENDPOINT);

@@ -31,9 +31,11 @@ class ContactController extends Controller {
 
 			$input["messageLines"] = explode("\n", $input["message"]);
 			Mail::send("contact-email", $input, function($message) use($input) {
-				$recipients = User::where("admin", 1)->get()->pluck("email")->all();
+				$admins = User::where("admin", 1)->get();
+				$names = $admins->pluck("name")->all();
+				$recipients = $admins->pluck("email")->all();
 				$message->subject("[Albuquerue Angular Contact Form] " . $input["subject"])
-					->to($recipients)
+					->to($recipients, $names)
 					->from($input["email"], $input["name"]);
 			});
 		} catch(\Exception $exception) {

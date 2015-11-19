@@ -2,7 +2,7 @@
 @section("content")
 	<h1>Contact Us</h1>
 	<p>Use this form to contact the Albuquerque Angular Team.</p>
-	<form class="form-horizontal well" name="contactForm" ng-submit="contactUs(contactData, contactForm.$valid);" novalidate>
+	<form class="form-horizontal well" name="contactForm" ng-controller="ContactController" ng-submit="contact(contactData, contactForm.$valid);" novalidate>
 		<h2>Get In Touch</h2>
 		<div class="form-group" ng-class="{ 'has-error': contactForm.name.$touched && contactForm.name.$invalid }">
 			<label for="name">Name</label>
@@ -23,7 +23,7 @@
 				<div class="input-group-addon">
 					<i class="fa fa-envelope" aria-hidden="true"></i>
 				</div>
-				<input type="email" name="email" class="form-control" placeholder="How can we get back to you?" maxlength="256" ng-model="contcactData.email" ng-maxlength="256" ng-required="true" />
+				<input type="email" name="email" class="form-control" placeholder="How can we get back to you?" maxlength="256" ng-model="contactData.email" ng-maxlength="256" ng-required="true" />
 			</div>
 		</div>
 		<div class="alert alert-danger" role="alert" ng-messages="contactForm.email.$error" ng-if="contactForm.email.$touched" ng-hide="contactForm.email.$valid">

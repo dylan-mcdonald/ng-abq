@@ -19,11 +19,17 @@
 		<script type="text/javascript" src="/js/angular-password.min.js"></script>
 		<script type="text/javascript" src="/js/ng-abq.js"></script>
 		<script type="text/javascript" src="/js/directives/abq-events.js"></script>
+
+		<!-- Angular Services -->
 		<script type="text/javascript" src="/js/services/alert-service.js"></script>
+		<script type="text/javascript" src="/js/services/contact-service.js"></script>
 		<script type="text/javascript" src="/js/services/event-service.js"></script>
 		<script type="text/javascript" src="/js/services/signin-service.js"></script>
 		<script type="text/javascript" src="/js/services/signup-service.js"></script>
+
+		<!-- Angular Controllers -->
 		<script type="text/javascript" src="/js/controllers/alert-controller.js"></script>
+		<script type="text/javascript" src="/js/controllers/contact-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/event-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/nav-controller.js"></script>
 		<script type="text/javascript" src="/js/controllers/signin-controller.js"></script>
