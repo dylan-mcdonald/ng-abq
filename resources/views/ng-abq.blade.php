@@ -71,10 +71,11 @@
 					</div>
 					<div class="col-sm-8">
 						<ul class="list-inline">
-							<li>Follow us:</li>
-							<li><a class="btn btn-sm btn-info github-color" href="https://github.com/ng-abq/"><i class="fa fa-github" aria-hidden="true"></i> GitHub</a></li>
-							<li><a class="btn btn-sm btn-info google-color" href="https://plus.google.com/102721502767657519522"><i class="fa fa-google" aria-hidden="true"></i> Google</a></li>
-							<li><a class="btn btn-sm btn-info facebook-color" href="https://www.facebook.com/angularabq"><i class="fa fa-facebook" aria-hidden="true"></i> Facebook</a></li>
+							<li>Reach Out:</li>
+							<li><a class="btn btn-sm btn-info" href="/contact"><i class="fa fa-envelope" aria-hidden="true"></i></a></li>
+							<li><a class="btn btn-sm btn-info github-color" href="https://github.com/ng-abq/"><i class="fa fa-github" aria-hidden="true"></i></a></li>
+							<li><a class="btn btn-sm btn-info google-color" href="https://plus.google.com/102721502767657519522"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+							<li><a class="btn btn-sm btn-info facebook-color" href="https://www.facebook.com/angularabq"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
 						</ul>
 					</div>
 				</div>
