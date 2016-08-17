@@ -2,6 +2,12 @@
 
 ---
 
+## Data Design
+
+- ERD
+
+---
+
 ## Templates
 
 - Navbar
