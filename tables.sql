@@ -9,16 +9,16 @@ DROP TABLE IF EXISTS image;
 DROP TABLE IF EXISTS passwordReset;
 
 CREATE TABLE profile (
-	profileId         INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	profileAdmin      TINYINT UNSIGNED DEFAULT 0  NOT NULL,
-	profileNameFirst  VARCHAR(50)                 NOT NULL,
-	profileNameLast   VARCHAR(50)                 NOT NULL,
-	profileEmail      VARCHAR(75)                 NOT NULL,
-	profileUserName   VARCHAR(25)                 NOT NULL,
-	UNIQUE (profileUserName),
-	UNIQUE (profileEmail),
-	PRIMARY KEY (profileId)
-);
+  	profileId         INT UNSIGNED AUTO_INCREMENT NOT NULL,
+  	profileAdmin      TINYINT UNSIGNED DEFAULT 0  NOT NULL,
+  	profileNameFirst  VARCHAR(50)                 NOT NULL,
+  	profileNameLast   VARCHAR(50)                 NOT NULL,
+  	profileEmail      VARCHAR(75)                 NOT NULL,
+  	profileUserName   VARCHAR(25)                 NOT NULL,
+  	UNIQUE (profileUserName),
+  	UNIQUE (profileEmail),
+  	PRIMARY KEY (profileId)
+  );
 
 CREATE TABLE oauthIdentity (
 	oauthIdentityId             INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -56,7 +56,22 @@ CREATE TABLE link (
 	PRIMARY KEY (eventId)
 );
 
+CREATE TABLE post (
+	postId              INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	postProfileUserName VARCHAR(50)                 NOT NULL,
+	postSubmission      VARCHAR(50)                 NOT NULL,
+	postTime            DATETIME                    NOT NULL,
+	PRIMARY KEY (postId)
+);
 
+CREATE TABLE comment (
+	commentId               INT UNSIGNED AUTO_INCREMENT NOT NULL,
+	commentProfileUserName  VARCHAR(50)                 NOT NULL,
+	commentSubmission       VARCHAR(50)                 NOT NULL,
+	commentPostId           VARCHAR(50)                 NOT NULL,
+	commentTime             DATETIME                    NOT NULL,
+	PRIMARY KEY (commentId)
+);
 
 CREATE TABLE image (
 	imageId       INT UNSIGNED AUTO_INCREMENT NOT NULL,
@@ -66,3 +81,14 @@ CREATE TABLE image (
 	PRIMARY KEY (imageId)
 );
 
+CREATE TABLE profile (
+  	profileId         INT UNSIGNED AUTO_INCREMENT NOT NULL,
+  	profileAdmin      TINYINT UNSIGNED DEFAULT 0  NOT NULL,
+  	profileNameFirst  VARCHAR(50)                 NOT NULL,
+  	profileNameLast   VARCHAR(50)                 NOT NULL,
+  	profileEmail      VARCHAR(75)                 NOT NULL,
+  	profileUserName   VARCHAR(25)                 NOT NULL,
+  	UNIQUE (profileUserName),
+  	UNIQUE (profileEmail),
+  	PRIMARY KEY (profileId)
+  );
