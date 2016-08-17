@@ -4,11 +4,16 @@
 
 ## Timeline
 
+One week:
 - SQL Tables
 - Classes
+
+Two Weeks:
 - APIs
 - Angular
-- Templates
+
+One Week:
+- Templating
 
 ---
 
