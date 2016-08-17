@@ -9,6 +9,7 @@ One week:
 Two Weeks:
 - APIs
 - Angular
+- If we do the forum, add a week
 
 One Week:
 - Templating
