@@ -28,7 +28,7 @@ One Week:
 - image
 - post
 - comment
-- password_reset(?)
+- password_reset
 
 ## Templates
 
