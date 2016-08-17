@@ -8,7 +8,7 @@ require_once("autoload.php");
  *
  * Contains information about a comment on a forum post.
  *
- * @author Skyler Rexroad
+ * @author Skyler Rexroad <skyler.rexroad@gmail.com>
  **/
 class Comment implements JsonSerializable {
 	//TODO

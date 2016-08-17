@@ -8,7 +8,7 @@ require_once("autoload.php");
  *
  * The OAuth identity is information about where a user logged in from.
  *
- * @author Skyler Rexroad
+ * @author Skyler Rexroad <skyler.rexroad@gmail.com>
  **/
 class OauthIdentitiy implements JsonSerializable {
 	//TODO

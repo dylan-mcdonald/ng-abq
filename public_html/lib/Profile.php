@@ -8,7 +8,7 @@ require_once("autoload.php");
  *
  * Contains profile information and talks to the OauthIdentitiy class to determine login source.
  *
- * @author Skyler Rexroad
+ * @author Skyler Rexroad <skyler.rexroad@gmail.com>
  **/
 class Profile implements JsonSerializable {
 	//TODO
