@@ -2,9 +2,33 @@
 
 ---
 
+## Timeline
+
+- SQL Tables
+- Classes
+- APIs
+- Angular
+- Templates
+
+---
+
 ## Data Design
 
 - ERD
+
+---
+
+## Classes
+
+- profile
+- oauth_identity
+- event
+- attendee
+- link
+- image
+- post
+- comment
+- password_reset(?)
 
 ---
 
@@ -20,17 +44,3 @@
 - Links
 - Calendar
 - Join
-
----
-
-## Classes
-
-- profile
-- oauth_identity
-- event
-- attendee
-- link
-- image
-- post
-- comment
-- password_reset(?)
