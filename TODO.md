@@ -1,7 +1,5 @@
 # ng-abq
 
----
-
 ## Timeline
 
 One week:
@@ -15,13 +13,9 @@ Two Weeks:
 One Week:
 - Templating
 
----
-
 ## Data Design
 
 - ERD
-
----
 
 ## Classes
 
@@ -34,8 +28,6 @@ One Week:
 - post
 - comment
 - password_reset(?)
-
----
 
 ## Templates
 
