@@ -10,7 +10,7 @@ require_once("autoload.php");
  *
  * @author Marlan Ball <wyndows@earthlink.net>
  *
- * version 1.0.0
+ * @version 1.0.0
  **/
 
 class Link implements \JsonSerializable {
@@ -37,6 +37,32 @@ class Link implements \JsonSerializable {
 	 * @var string $linkDate
 	 */
 	private $linkDate;
+
+	public function __construct(int $newLinkId = null, int $newLinkProfileId, string $newLinkProfileUserName, string $newLinkUrl, string $newLinkDate) {
+		try {
+			$this->setProductId($newProductId);
+			$this->setProductAccountId($newProductAccountId);
+			$this->setProductImageId($newProductImageId);
+			$this->setProductAdminFee($newProductAdminFee);
+			$this->setProductDescription($newProductDescription);
+			$this->setProductPrice($newProductPrice);
+			$this->setProductShipping($newProductShipping);
+			$this->setProductSold($newProductSold);
+			$this->setProductTitle($newProductTitle);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			//rethrow the exception to the caller
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			//rethrow the exception to the caller
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		} catch(\TypeError $typeError) {
+			//rethrow the exception to the caller
+			throw(new \TypeError($typeError->getMessage(), 0, $typeError));
+		} catch(\Exception $exception) {
+			//rethrow the exception to the caller
+			throw(new \Exception($exception->getMessage(), 0, $exception));
+		}
+	}
 
 
 
