@@ -40,16 +40,12 @@ class Link implements \JsonSerializable {
 
 	public function __construct(int $newLinkId = null, int $newLinkProfileId, string $newLinkProfileUserName, string $newLinkUrl, string $newLinkDate) {
 		try {
-			$this->setProductId($newProductId);
-			$this->setProductAccountId($newProductAccountId);
-			$this->setProductImageId($newProductImageId);
-			$this->setProductAdminFee($newProductAdminFee);
-			$this->setProductDescription($newProductDescription);
-			$this->setProductPrice($newProductPrice);
-			$this->setProductShipping($newProductShipping);
-			$this->setProductSold($newProductSold);
-			$this->setProductTitle($newProductTitle);
-		} catch(\InvalidArgumentException $invalidArgument) {
+			$this->setLinkId($newLinkId);
+			$this->setLinkProfileId($newLinkProfileId);
+			$this->setLinkUserName($newLinkProfileUserName);
+			$this->setLinkUrl($newLinkUrl);
+			$this->setLinkDate($newLinkDate);
+			} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
