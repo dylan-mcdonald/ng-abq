@@ -65,7 +65,7 @@ class Link implements \JsonSerializable {
 		}
 	}
 
-
+// accessors and mutators
 	/**
 	 * accessor method for link id
 	 *
@@ -228,6 +228,63 @@ class Link implements \JsonSerializable {
 		$this->linkDate = $newLinkDate;
 	}
 
+// insert
+	/**
+	 * inserts link information into mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function insert(\PDO $pdo) {
+		// enforce the linkId is null (i.e., don't insert a link that already exists
+		if($this->linkId !== null) {
+			throw(new \PDOException("not a new link"));
+		}
+
+		// create query template
+		$query = "INSERT INTO link(linkProfileId, linkProfileUserName, linkUrl, linkDate) VALUES(:linkProfileId, :linkProfileUserName, :linkUrl, :linkDate)";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders in the template
+		$formattedDate = $this->linkDate->format("Y-m-d H:i:s");
+		$parameters = ["linkProfileId" => $this->linkProfileId, "linkProfileUserName" => $this->linkProfileUserName, "linkUrl" => $this->linkUrl, "linkDate" => $formattedDate];
+		$statement->execute($parameters);
+
+		// update the null linkId with what mySQL just gave us
+		$this->linkId = intval($pdo->lastInsertId());
+	}
+
+	// get all links
+	/**
+	 * gets all links
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @return \SplFixedArray SplFixedArray of Links found or null if not found
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError when variables are not the correct data type
+	 **/
+	public static function getAllLinks(\PDO $pdo) {
+		// create query template
+		$query = "SELECT linkId, linkProfileId, linkProfileUserName, linkUrl, linkDate FROM link";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// build an array of links
+		$links = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkProfileUserName"], $row["linkUrl"], $row["linkDate"]);
+				$links[$links->key()] = $link;
+				$links->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($links);
+	}
 
 	/**
 	 * formats the state variables for JSON serialization
