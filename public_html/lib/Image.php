@@ -281,7 +281,7 @@ class Image implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$image = new Image($row["imageId"], ,$row["imageProfileId"], $row["imageFileName"], $row["imageType"]);
+				$image = new Image($row["imageId"], $row["imageProfileId"], $row["imageFileName"], $row["imageType"]);
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
