@@ -231,7 +231,29 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * gets the image file name by image id
+	 * deletes this image from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) {
+		// enforce the imageId is not null (don't delete an image that has just been inserted)
+		if($this->imageId === null) {
+			throw(new \PDOException("unable to delete an image that does not exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM image WHERE imageId = :imageId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["imageId" => $this->imageId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * gets the image by image id
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param int $imageId - image id to search for
@@ -265,12 +287,12 @@ class Image implements \JsonSerializable {
 			// if the row couldn't be converted, rethrow it
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
-		return ($images);
+		return ($image);
 	}
 
 
 	/**
-	 * gets the image file name by file name
+	 * gets the image by file name
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @param string $imageFileName - file name of image
@@ -309,6 +331,7 @@ class Image implements \JsonSerializable {
 			}
 		}
 		return ($images);
+	}
 
 	/**
 	 * getAllImages
@@ -350,8 +373,6 @@ class Image implements \JsonSerializable {
 		$fields = get_object_vars($this);
 		return($fields);
 	}
-
-
 
 }
 
