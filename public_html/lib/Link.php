@@ -22,21 +22,25 @@ class Link implements \JsonSerializable {
 	 * @var int $linkId
 	 */
 	private $linkId;
+
 	/**
 	 * foreign key
 	 * @var int $linkProfileId
 	 */
 	private $linkProfileId;
+
 	/**
 	 * foreign key
 	 * @var string $linkProfileUserName
 	 */
 	private $linkProfileUserName;
+
 	/**
 	 * the url of the shared link
 	 * @var string $linkUrl
 	 */
 	private $linkUrl;
+
 	/**
 	 * the date link is shared
 	 * @var string $linkDate
