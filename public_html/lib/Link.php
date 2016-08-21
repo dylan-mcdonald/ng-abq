@@ -82,7 +82,7 @@ class Link implements \JsonSerializable {
 	/**
 	 * mutator method for link id
 	 *
-	 * @param int|null $newLinkId new value of product id
+	 * @param int|null $newLinkId new value of link id
 	 * @throws \RangeException if $newLinkId is not positive
 	 * @throws \TypeError if $newLinkId is not an integer
 	 */
@@ -116,7 +116,7 @@ class Link implements \JsonSerializable {
 	/**
 	 * mutator method for link id
 	 *
-	 * @param int|null $newLinkProfileId new value of product account id
+	 * @param int|null $newLinkProfileId new value of link profile id
 	 * @throws \RangeException if $newLinkProfileId is not positive
 	 * @throws \TypeError if $newLinkProfileId is not an integer
 	 */
@@ -142,7 +142,7 @@ class Link implements \JsonSerializable {
 	/**
 	 * mutator method for link profile username
 	 *
-	 * @param string $newLinkProfileUserName new value of product description
+	 * @param string $newLinkProfileUserName new value of link profile username
 	 * @throws \InvalidArgumentException if $newLinkProfileUserName is not a string or insecure
 	 * @throws \RangeException if $newLinkProfileUserName is > 25 characters
 	 * @throws \TypeError if $newLinkProfileUserName is not a string
@@ -176,7 +176,7 @@ class Link implements \JsonSerializable {
 	/**
 	 * mutator method for link url
 	 *
-	 * @param string $newLinkUrl new value of product description
+	 * @param string $newLinkUrl new value of link url
 	 * @throws \InvalidArgumentException if $newLinkUrl is not a string or insecure
 	 * @throws \RangeException if $newLinkUrl is > 25 characters
 	 * @throws \TypeError if $newLinkUrl is not a string
