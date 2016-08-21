@@ -15,8 +15,13 @@ require_once("autoload.php");
 
 class Link implements \JsonSerializable {
 
-	// use ValidateDate;
+	 use ValidateDate;
 
+	/**
+	 * id for the link; this is the primary key
+	 * @var int $linkId
+	 */
+	private $linkId;
 	/**
 	 * foreign key
 	 * @var int $linkProfileId
@@ -38,11 +43,11 @@ class Link implements \JsonSerializable {
 	 */
 	private $linkDate;
 
-	public function __construct(int $newLinkId = null, int $newLinkProfileId, string $newLinkProfileUserName, string $newLinkUrl, string $newLinkDate) {
+	public function __construct(int $newLinkId = null, int $newLinkProfileId, string $newLinkProfileUserName, string $newLinkUrl, $newLinkDate = null) {
 		try {
 			$this->setLinkId($newLinkId);
 			$this->setLinkProfileId($newLinkProfileId);
-			$this->setLinkUserName($newLinkProfileUserName);
+			$this->setLinkProfileUserName($newLinkProfileUserName);
 			$this->setLinkUrl($newLinkUrl);
 			$this->setLinkDate($newLinkDate);
 			} catch(\InvalidArgumentException $invalidArgument) {
@@ -61,9 +66,167 @@ class Link implements \JsonSerializable {
 	}
 
 
+	/**
+	 * accessor method for link id
+	 *
+	 * @return int value of link id
+	 */
+	public function getLinkId() {
+		return ($this->linkId);
+	}
 
+	/**
+	 * mutator method for link id
+	 *
+	 * @param int|null $newLinkId new value of product id
+	 * @throws \RangeException if $newLinkId is not positive
+	 * @throws \TypeError if $newLinkId is not an integer
+	 */
+	public function setLinkId(int $newLinkId = null) {
+		// base case: if the link id is null, this is a new link without a mySQL assigned id
+		if($newLinkId === null) {
+			$this->linkId = null;
+			return;
+		}
 
+		// verify the link id is positive
+		if($newLinkId <= 0) {
+			throw(new \RangeException("link id is not positive"));
+		}
 
+		// store the link id
+		$this->linkId = $newLinkId;
+
+	}
+
+	/**
+	 * accessor method for link profile id
+	 *
+	 * @return int value of link profile id
+	 */
+
+	public function getLinkProfileId() {
+		return ($this->linkProfileId);
+	}
+
+	/**
+	 * mutator method for link id
+	 *
+	 * @param int|null $newLinkProfileId new value of product account id
+	 * @throws \RangeException if $newLinkProfileId is not positive
+	 * @throws \TypeError if $newLinkProfileId is not an integer
+	 */
+	public function setLinkProfileId(int $newLinkProfileId) {
+		// verify the linkProfileId is positive
+		if($newLinkProfileId <= 0) {
+			throw(new \RangeException("linkProfileId is not positive"));
+		}
+
+		// convert and store the account id
+		$this->linkProfileId = $newLinkProfileId;
+	}
+
+	/**
+	 * accessor method for link profile username
+	 *
+	 * @return string value of link profile username
+	 */
+	public function getLinkProfileUserName() {
+		return ($this->linkProfileUserName);
+	}
+
+	/**
+	 * mutator method for link profile username
+	 *
+	 * @param string $newLinkProfileUserName new value of product description
+	 * @throws \InvalidArgumentException if $newLinkProfileUserName is not a string or insecure
+	 * @throws \RangeException if $newLinkProfileUserName is > 25 characters
+	 * @throws \TypeError if $newLinkProfileUserName is not a string
+	 */
+	public function setLinkProfileUserName(string $newLinkProfileUserName) {
+		// verify the link profile username is secure
+		$newLinkProfileUserName = trim($newLinkProfileUserName);
+		$newLinkProfileUserName = filter_var($newLinkProfileUserName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newLinkProfileUserName) === true) {
+			throw(new \InvalidArgumentException("link profile username is empty or insecure"));
+		}
+
+		// verify the link profile username will fit in the database
+		if(strlen($newLinkProfileUserName) > 25) {
+			throw(new \RangeException("link profile username is too long"));
+		}
+
+		// store the product description
+		$this->linkProfileUserName = $newLinkProfileUserName;
+	}
+
+	/**
+	 * accessor method for link url
+	 *
+	 * @return string value of link url
+	 */
+	public function getLinkUrl() {
+		return ($this->linkUrl);
+	}
+
+	/**
+	 * mutator method for link url
+	 *
+	 * @param string $newLinkUrl new value of product description
+	 * @throws \InvalidArgumentException if $newLinkUrl is not a string or insecure
+	 * @throws \RangeException if $newLinkUrl is > 25 characters
+	 * @throws \TypeError if $newLinkUrl is not a string
+	 */
+	public function setLinkUrl(string $newLinkUrl) {
+		// verify the link url is secure
+		$newLinkUrl = trim($newLinkUrl);
+		$newLinkUrl = filter_var($newLinkUrl, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newLinkUrl) === true) {
+			throw(new \InvalidArgumentException("link url is empty or insecure"));
+		}
+
+		// verify the link url will fit in the database
+		if(strlen($newLinkUrl) > 100) {
+			throw(new \RangeException("link url is too long"));
+		}
+
+		// store the product description
+		$this->linkUrl = $newLinkUrl;
+	}
+
+	/**
+	 * accessor method for link date
+	 *
+	 * @return \DateTime value of link date
+	 **/
+	public function getLinkDate() {
+		return($this->linkDate);
+	}
+
+	/**
+	 * mutator method for link date
+	 *
+	 * @param \DateTime|string|null $newLinkDate purchase date as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newLinkDate is not a valid object or string
+	 * @throws \RangeException if $newLinkDate is  a date that does not exist
+	 **/
+	public function setLinkDate($newLinkDate = null) {
+		// base case: if the date is null, use the current date and time
+		if($newLinkDate === null) {
+			$this->linkDate = new \DateTime();
+			return;
+		}
+
+		// store the link date
+		try {
+			$newLinkDate = $this->validateDate($newLinkDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->linkDate = $newLinkDate;
+	}
 
 
 	/**

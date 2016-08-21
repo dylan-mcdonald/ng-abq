@@ -67,7 +67,7 @@ CREATE TABLE link (
 	linkProfileId       INT UNSIGNED                    NOT NULL,
 	linkProfileUserName VARCHAR(25)                     NOT NULL,
 	linkUrl             VARCHAR(100)                    NOT NULL,
-	linkDate            VARCHAR(15)                     NOT NULL,
+	linkDate            DATETIME		                   NOT NULL,
 	FOREIGN KEY (linkProfileId) REFERENCES profile (profileId),
 	FOREIGN KEY (linkProfileUserName) REFERENCES profile (profileUserName),
 	PRIMARY KEY (linkId)
