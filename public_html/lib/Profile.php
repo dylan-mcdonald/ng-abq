@@ -139,6 +139,34 @@ class Profile implements \JsonSerializable {
 		$this->profileAdmin = $newProfileAdmin;
 	}
 
+	/**
+	 * Accessor for profile first name
+	 * @return string first name
+	 **/
+	public function getProfileNameFirst() {
+		return $this->profileNameFirst;
+	}
+
+	/**
+	 * Mutator for profile first name
+	 * @param string $newProfileNameFirst, first name
+	 * @throws \RangeException if profile first name is out of bounds
+	 * @throws \TypeError if profile first name is not a string
+	 **/
+	public function setProfileNameFirst(int $newProfileNameFirst = null) {
+		// Sanitize dat string
+		$newProfileNameFirst = filter_var(trim($newProfileNameFirst), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		// Make sure profile first name exists and fits in database
+		if (strlen($newProfileNameFirst) <= 0) {
+			throw new \RangeException("Profile first name too short");
+		} else if (strlen($newProfileNameFirst) > 50) {
+			throw new \RangeException("Profile first name too long");
+		}
+
+		$this->profileNameFirst = $newProfileNameFirst;
+	}
+
 	/* PDO METHODS */
 
 	/* JSON SERIALIZE */
