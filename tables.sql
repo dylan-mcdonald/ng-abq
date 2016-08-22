@@ -31,7 +31,7 @@ CREATE TABLE post (
 
 CREATE TABLE event (
 	eventId             INT UNSIGNED AUTO_INCREMENT NOT NULL,
-	eventProfileId      TINYINT UNSIGNED DEFAULT 0  NOT NULL,
+	eventProfileId      INT UNSIGNED						NOT NULL,
 	eventName           VARCHAR(50)                 NOT NULL,
 	eventDate           VARCHAR(50)                 NOT NULL,
 	eventTime           VARCHAR(75)                 NOT NULL,

@@ -33,7 +33,7 @@ class PasswordReset implements \JsonSerializable {
 	 * foreign key
 	 * @var string $passwordResetProfileUserName
 	 */
-	private $passwordResetUserName;
+	private $passwordResetProfileUserName;
 
 	/**
 	 * the token of the password reset
