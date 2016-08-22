@@ -70,7 +70,6 @@ private $eventTime;
      *
      **/
     public function setEventId($newEventId = null) {
-        // base case: if the user id is null, this a new user without a mySQL assigned id (yet)
         if($newEventId === null) {
             $this->eventId = null;
             return;
