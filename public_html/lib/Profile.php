@@ -116,6 +116,23 @@ class Profile implements \JsonSerializable {
 		$this->profileId = $newProfileId;
 	}
 
+	/**
+	 * Accessor for profile admin flag
+	 * @return boolean admin flag
+	 **/
+	public function getProfileAdmin() {
+		return $this->profileAdmin;
+	}
+
+	/**
+	 * Mutator for profile admin flag
+	 * @param boolean $newProfileId, admin flag
+	 * @throws \TypeError if profile admin flag is not a boolean
+	 **/
+	public function setProfileAdmin(boolean $newProfileAdmin) {
+		$this->profileAdmin = $newProfileAdmin;
+	}
+
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
 		// unset($fields["profileEmailActivation"]);
