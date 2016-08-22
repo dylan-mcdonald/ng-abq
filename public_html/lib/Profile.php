@@ -14,6 +14,8 @@ require_once("autoload.php");
  **/
 class Profile implements \JsonSerializable {
 
+	/* STATE VARIABLES */
+
 	/**
 	 * Primary key of profile
 	 * @var int $profileId
@@ -49,6 +51,8 @@ class Profile implements \JsonSerializable {
 	 * @var string $profileUserName
 	 **/
 	private $profileUserName;
+
+	/* CONSTRUCTOR */
 
 	/**
 	 * Constructor for profile
@@ -86,6 +90,8 @@ class Profile implements \JsonSerializable {
 			throw new \Exception($exception->getMessage(), 0, $exception);
 		}
 	}
+
+	/* ACCESSORS AND MUTATORS */
 
 	/**
 	 * Accessor for profile ID
@@ -132,6 +138,10 @@ class Profile implements \JsonSerializable {
 	public function setProfileAdmin(boolean $newProfileAdmin) {
 		$this->profileAdmin = $newProfileAdmin;
 	}
+
+	/* PDO METHODS */
+
+	/* JSON SERIALIZE */
 
 	public function jsonSerialize() {
 		$fields = get_object_vars($this);
