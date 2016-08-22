@@ -153,7 +153,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if profile first name is out of bounds
 	 * @throws \TypeError if profile first name is not a string
 	 **/
-	public function setProfileNameFirst(int $newProfileNameFirst = null) {
+	public function setProfileNameFirst(int $newProfileNameFirst) {
 		// Sanitize dat string
 		$newProfileNameFirst = filter_var(trim($newProfileNameFirst), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -165,6 +165,62 @@ class Profile implements \JsonSerializable {
 		}
 
 		$this->profileNameFirst = $newProfileNameFirst;
+	}
+
+	/**
+	 * Accessor for profile last name
+	 * @return string last name
+	 **/
+	public function getProfileNameLast() {
+		return $this->profileNameLast;
+	}
+
+	/**
+	 * Mutator for profile last name
+	 * @param string $newProfileNameLast, last name
+	 * @throws \RangeException if profile last name is out of bounds
+	 * @throws \TypeError if profile last name is not a string
+	 **/
+	public function setProfileNameLast(int $newProfileNameLast) {
+		// Sanitize dat string
+		$newProfileNameLast = filter_var(trim($newProfileNameLast), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		// Make sure profile last name exists and fits in database
+		if (strlen($newProfileNameLast) <= 0) {
+			throw new \RangeException("Profile last name too short");
+		} else if (strlen($newProfileNameLast) > 50) {
+			throw new \RangeException("Profile last name too long");
+		}
+
+		$this->profileNameLast = $newProfileNameLast;
+	}
+
+	/**
+	 * Accessor for profile email
+	 * @return string email
+	 **/
+	public function getProfileEmail() {
+		return $this->profileEmail;
+	}
+
+	/**
+	 * Mutator for profile email
+	 * @param string $newProfileEmail, email
+	 * @throws \RangeException if profile email is out of bounds
+	 * @throws \TypeError if profile email is not a string
+	 **/
+	public function setProfileEmail(int $newProfileEmail) {
+		// Sanitize dat string
+		$newProfileEmail = filter_var(trim($newProfileEmail), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		// Make sure profile email exists and fits in database
+		if (strlen($newProfileEmail) <= 0) {
+			throw new \RangeException("Profile email too short");
+		} else if (strlen($newProfileEmail) > 75) {
+			throw new \RangeException("Profile email too long");
+		}
+
+		$this->profileEmail = $newProfileEmail;
 	}
 
 	/* PDO METHODS */
