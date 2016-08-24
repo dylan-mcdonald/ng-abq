@@ -4,13 +4,9 @@ namespace Com\NgAbq\Beta;
 require_once("autoload.php");
 
 /**
- *
  * Event class lists when ng events take place
- * 
- *
  * @author Eliot Ostling <it.treugott@gmail.com>
- *
- * @version 1.0.0
+ * @version 1.0.0BETA
  **/
 
 class Event implements \JsonSerializable {
@@ -38,7 +34,8 @@ private $eventDate;
 private $eventTime;
 
 
-    public function __construct(int $newEventId = null, int $newEventProfileId, string $newEventName , string $newEventDate, string $newEventTime) {
+    public function __construct(int $newEventId = null, int $newEventProfileId, string $newEventName , string $newEventDate, string $newEventTime)
+    {
         try {
             $this->setEventId($newEventId);
             $this->setEventProfileId($newEventProfileId);
@@ -61,7 +58,8 @@ private $eventTime;
     }
 
 
-    public function getEventId() {
+    public function getEventId()
+    {
         return ($this->eventId);
     }
 
@@ -69,7 +67,8 @@ private $eventTime;
      * mutator method
      *
      **/
-    public function setEventId($newEventId = null) {
+    public function setEventId($newEventId = null)
+    {
         if($newEventId === null) {
             $this->eventId = null;
             return;
@@ -83,11 +82,13 @@ private $eventTime;
     }
 
 //accessor
-    public function getEventProfileId() {
+    public function getEventProfileId()
+    {
         return ($this->eventProfileId);
     }
 //mutator
-    public function setEventProfileId($newEventProfileId = null) {
+    public function setEventProfileId($newEventProfileId = null)
+    {
         if($newEventProfileId === null) {
             $this->eventProfileId = null;
             return;
@@ -101,13 +102,15 @@ private $eventTime;
         $this->eventProfileId = $newEventProfileId;
     }
 
-//accessor
-    public function getEventName() {
+    //accessor
+    public function getEventName()
+    {
         return ($this->eventName);
     }
 
     //mutator
-    public function setEventName($newEventName = null) {
+    public function setEventName($newEventName = null)
+    {
         if($newEventName === null) {
             $this->eventName = null;
             return;
@@ -121,12 +124,14 @@ private $eventTime;
         $this->eventName = $newEventName;
     }
 //accessor
-    public function getEventDate() {
+    public function getEventDate()
+    {
         return ($this->eventDate);
     }
 
     //Mutator
-    public function setEventDate($newEventDate = null) {
+    public function setEventDate($newEventDate = null)
+    {
 
         if($newEventDate === null) {
             $this->eventDate = null;
@@ -141,12 +146,14 @@ private $eventTime;
         $this->eventDate = $newEventDate;
     }
 
-    public function getEventTime() {
+    public function getEventTime()
+    {
         return ($this->eventTime);
     }
 
 
-    public function setEventTime($newEventTime = null) {
+    public function setEventTime($newEventTime = null)
+    {
 
         if($newEventTime === null) {
             $this->eventTime = null;
@@ -160,7 +167,8 @@ private $eventTime;
         $this->eventTime = $newEventTime;
     }
 
-    public function insert(\PDO $pdo) {
+    public function insert(\PDO $pdo)
+    {
 
         if($this->eventId !== null) {
             throw(new \PDOException("An event already exist"));
@@ -182,7 +190,8 @@ private $eventTime;
      * @throws \PDOException when mySQL related errors occur
      * @throws \TypeError if $pdo is not a PDO connection object
      * **/
-    public function delete(\PDO $pdo) {
+    public function delete(\PDO $pdo)
+    {
         //enforce the userId is not null
         if($this->eventId === null) {
             throw(new \PDOException("unable to delete an event that does not exist"));
@@ -202,7 +211,8 @@ private $eventTime;
      * @throws \PDOException when mySQL related errors occur
      * @throws \TypeError if $pdo is not a PDO connection object
      **/
-    public function update(\PDO $pdo) {
+    public function update(\PDO $pdo)
+    {
         // enforce the userId is not null
         if($this->eventId === null) {
             throw(new \PDOException("unable to udate an event that does not exist"));
@@ -216,10 +226,47 @@ private $eventTime;
     }
 
 
+    public static function getEventByUserId(\PDO $pdo, $userId)
+    {
+        if($userId <= 0) {
+            throw(new \PDOException("This Event Id is incorrect"));
+        }
+        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE userId = :userId";
+        $statement = $pdo->prepare($query);
+        $parameters = array("userId" => $userId);
+        $statement->execute($parameters);
+        try {
+            $users = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if($row !== false) {
+                $users = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+            }
+        } catch(\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+        return ($users);
+
+    }
+
+    public static function getEventByEventProfileId(\PDO $pdo, $eventProfileId )
+    {
+        $eventProfileId = trim($eventProfileId);
+        $eventProfileId = filter_var($eventProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        if($eventProfileId<= 0){
+            throw (new \PDOException("This is wrong on so many levels"));
+
+        }
+        //$query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE userId = :userId";
 
 
+    }
 
 
+    public static function getEventByEventDate(\PDO $pdo, $eventDate)
+    {
+
+    }
 
     public function jsonSerialize() {
         $fields = get_object_vars($this);
