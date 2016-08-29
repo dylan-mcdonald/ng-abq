@@ -9,7 +9,7 @@ require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
 /**
  * api for the image class
  *
- * @author Marlan Ball based on code by Elliot Murrey <emurrey@cnm.edu> parts of this code have been modified from Derek Mauldin <derek.e.mauldin from @see https://bootcamp-coders.cnm.edu/class-materials/php/writing-restful-apis/
+ * @author Marlan Ball based on code by Elliot Murrey <emurrey@cnm.edu> parts of this code have been modified from code by Derek Mauldin <derek.e.mauldin from @see https://bootcamp-coders.cnm.edu/class-materials/php/writing-restful-apis/
  **/
 
 // verify the session, start if not active
