@@ -247,7 +247,7 @@ class Link implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO link(linkProfileId, linkProfileUserName, linkUrl, linkDate) VALUES(:linkProfileId, :linkProfileUserName, :linkUrl, :linkDate)";
+		$query = "INSERT INTO link (linkProfileId, linkProfileUserName, linkUrl, linkDate) VALUES(:linkProfileId, :linkProfileUserName, :linkUrl, :linkDate)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
@@ -257,6 +257,51 @@ class Link implements \JsonSerializable {
 
 		// update the null linkId with what mySQL just gave us
 		$this->linkId = intval($pdo->lastInsertId());
+	}
+
+	/**
+	 * updates this link in mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL errors occure
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function update(\PDO $pdo) {
+
+		// enforce the linkId is not null (don't update whats not there)
+		if($this->linkId === null) {
+			throw(new \PDOException("unable to update a link that does not exist"));
+		}
+
+		// create query template
+		$query = "UPDATE link SET linkProfileId = :linkProfileId, linkProfileUserName = :linkProfileUserName, linkUrl = :linkUrl, linkDate = :linkDate WHERE linkId = :linkId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holders
+		$parameters = ["linkId" => $this->linkId, "linkProfileId" => $this->linkProfileId, "linkProfileUserName" => $this->linkProfileUserName, "linkUrl" => $this->linkUrl, "linkDate" => $this->linkDate];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * deletes this image from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) {
+		// enforce the linkId is not null (don't delete a link that has just been inserted)
+		if($this->linkId === null) {
+			throw(new \PDOException("unable to delete a link that does not exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM link WHERE linkId = :linkId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["linkId" => $this->linkId];
+		$statement->execute($parameters);
 	}
 
 	// get all links
