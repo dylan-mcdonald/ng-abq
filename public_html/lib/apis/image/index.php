@@ -44,7 +44,7 @@ try {
 		setXsrfCookie();
 
 		//get all images and update reply
-		$images = CartridgeCoders\Image::getAllImageFileNames($pdo);
+		$images = ng-abq\Image::getAllImageFileNames($pdo);
 				if($images !== null) {
 					$reply->data = $images;
 				}
@@ -64,7 +64,7 @@ try {
 			if($method === "PUT") {
 
 				// retrieve the image to update
-				$image = CartridgeCoders\Image::getImageFileNameByImageId($pdo, $id);
+				$image = ng-abq\Image::getImageFileNameByImageId($pdo, $id);
 				if($image === null) {
 					throw(new RuntimeException("Image Does not exist", 404));
 				}
@@ -79,7 +79,7 @@ try {
 			} else if($method === "POST") {
 
 				// create new Image and insert into the database
-				$image = new CartridgeCoders\Image(null, $requestObject->imageFileName, $requestObject->imageType);
+				$image = new ng-abq\Image(null, $requestObject->imageFileName, $requestObject->imageType);
 				$image->insert($pdo);
 
 				// update reply
@@ -89,7 +89,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the Image to be deleted
-			$image = CartridgeCoders\Image::getImageFileNameByImageId($pdo, $id);
+			$image = ng-abq\Image::getImageFileNameByImageId($pdo, $id);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}//
