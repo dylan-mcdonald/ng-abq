@@ -298,6 +298,14 @@ class Profile implements \JsonSerializable {
 		$statement->execute($parameters);
 	}
 
+	public static function getProfileByProfileId(\PDO $pdo, $profileId) {
+		// TODO
+	}
+
+	public static function getProfileByString(\PDO $pdo, $profileId) {
+		// TODO
+	}
+
 	/* JSON SERIALIZE */
 
 	public function jsonSerialize() {
