@@ -342,6 +342,21 @@ class Profile implements \JsonSerializable {
 		// Bind member variables to query
 		$parameters = ["attribute" => $attribute, "search" => $search];
 		$statement->execute($parameters);
+
+		// Build an array of matches
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileAdmin"], $row["profileNameFirst"], $row["profileNameLast"], $row["profileEmail"], $row["profileUserName"]);
+
+				$profiles[$profiles->key()] = $profile;
+				$profile->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
 	}
 
 	/* JSON SERIALIZE */
