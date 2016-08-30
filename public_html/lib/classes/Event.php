@@ -257,14 +257,107 @@ private $eventTime;
             throw (new \PDOException("This is wrong on so many levels"));
 
         }
-        //$query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE userId = :userId";
+        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE eventProfileId = :eventProfileId";
+        $statement = $pdo->prepare($query);
+        $parameters = array("eventProfileId" => $eventProfileId);
+        $statement->execute($parameters);
 
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        try {
+            $eventProfileId = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if($row !== false) {
+                $eventProfileId = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+            }
+        } catch
+        (\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+
+        return ($eventProfileId);
 
     }
 
 
     public static function getEventByEventDate(\PDO $pdo, $eventDate)
     {
+        $eventDate = trim($eventDate);
+        $eventDate = filter_var($eventDate, FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
+        if($eventDate <=0){
+            throw (new \PDOException("Wrong"));
+        }
+
+        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventDate= :eventDate";
+        $statement = $pdo->prepare($query);
+        $parameters = array("eventDate" => $eventDate);
+        $statement->execute($parameters);
+
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        try {
+            $eventDate = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if($row !== false) {
+                $eventDate = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+            }
+        } catch
+        (\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+
+        return ($eventDate);
+    }
+
+    public static function getEventByEventTime(\PDO $pdo,$eventTime)
+    {
+        $eventTime - trim($eventTime);
+        if($eventTime <=0){
+            throw (new \PDOException("Wrong"));
+        }
+
+        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventTime= :eventTime";
+        $statement = $pdo->prepare($query);
+        $parameters = array("eventTime" => $eventTime);
+        $statement->execute($parameters);
+
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        try {
+            $eventTime = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if($row !== false) {
+                $eventTime = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+            }
+        } catch
+        (\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+
+        return ($eventTime);
+
+    }
+    
+    
+    public static function getAllEvents(\PDO $pdo)
+    {
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM event";
+        $statement = $pdo->prepare($query);
+        $statement->execute();
+        $event = new \SplFixedArray($statement->rowCount());
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        while(($row = $statement->fetch()) !== false) {
+            try {
+                $event = new Image($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"],$row["eventTime"]);
+                $event[$event->key()] = $event;
+                $event->next();
+            } catch(\Exception $exception) {
+                throw(new \PDOException($exception->getMessage(), 0, $exception));
+            }
+        }
+        return ($event);
+
+
 
     }
 
