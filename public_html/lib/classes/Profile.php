@@ -326,8 +326,22 @@ class Profile implements \JsonSerializable {
 		return $profile;
 	}
 
-	public static function getProfileByString(\PDO $pdo, string $attribute, string $search) {
-		// TODO
+	public static function getProfileByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
+		$like = $like ? "LIKE" : "="; // Optionally search using "LIKE"
+		$attribute = filter_var(trim($attribute), FILTER_SANITIZE_STRING);
+		$search = filter_var(trim($search), FILTER_SANITIZE_STRING);
+
+		if (empty($attribute) === true || empty($search) === true) {
+			throw new \PDOException("Invalid string.");
+		}
+
+		// Create query template
+		$query = "SELECT profileId, profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName FROM profile WHERE :attribute $like :search";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["attribute" => $attribute, "search" => $search];
+		$statement->execute($parameters);
 	}
 
 	/* JSON SERIALIZE */
