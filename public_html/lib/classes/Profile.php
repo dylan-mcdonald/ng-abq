@@ -272,7 +272,7 @@ class Profile implements \JsonSerializable {
 
 	public function delete(\PDO $pdo) {
 		if ($this->profileId === null) {
-			throw new \PDOException("This profile doesn't exist.");
+			throw new \PDOException("Cannot delete profile which doesn't exist.");
 		}
 
 		// Create query template
@@ -285,7 +285,9 @@ class Profile implements \JsonSerializable {
 	}
 
 	public function update(\PDO $pdo) {
-		// TODO
+		if ($this->profileId === null) {
+			throw new \PDOException("Cannot update profile which doesn't exist.");
+		}
 	}
 
 	/* JSON SERIALIZE */
