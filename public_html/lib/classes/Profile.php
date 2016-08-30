@@ -299,7 +299,31 @@ class Profile implements \JsonSerializable {
 	}
 
 	public static function getProfileByProfileId(\PDO $pdo, int $profileId) {
-		// TODO
+		if ($profileId <= 0) {
+			throw new \PDOException("Not a valid profile ID.");
+		}
+
+		// Create query template
+		$query = "SELECT profileId, profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["profileId" => $this->profileId];
+		$statement->execute($parameters);
+
+		try {
+			$profile = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+
+			if ($row !== false) {
+				$profile = new Profile($row["profileId"], $row["profileAdmin"], $row["profileNameFirst"], $row["profileNameLast"], $row["profileEmail"], $row["profileUserName"]);
+			}
+		} catch(\Exception $exception) {
+			throw new \PDOException($exception->getMessage(), 0, $exception);
+		}
+
+		return $profile;
 	}
 
 	public static function getProfileByString(\PDO $pdo, string $attribute, string $search) {
