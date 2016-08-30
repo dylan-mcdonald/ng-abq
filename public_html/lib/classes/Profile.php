@@ -255,7 +255,7 @@ class Profile implements \JsonSerializable {
 
 	public function insert(\PDO $pdo) {
 		if ($this->profileId !== null) {
-			throw new \PDOException("This profile already exists.");
+			throw new \PDOException("Cannot insert profile which already exists.");
 		}
 
 		// Create query template
