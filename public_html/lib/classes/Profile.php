@@ -288,6 +288,14 @@ class Profile implements \JsonSerializable {
 		if ($this->profileId === null) {
 			throw new \PDOException("Cannot update profile which doesn't exist.");
 		}
+
+		// Create query template
+		$query = "UPDATE profile SET profileAdmin = :profileAdmin profileNameFirst = :profileNameFirst profileNameLast = :profileNameLast profileEmail = :profileEmail profileUserName = :profileUserName WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["profileAdmin" => $this->profileAdmin, "profileNameFirst" => $this->profileNameFirst, "profileNameLast" => $this->profileNameLast, "profileEmail" => $this->profileEmail, "profileUserName" => $this->profileUserName, "profileId" => $this->profileId];
+		$statement->execute($parameters);
 	}
 
 	/* JSON SERIALIZE */
