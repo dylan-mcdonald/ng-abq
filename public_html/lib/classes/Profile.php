@@ -253,6 +253,23 @@ class Profile implements \JsonSerializable {
 
 	/* PDO METHODS */
 
+	public function insert(\PDO $pdo) {
+		if ($this->profileId !== null) {
+			throw new \PDOException("This profile already exists.");
+		}
+
+		// Create query template
+		$query = "INSERT INTO profile(profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName) VALUES(:profileAdmin, :profileNameFirst, :profileNameLast, :profileEmail, :profileUserName)";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["profileAdmin" => $this->profileAdmin, "profileNameFirst" => $this->profileNameFirst, "profileNameLast" => $this->profileNameLast, "profileEmail" => $this->profileEmail, "profileUserName" => $this->profileUserName];
+		$statement->execute($pdo);
+
+		// Grab primary key from MySQL
+		$this->profileId = intval($pdo->lastInsertId);
+	}
+
 	/* JSON SERIALIZE */
 
 	public function jsonSerialize() {
