@@ -308,7 +308,7 @@ class Profile implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["profileId" => $this->profileId];
+		$parameters = ["profileId" => $profileId];
 		$statement->execute($parameters);
 
 		try {
