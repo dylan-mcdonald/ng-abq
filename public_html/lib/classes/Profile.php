@@ -264,10 +264,28 @@ class Profile implements \JsonSerializable {
 
 		// Bind member variables to query
 		$parameters = ["profileAdmin" => $this->profileAdmin, "profileNameFirst" => $this->profileNameFirst, "profileNameLast" => $this->profileNameLast, "profileEmail" => $this->profileEmail, "profileUserName" => $this->profileUserName];
-		$statement->execute($pdo);
+		$statement->execute($parameters);
 
 		// Grab primary key from MySQL
 		$this->profileId = intval($pdo->lastInsertId);
+	}
+
+	public function delete(\PDO $pdo) {
+		if ($this->profileId === null) {
+			throw new \PDOException("This profile doesn't exist.");
+		}
+
+		// Create query template
+		$query = "DELETE FROM profile WHERE profileId = :profileId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["profileId" => $this->profileId];
+		$statement->execute($parameters);
+	}
+
+	public function update(\PDO $pdo) {
+		// TODO
 	}
 
 	/* JSON SERIALIZE */
