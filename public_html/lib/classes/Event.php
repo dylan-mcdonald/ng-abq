@@ -226,26 +226,26 @@ private $eventTime;
     }
 
 
-    public static function getEventByUserId(\PDO $pdo, $userId)
+    public static function getEventByEventId(\PDO $pdo, $eventId)
     {
-        if($userId <= 0) {
+        if($eventId <= 0) {
             throw(new \PDOException("This Event Id is incorrect"));
         }
-        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE userId = :userId";
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE eventId = :eventId";
         $statement = $pdo->prepare($query);
-        $parameters = array("userId" => $userId);
+        $parameters = array("eventId" => $eventId);
         $statement->execute($parameters);
         try {
             $users = null;
             $statement->setFetchMode(\PDO::FETCH_ASSOC);
             $row = $statement->fetch();
             if($row !== false) {
-                $users = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+                $eventId = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
             }
         } catch(\Exception $exception) {
             throw(new \PDOException($exception->getMessage(), 0, $exception));
         }
-        return ($users);
+        return ($eventId);
 
     }
 
@@ -257,7 +257,7 @@ private $eventTime;
             throw (new \PDOException("This is wrong on so many levels"));
 
         }
-        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE eventProfileId = :eventProfileId";
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE eventProfileId = :eventProfileId";
         $statement = $pdo->prepare($query);
         $parameters = array("eventProfileId" => $eventProfileId);
         $statement->execute($parameters);
@@ -288,7 +288,7 @@ private $eventTime;
             throw (new \PDOException("Wrong"));
         }
 
-        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventDate= :eventDate";
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventDate= :eventDate";
         $statement = $pdo->prepare($query);
         $parameters = array("eventDate" => $eventDate);
         $statement->execute($parameters);
@@ -316,7 +316,7 @@ private $eventTime;
             throw (new \PDOException("Wrong"));
         }
 
-        $query = "SELECT userId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventTime= :eventTime";
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventTime= :eventTime";
         $statement = $pdo->prepare($query);
         $parameters = array("eventTime" => $eventTime);
         $statement->execute($parameters);

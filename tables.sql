@@ -96,7 +96,7 @@ CREATE TABLE comment (
 
 CREATE TABLE attendee (
 	attendeeId              INT UNSIGNED AUTO_INCREMENT NOT NULL,
-    attendeeEventId         INT UNSIGNED                NOT NULL,
+  attendeeEventId         INT UNSIGNED                NOT NULL,
 	attendeeProfileId       INT UNSIGNED                NOT NULL,
 	FOREIGN KEY (attendeeEventId) REFERENCES event (eventId),
 	FOREIGN KEY (attendeeProfileId) REFERENCES profile (profileId),
