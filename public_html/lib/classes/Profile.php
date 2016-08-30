@@ -223,6 +223,34 @@ class Profile implements \JsonSerializable {
 		$this->profileEmail = $newProfileEmail;
 	}
 
+	/**
+	 * Accessor for profile username
+	 * @return string username
+	 **/
+	public function getProfileUserName() {
+		return $this->profileUserName;
+	}
+
+	/**
+	 * Mutator for profile username
+	 * @param string $newProfileUserName, username
+	 * @throws \RangeException if profile username is out of bounds
+	 * @throws \TypeError if profile username is not a string
+	 **/
+	public function setProfileUserName(int $newProfileUserName) {
+		// Sanitize dat string
+		$newProfileUserName = filter_var(trim($newProfileUserName), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+
+		// Make sure profile username exists and fits in database
+		if (strlen($newProfileUserName) <= 0) {
+			throw new \RangeException("Profile username too short");
+		} else if (strlen($newProfileUserName) > 25) {
+			throw new \RangeException("Profile username too long");
+		}
+
+		$this->profileUserName = $newProfileUserName;
+	}
+
 	/* PDO METHODS */
 
 	/* JSON SERIALIZE */
