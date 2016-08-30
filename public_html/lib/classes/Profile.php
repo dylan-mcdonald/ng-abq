@@ -302,7 +302,7 @@ class Profile implements \JsonSerializable {
 		// TODO
 	}
 
-	public static function getProfileByString(\PDO $pdo, $profileId) {
+	public static function getProfileByString(\PDO $pdo, $attribute, $search) {
 		// TODO
 	}
 
