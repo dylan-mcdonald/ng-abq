@@ -3,7 +3,7 @@ use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
 require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
 /**
@@ -44,7 +44,7 @@ try {
 		setXsrfCookie();
 
 		//get all images and update reply
-		$images = ng-abq\Image::getAllImageFileNames($pdo);
+		$images = Beta\Image::getAllImageFileNames($pdo);
 				if($images !== null) {
 					$reply->data = $images;
 				}
@@ -64,7 +64,7 @@ try {
 			if($method === "PUT") {
 
 				// retrieve the image to update
-				$image = ng-abq\Image::getImageFileNameByImageId($pdo, $id);
+				$image = Beta\Image::getImageFileNameByImageId($pdo, $id);
 				if($image === null) {
 					throw(new RuntimeException("Image Does not exist", 404));
 				}
@@ -79,7 +79,7 @@ try {
 			} else if($method === "POST") {
 
 				// create new Image and insert into the database
-				$image = new ng-abq\Image(null, $requestObject->imageFileName, $requestObject->imageType);
+				$image = new Beta\Image(null, $requestObject->imageFileName, $requestObject->imageType);
 				$image->insert($pdo);
 
 				// update reply
@@ -89,7 +89,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the Image to be deleted
-			$image = ng-abq\Image::getImageFileNameByImageId($pdo, $id);
+			$image = Beta\Image::getImageFileNameByImageId($pdo, $id);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}//
@@ -102,7 +102,7 @@ try {
 		} else {
 			throw (new InvalidArgumentException("Invalid HTTP method request"));
 		}
-	}
+
 
 	// update reply with exception information
 } catch(Exception $exception) {

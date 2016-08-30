@@ -3,7 +3,7 @@ use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
 require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
 /**
@@ -24,7 +24,7 @@ $reply->data = null;
 
 try {
 	// grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/cartridge.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -33,10 +33,9 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+	if(($method === "DELETE") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
-
 
 	// handle GET request - all passwordResets are returned.
 	if($method === "GET") {
@@ -44,7 +43,7 @@ try {
 		setXsrfCookie();
 
 		//get all passwordResets and update reply
-		$passwordResets = ng-abq\PasswordReset::getAllPasswordResets($pdo);
+		$passwordResets = Beta\PasswordReset::getAllPasswordResets($pdo);
 		if($passwordResets !== null) {
 			$reply->data = $passwordResets;
 		}
@@ -64,7 +63,7 @@ try {
 		if($method === "POST") {
 
 			// create new passwordReset and insert into the database
-			$passwordReset = new ng-abq\PasswordReset(null, $requestObject->passwordResetProfileId, $requestObject->passwordResetProfileUserName, $requestObject->passwordResetUrl, $requestObject->passwordResetDate);
+			$passwordReset = new Beta\PasswordReset(null, $requestObject->passwordResetProfileId, $requestObject->passwordResetProfileUserName, $requestObject->passwordResetUrl, $requestObject->passwordResetDate);
 			$passwordReset->insert($pdo);
 
 			// update reply
@@ -74,7 +73,7 @@ try {
 		verifyXsrf();
 
 		// retrieve the PasswordReset to be deleted
-		$passwordReset = ng-abq\PasswordReset::getPasswordResetByPasswordResetId($pdo, $id);
+		$passwordReset = Beta\PasswordReset::getPasswordResetByPasswordResetId($pdo, $id);
 		if($passwordReset === null) {
 			throw(new RuntimeException("PasswordReset does not exist", 404));
 		}
@@ -87,7 +86,7 @@ try {
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
-}
+
 
 	// update reply with exception information
 } catch(Exception $exception) {

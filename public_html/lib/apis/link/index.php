@@ -3,7 +3,7 @@ use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
 require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
-require_once("/etc/apache2/capstone-mysql/encrypted-config.php");
+require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
 /**
@@ -44,7 +44,7 @@ try {
 		setXsrfCookie();
 
 		//get all links and update reply
-		$links = ng-abq\Link::getAllLinks($pdo);
+		$links = Beta\Link::getAllLinks($pdo);
 		if($links !== null) {
 			$reply->data = $links;
 		}
@@ -64,7 +64,7 @@ try {
 		if($method === "POST") {
 
 			// create new link and insert into the database
-			$link = new ng-abq\Link(null, $requestObject->linkProfileId, $requestObject->linkProfileUserName, $requestObject->linkUrl, $requestObject->linkDate);
+			$link = new Beta\Link(null, $requestObject->linkProfileId, $requestObject->linkProfileUserName, $requestObject->linkUrl, $requestObject->linkDate);
 			$link->insert($pdo);
 
 			// update reply
@@ -74,7 +74,7 @@ try {
 		verifyXsrf();
 
 		// retrieve the Link to be deleted
-		$link = ng-abq\Link::getLinkByLinkId($pdo, $id);
+		$link = Beta\Link::getLinkByLinkId($pdo, $id);
 		if($link === null) {
 			throw(new RuntimeException("Link does not exist", 404));
 		}
@@ -87,7 +87,7 @@ try {
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
-}
+
 
 	// update reply with exception information
 } catch(Exception $exception) {
