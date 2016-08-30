@@ -4,7 +4,7 @@ namespace Com\NgAbq\Beta;
 require_once("autoload.php");
 
 /**
- * Attendee class 
+ * Attendee class  
  * @author Eliot Ostling <it.treugott@gmail.com>
  * @version 1.0.0BETA
  **/
