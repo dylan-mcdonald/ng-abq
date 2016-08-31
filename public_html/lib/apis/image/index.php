@@ -9,7 +9,7 @@ require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 /**
  * api for the image class
  *
- * @author Marlan Ball based on code by Elliot Murrey <emurrey@cnm.edu> parts of this code have been modified from code by Derek Mauldin <derek.e.mauldin from @see https://bootcamp-coders.cnm.edu/class-materials/php/writing-restful-apis/
+ * @author Marlan Ball based on code by Elliot Murrey <emurrey@cnm.edu> which was modified from code by Derek Mauldin <derek.e.mauldin from @see https://bootcamp-coders.cnm.edu/class-materials/php/writing-restful-apis/
  **/
 
 // verify the session, start if not active
@@ -24,7 +24,7 @@ $reply->data = null;
 
 try {
 	// grab the mySQL connection
-	$pdo = connectToEncryptedMySQL("/etc/apache2/capstone-mysql/cartridge.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
 
 	//determine which HTTP method was used
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
@@ -37,7 +37,6 @@ try {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
-
 	// handle GET request - if id is present, that image is returned, otherwise all images are returned.
 	if($method === "GET") {
 		//set XSRF cookie
@@ -48,8 +47,7 @@ try {
 				if($images !== null) {
 					$reply->data = $images;
 				}
-			}
-	else if($method === "PUT" || $method === "POST") {
+			} else if($method === "POST") {
 
 			verifyXsrf();
 			$requestContent = file_get_contents("php://input");
@@ -60,23 +58,8 @@ try {
 				throw(new \InvalidArgumentException ("no content for image.", 405));
 			}
 
-			//perform the actual put or post
-			if($method === "PUT") {
-
-				// retrieve the image to update
-				$image = Beta\Image::getImageFileNameByImageId($pdo, $id);
-				if($image === null) {
-					throw(new RuntimeException("Image Does not exist", 404));
-				}
-
-				// put the new image file name into the image and update
-				$image->setImageFileName($requestObject->imageFileName);
-				$image->update($pdo);
-
-				//update reply
-				$reply->message = "Image updated ok";
-
-			} else if($method === "POST") {
+			//perform the actual post
+			if($method === "POST") {
 
 				// create new Image and insert into the database
 				$image = new Beta\Image(null, $requestObject->imageFileName, $requestObject->imageType);
@@ -92,8 +75,8 @@ try {
 			$image = Beta\Image::getImageFileNameByImageId($pdo, $id);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
-			}//
-// I should delete this delete?
+			}
+
 			// delete image
 			$image->delete($pdo);
 

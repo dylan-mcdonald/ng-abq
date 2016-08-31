@@ -208,29 +208,6 @@ class Image implements \JsonSerializable {
 	}
 
 	/**
-	 * updates this image in mySQL
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @throws \PDOException when mySQL errors occure
-	 * @throws \TypeError if $pdo is not a PDO connection object
-	 */
-	public function update(\PDO $pdo) {
-
-		// enforce the imageId is not null (don't update whats not there)
-		if($this->imageId === null) {
-			throw(new \PDOException("unable to update and image that does not exist"));
-		}
-
-		// create query template
-		$query = "UPDATE image SET imageProfileId = :imageProfileId, imageFileName = :imageFileName, imageType = :imageType WHERE imageId = :imageId";
-		$statement = $pdo->prepare($query);
-
-		// bind the member variables to the place holders
-		$parameters = ["imageId" => $this->imageId, "imageProfileId" => $this->imageProfileId, "imageFileName" => $this->imageFileName, "imageType" => $this->imageType];
-		$statement->execute($parameters);
-	}
-
-	/**
 	 * deletes this image from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
