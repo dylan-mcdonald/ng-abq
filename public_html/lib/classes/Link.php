@@ -43,7 +43,7 @@ class Link implements \JsonSerializable {
 
 	/**
 	 * the date link is shared
-	 * @var string $linkDate
+	 * @var \DateTime $linkDate
 	 */
 	private $linkDate;
 

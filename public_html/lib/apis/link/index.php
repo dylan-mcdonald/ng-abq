@@ -2,7 +2,7 @@
 use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
@@ -37,7 +37,6 @@ try {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
-
 	// handle GET request - all links are returned.
 	if($method === "GET") {
 		//set XSRF cookie
@@ -45,6 +44,7 @@ try {
 
 		//get all links and update reply
 		$links = Beta\Link::getAllLinks($pdo);
+		var_dump($links);
 		if($links !== null) {
 			$reply->data = $links;
 		}
@@ -54,6 +54,7 @@ try {
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
+
 
 		//make sure link content is available
 		if(empty($requestObject->linkUrl) === true) {
