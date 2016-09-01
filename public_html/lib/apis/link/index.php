@@ -44,7 +44,6 @@ try {
 
 		//get all links and update reply
 		$links = Beta\Link::getAllLinks($pdo);
-		var_dump($links);
 		if($links !== null) {
 			$reply->data = $links;
 		}

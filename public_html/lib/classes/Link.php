@@ -324,7 +324,7 @@ class Link implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkProfileUserName"], $row["linkUrl"], $row["linkDate"]);
+				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkProfileUserName"], $row["linkUrl"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["linkDate"]));
 				$links[$links->key()] = $link;
 				$links->next();
 			} catch(\Exception $exception) {
