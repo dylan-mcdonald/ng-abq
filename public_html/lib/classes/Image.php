@@ -267,49 +267,6 @@ class Image implements \JsonSerializable {
 		return ($image);
 	}
 
-
-	/**
-	 * gets the image by file name
-	 *
-	 * @param \PDO $pdo PDO connection object
-	 * @param string $imageFileName - file name of image
-	 * @return Image|null - image found or null if not
-	 * @throws \PDOException when mySQL related error occurs
-	 * @throws \TypeError when variables are not the correct data type
-	 */
-
-	public static function getImageByImageFileName(\PDO $pdo, string $imageFileName) {
-// sanitize the image file name before searching
-		$imageFileName = trim($imageFileName);
-		$imageFileName = filter_var($imageFileName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($imageFileName) === true) {
-			throw(new \PDOException("image file name content is invalid"));
-		}
-		// create query template
-		$query = "SELECT imageId, imageProfileId, imageFileName, imageType FROM image WHERE imageFileName LIKE :imageFileName";
-		$statement = $pdo->prepare($query);
-
-		// bind the image file name to the place holder in the template
-		$imageFileName = "%$imageFileName%";
-		$parameters = array("imageFileName" => $imageFileName);
-		$statement->execute($parameters);
-
-		// build an array of images
-		$images = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
-		while(($row = $statement->fetch()) !== false) {
-			try {
-				$image = new Image($row["imageId"], $row["imageProfileId"], $row["imageFileName"], $row["imageType"]);
-				$images[$images->key()] = $image;
-				$images->next();
-			} catch(\Exception $exception) {
-				// if the row couldn't be converted, rethrow it
-				throw(new \PDOException($exception->getMessage(), 0, $exception));
-			}
-		}
-		return ($images);
-	}
-
 	/**
 	 * getAllImages
 	 *

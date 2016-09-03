@@ -12,10 +12,9 @@ require_once("autoload.php");
  *
  * @version 1.0.0
  **/
-
 class Link implements \JsonSerializable {
 
-	 use ValidateDate;
+	use ValidateDate;
 
 	/**
 	 * id for the link; this is the primary key
@@ -54,7 +53,7 @@ class Link implements \JsonSerializable {
 			$this->setLinkProfileUserName($newLinkProfileUserName);
 			$this->setLinkUrl($newLinkUrl);
 			$this->setLinkDate($newLinkDate);
-			} catch(\InvalidArgumentException $invalidArgument) {
+		} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -204,7 +203,7 @@ class Link implements \JsonSerializable {
 	 * @return \DateTime value of link date
 	 **/
 	public function getLinkDate() {
-		return($this->linkDate);
+		return ($this->linkDate);
 	}
 
 	/**
@@ -283,7 +282,7 @@ class Link implements \JsonSerializable {
 	}
 
 	/**
-	 * deletes this image from mySQL
+	 * deletes this link from mySQL
 	 *
 	 * @param \PDO $pdo PDO connection object
 	 * @throws \PDOException when mySQL related errors occur
@@ -302,6 +301,44 @@ class Link implements \JsonSerializable {
 		// bind the member variables to the place holder in the template
 		$parameters = ["linkId" => $this->linkId];
 		$statement->execute($parameters);
+	}
+
+	/**
+	 * gets the link by link id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $linkId - link id to search for
+	 * @return link|null - link found or null if not
+	 * @throws \PDOException when mySQL related error occurs
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+
+	public static function getLinkByLinkId(\PDO $pdo, int $linkId) {
+		// sanitize the linkId before searching
+		if($linkId <= 0) {
+			throw(new \PDOException("link id is not positive"));
+		}
+		// create query template
+		$query = "SELECT linkId, linkProfileId, linkProfileUserName, linkUrl, linkDate FROM link WHERE linkId = :linkId";
+		$statement = $pdo->prepare($query);
+
+		// bind the link id to the place holder in the template
+		$parameters = array("linkId" => $linkId);
+		$statement->execute($parameters);
+
+		// grab the link from mySQL
+		try {
+			$link = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkiUserName"], $row["linkUrl"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["linkDate"]));
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($link);
 	}
 
 	// get all links

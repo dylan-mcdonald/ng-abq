@@ -33,7 +33,8 @@ try {
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
 	//make sure the id is valid for methods that require it
-	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+
+	if(($method === "DELETE") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
 	}
 
@@ -62,7 +63,7 @@ try {
 			if($method === "POST") {
 
 				// create new Image and insert into the database
-				$image = new Beta\Image(null, $requestObject->imageFileName, $requestObject->imageType);
+				$image = new Beta\Image(null, $requestObject->imageProfileId, $requestObject->imageFileName, $requestObject->imageType);
 				$image->insert($pdo);
 
 				// update reply
@@ -72,7 +73,7 @@ try {
 			verifyXsrf();
 
 			// retrieve the Image to be deleted
-			$image = Beta\Image::getImageFileNameByImageId($pdo, $id);
+			$image = Beta\Image::getImageByImageId($pdo, $id);
 			if($image === null) {
 				throw(new RuntimeException("Image does not exist", 404));
 			}
