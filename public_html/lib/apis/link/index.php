@@ -54,7 +54,6 @@ try {
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
-
 		//make sure link content is available
 		if(empty($requestObject->linkUrl) === true) {
 			throw(new \InvalidArgumentException ("no content for link.", 405));
