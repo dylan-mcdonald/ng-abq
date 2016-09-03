@@ -47,42 +47,33 @@ try {
 		if($passwordResets !== null) {
 			$reply->data = $passwordResets;
 		}
-	}
-	else if($method === "POST") {
+	} else if($method === "POST") {
 
 		verifyXsrf();
 		$requestContent = file_get_contents("php://input");
 		$requestObject = json_decode($requestContent);
 
 		//make sure passwordReset content is available
-		if(empty($requestObject->passwordResetUrl) === true) {
-			throw(new \InvalidArgumentException ("no content for passwordReset.", 405));
+		if((empty($requestObject->passwordResetProfileId) === true) && (empty($requestObject->passwordResetProfileEmail) === true)) {
+			throw(new \InvalidArgumentException ("no profile for passwordReset.", 405));
+		}
+		if(empty($requestObject->passwordResetToken) === true) {
+			throw(new \InvalidArgumentException ("no password reset token.", 405));
 		}
 
 		//perform the actual post
 		if($method === "POST") {
 
 			// create new passwordReset and insert into the database
-			$passwordReset = new Beta\PasswordReset(null, $requestObject->passwordResetProfileId, $requestObject->passwordResetProfileUserName, $requestObject->passwordResetUrl, $requestObject->passwordResetDate);
+			$bytes = random_bytes(25);
+			$requestObject->passwordResetToken = (bin2hex($bytes));
+			var_dump(($requestObject->passwordResetToken));
+			$passwordReset = new Beta\PasswordReset(null, $requestObject->passwordResetProfileId, $requestObject->passwordResetProfileEmail, $requestObject->passwordResetToken, $requestObject->passwordResetDate);
 			$passwordReset->insert($pdo);
 
 			// update reply
 			$reply->message = "PasswordReset created ok";
 		}
-	} else if($method === "DELETE") {
-		verifyXsrf();
-
-		// retrieve the PasswordReset to be deleted
-		$passwordReset = Beta\PasswordReset::getPasswordResetByPasswordResetId($pdo, $id);
-		if($passwordReset === null) {
-			throw(new RuntimeException("PasswordReset does not exist", 404));
-		}
-
-		// delete passwordReset
-		$passwordReset->delete($pdo);
-
-		// update reply
-		$reply->message = "PasswordReset deleted OK";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}

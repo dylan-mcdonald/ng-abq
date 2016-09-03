@@ -31,9 +31,9 @@ class PasswordReset implements \JsonSerializable {
 
 	/**
 	 * foreign key
-	 * @var string $passwordResetProfileUserName
+	 * @var string $passwordResetProfileEmail
 	 */
-	private $passwordResetProfileUserName;
+	private $passwordResetProfileEmail;
 
 	/**
 	 * the token of the password reset
@@ -48,11 +48,11 @@ class PasswordReset implements \JsonSerializable {
 	private $passwordResetTime;
 
 
-	public function __construct(int $newPasswordResetId = null, int $newPasswordResetProfileId, string $newPasswordResetProfileUserName, string $newPasswordResetToken, $newPasswordResetTime = null) {
+	public function __construct(int $newPasswordResetId = null, int $newPasswordResetProfileId, string $newPasswordResetProfileEmail, string $newPasswordResetToken, $newPasswordResetTime = null) {
 		try {
 			$this->setPasswordResetId($newPasswordResetId);
 			$this->setPasswordResetProfileId($newPasswordResetProfileId);
-			$this->setPasswordResetProfileUserName($newPasswordResetProfileUserName);
+			$this->setPasswordResetProfileEmail($newPasswordResetProfileEmail);
 			$this->setPasswordResetToken($newPasswordResetToken);
 			$this->setPasswordResetTime($newPasswordResetTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
@@ -132,37 +132,37 @@ class PasswordReset implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for password reset profile username
+	 * accessor method for password reset profile email
 	 *
-	 * @return string value of password reset profile username
+	 * @return string value of password reset profile email
 	 */
-	public function getPasswordResetProfileUserName() {
-		return ($this->passwordResetProfileUserName);
+	public function getPasswordResetProfileEmail() {
+		return ($this->passwordResetProfileEmail);
 	}
 
 	/**
-	 * mutator method for password reset profile username
+	 * mutator method for password reset profile email
 	 *
-	 * @param string $newPasswordResetProfileUserName new value of password reset profile username
-	 * @throws \InvalidArgumentException if $newPasswordResetProfileUserName is not a string or insecure
-	 * @throws \RangeException if $newPasswordResetProfileUserName is > 25 characters
-	 * @throws \TypeError if $newPasswordResetProfileUserName is not a string
+	 * @param string $newPasswordResetProfileEmail new value of password reset profile email
+	 * @throws \InvalidArgumentException if $newPasswordResetProfileEmail is not a string or insecure
+	 * @throws \RangeException if $newPasswordResetProfileEmail is > 25 characters
+	 * @throws \TypeError if $newPasswordResetProfileEmail is not a string
 	 */
-	public function setPasswordResetProfileUserName(string $newPasswordResetProfileUserName) {
-		// verify the password reset profile username is secure
-		$newPasswordResetProfileUserName = trim($newPasswordResetProfileUserName);
-		$newPasswordResetProfileUserName = filter_var($newPasswordResetProfileUserName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newPasswordResetProfileUserName) === true) {
-			throw(new \InvalidArgumentException("passwordReset profile username is empty or insecure"));
+	public function setPasswordResetProfileEmail(string $newPasswordResetProfileEmail) {
+		// verify the password reset profile email is secure
+		$newPasswordResetProfileEmail = trim($newPasswordResetProfileEmail);
+		$newPasswordResetProfileEmail = filter_var($newPasswordResetProfileEmail, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPasswordResetProfileEmail) === true) {
+			throw(new \InvalidArgumentException("passwordReset profile email is empty or insecure"));
 		}
 
-		// verify the password reset profile username will fit in the database
-		if(strlen($newPasswordResetProfileUserName) > 25) {
-			throw(new \RangeException("password reset profile username is too long"));
+		// verify the password reset profile email will fit in the database
+		if(strlen($newPasswordResetProfileEmail) > 25) {
+			throw(new \RangeException("password reset profile email is too long"));
 		}
 
-		// store the password reset profile username
-		$this->passwordResetProfileUserName = $newPasswordResetProfileUserName;
+		// store the password reset profile email
+		$this->passwordResetProfileEmail = $newPasswordResetProfileEmail;
 	}
 
 	/**
@@ -248,12 +248,12 @@ class PasswordReset implements \JsonSerializable {
 		}
 
 		// create query template
-		$query = "INSERT INTO passwordReset(passwordResetProfileId, passwordResetProfileUserName, passwordResetToken, passwordResetTime) VALUES(:passwordResetProfileId, :passwordResetProfileUserName, :passwordResetToken, :passwordResetTime)";
+		$query = "INSERT INTO passwordReset(passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime) VALUES(:passwordResetProfileId, :passwordResetProfileEmail, :passwordResetToken, :passwordResetTime)";
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders in the template
 		$formattedDate = $this->passwordResetTime->format("Y-m-d H:i:s");
-		$parameters = ["passwordResetProfileId" => $this->passwordResetProfileId, "passwordResetProfileUserName" => $this->passwordResetProfileUserName, "passwordResetToken" => $this->passwordResetToken, "passwordResetTime" => $formattedDate];
+		$parameters = ["passwordResetProfileId" => $this->passwordResetProfileId, "passwordResetProfileEmail" => $this->passwordResetProfileEmail, "passwordResetToken" => $this->passwordResetToken, "passwordResetTime" => $formattedDate];
 		$statement->execute($parameters);
 
 		// update the null passwordResetId with what mySQL just gave us
