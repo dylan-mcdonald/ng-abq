@@ -2,7 +2,7 @@
 use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 2) . "/lib/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
@@ -43,7 +43,7 @@ try {
 		setXsrfCookie();
 
 		//get all images and update reply
-		$images = Beta\Image::getAllImageFileNames($pdo);
+		$images = Beta\Image::getAllImages($pdo);
 				if($images !== null) {
 					$reply->data = $images;
 				}

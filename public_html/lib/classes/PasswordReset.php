@@ -271,7 +271,7 @@ class PasswordReset implements \JsonSerializable {
 	 **/
 	public static function getAllPasswordResets(\PDO $pdo) {
 		// create query template
-		$query = "SELECT passwordResetId, passwordResetProfileId, passwordResetProfileUserName, passwordResetToken, passwordResetTime FROM passwordReset";
+		$query = "SELECT passwordResetId, passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime FROM passwordReset";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -280,7 +280,7 @@ class PasswordReset implements \JsonSerializable {
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$passwordReset = new PasswordReset($row["passwordResetId"], $row["passwordResetProfileId"], $row["passwordResetProfileUserName"], $row["passwordResetToken"], $row["passwordResetTime"]);
+				$passwordReset = new PasswordReset($row["passwordResetId"], $row["passwordResetProfileId"], $row["passwordResetProfileEmail"], $row["passwordResetToken"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["passwordResetTime"]));
 				$passwordResets[$passwordResets->key()] = $passwordReset;
 				$passwordResets->next();
 			} catch(\Exception $exception) {
