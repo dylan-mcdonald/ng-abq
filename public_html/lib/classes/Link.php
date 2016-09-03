@@ -277,7 +277,8 @@ class Link implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// bind the member variables to the place holders
-		$parameters = ["linkId" => $this->linkId, "linkProfileId" => $this->linkProfileId, "linkProfileUserName" => $this->linkProfileUserName, "linkUrl" => $this->linkUrl, "linkDate" => $this->linkDate];
+		$formattedDate = $this->linkDate->format("Y-m-d H:i:s");
+		$parameters = ["linkId" => $this->linkId, "linkProfileId" => $this->linkProfileId, "linkProfileUserName" => $this->linkProfileUserName, "linkUrl" => $this->linkUrl, "linkDate" => $formattedDate];
 		$statement->execute($parameters);
 	}
 
@@ -332,7 +333,7 @@ class Link implements \JsonSerializable {
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
 			if($row !== false) {
-				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkiUserName"], $row["linkUrl"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["linkDate"]));
+				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkProfileUserName"], $row["linkUrl"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["linkDate"]));
 			}
 		} catch(\Exception $exception) {
 			// if the row couldn't be converted, rethrow it
