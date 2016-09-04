@@ -8,7 +8,7 @@ require_once("autoload.php");
  *
  * Contains information about a forum post.
  *
- * @author Skyler Rexroad <skyler.rexroad@gmail.com>
+ * @author Skyler Rexroad <skyler.rexroad@gmail.com> and Marlan Ball <wyndows@earthlink.net>
  *
  * @version 1.0.0
  **/
@@ -122,7 +122,7 @@ class Post implements \JsonSerializable {
 		}
 
 		// verify the post profile username will fit in the database
-		if(strlen($newPostProfileUserName) > 150) {
+		if(strlen($newPostProfileUserName) > 25) {
 			throw(new \RangeException("post profile username is too long"));
 		}
 
@@ -130,6 +130,73 @@ class Post implements \JsonSerializable {
 		$this->postProfileUserName = $newPostProfileUserName;
 	}
 
+	/**
+	 * accessor method for post submission
+	 *
+	 * @return string value of post submission
+	 */
+	public function getPostSubmission() {
+		return ($this->postSubmission);
+	}
+
+	/**
+	 * mutator method for post submission
+	 *
+	 * @param string $newPostSubmission new value of post submission
+	 * @throws \InvalidArgumentException if $newPostSubmission is not a string or insecure
+	 * @throws \RangeException if $newPostSubmission is > 25 characters
+	 * @throws \TypeError if $newPostSubmission is not a string
+	 */
+	public function setPostSubmission(string $newPostSubmission) {
+		// verify the post submission is secure
+		$newPostSubmission = trim($newPostSubmission);
+		$newPostSubmission = filter_var($newPostSubmission, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newPostSubmission) === true) {
+			throw(new \InvalidArgumentException("post submission is empty or insecure"));
+		}
+
+		// verify the post submission will fit in the database
+		if(strlen($newPostSubmission) > 150) {
+			throw(new \RangeException("post submission is too long"));
+		}
+
+		// store the product description
+		$this->postSubmission = $newPostSubmission;
+	}
+
+	/**
+	 * accessor method for post time
+	 *
+	 * @return \DateTime value of post time
+	 **/
+	public function getPostTime() {
+		return ($this->postTime);
+	}
+
+	/**
+	 * mutator method for post time
+	 *
+	 * @param \DateTime|string|null $newPostTime purchase time as a DateTime object or string (or null to load the current time)
+	 * @throws \InvalidArgumentException if $newPostTime is not a valid object or string
+	 * @throws \RangeException if $newPostTime is  a time that does not exist
+	 **/
+	public function setPostTime($newPostTime = null) {
+		// base case: if the time is null, use the current date and time
+		if($newPostTime === null) {
+			$this->postTime = new \DateTime();
+			return;
+		}
+
+		// store the post time
+		try {
+			$newPostTime = $this->validateDate($newPostTime);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->postTime = $newPostTime;
+	}
 
 
 	//TODO
