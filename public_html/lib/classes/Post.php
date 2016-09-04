@@ -41,6 +41,18 @@ class Post implements \JsonSerializable {
 	private $postTime;
 
 	//construct
+	/**
+	 * constructor for this Post
+	 *
+	 * @param int|null $newPostId , id of this post
+	 * @param string $newPostProfileUserName , profile user name of user posting post
+	 * @param string $newPostSubmission , actual post
+	 * @param \DateTime|string|null $newPostTime date and time post was made or null if set to current date and time
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g. strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 */
 	public function __construct(int $newPostId = null, string $newPostProfileUserName, string $newPostSubmission, string $newPostTime = null) {
 		try {
 			$this->setPostId($newPostId);

@@ -47,6 +47,19 @@ class Comment implements \JsonSerializable {
 	private $commentTime;
 
 	//construct
+	/**
+	 * constructor for this comment
+	 *
+	 * @param int|null $newCommentId , id of this comment
+	 * @param string $newCommentProfileUserName , profile user name of user posting comment
+	 * @param int $newCommentPostId , id of post being commented on
+	 * @param string $newCommentSubmission , actual comment
+	 * @param \DateTime|string|null $newCommentTime date and time comment was made or null if set to current date and time
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g. strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 */
 	public function __construct(int $newCommentId = null, string $newCommentProfileUserName, int $newCommentPostId, string $newCommentSubmission, string $newCommentTime = null) {
 		try {
 			$this->setCommentId($newCommentId);
@@ -138,30 +151,30 @@ class Comment implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for comment profile id
+	 * accessor method for comment post id
 	 *
-	 * @return int value of comment profile id
+	 * @return int value of comment post id
 	 */
 
-	public function getCommentProfileId() {
-		return ($this->commentProfileId);
+	public function getCommentPostId() {
+		return ($this->commentPostId);
 	}
 
 	/**
-	 * mutator method for comment profile id
+	 * mutator method for comment post id
 	 *
-	 * @param int|null $newCommentProfileId new value of comment profile id
-	 * @throws \RangeException if $newCommentProfileId is not positive
-	 * @throws \TypeError if $newCommentProfileId is not an integer
+	 * @param int|null $newCommentPostId new value of comment post id
+	 * @throws \RangeException if $newCommentPostId is not positive
+	 * @throws \TypeError if $newCommentPostId is not an integer
 	 */
-	public function setCommentProfileId(int $newCommentProfileId) {
-		// verify the commentProfileId is positive
-		if($newCommentProfileId <= 0) {
-			throw(new \RangeException("commentProfileId is not positive"));
+	public function setCommentPostId(int $newCommentPostId) {
+		// verify the commentPostId is positive
+		if($newCommentPostId <= 0) {
+			throw(new \RangeException("commentProstId is not positive"));
 		}
 
 		// convert and store the account id
-		$this->commentProfileId = $newCommentProfileId;
+		$this->commentPostId = $newCommentPostId;
 	}
 
 	/**
@@ -231,6 +244,7 @@ class Comment implements \JsonSerializable {
 		}
 		$this->commentTime = $newCommentTime;
 	}
+
 	//TODO
 	public function jsonSerialize() {
 		// TODO

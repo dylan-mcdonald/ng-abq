@@ -46,6 +46,21 @@ class Link implements \JsonSerializable {
 	 */
 	private $linkDate;
 
+	// construct
+	/**
+	 * constructor for this link
+	 *
+	 * @param int|null $newLinkId, id of this link or null if a new link
+	 * @param int $newLinkProfileId, profile id of user posting link
+	 * @param string $newLinkProfileUserName, profile user name of user posting link
+	 * @param string $newLinkUrl, url of link
+	 * @param \DateTime|string|null $newLinkDate date and time link was posted or null if set to current date and time
+	 * @throws \InvalidArgumentException if data types are not valid
+	 * @throws \RangeException if data values are out of bounds (e.g. strings too long, negative integers)
+	 * @throws \TypeError if data types violate type hints
+	 * @throws \Exception if some other exception occurs
+	 */
+
 	public function __construct(int $newLinkId = null, int $newLinkProfileId, string $newLinkProfileUserName, string $newLinkUrl, $newLinkDate = null) {
 		try {
 			$this->setLinkId($newLinkId);

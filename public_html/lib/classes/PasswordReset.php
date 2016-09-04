@@ -47,7 +47,19 @@ class PasswordReset implements \JsonSerializable {
 	 */
 	private $passwordResetTime;
 
-
+	/**
+	 * Constructor for passwordReset
+	 *
+	 * @param int|null $newPasswordResetId, primary key, null if new passwordReset
+	 * @param int $newPasswordResetProfileId, profile id of authorized access
+	 * @param string $newPasswordResetProfileEmail, email of user requesting reset
+	 * @param string $newPasswordResetToken, token for verifying reset
+	 * @param \DateTime|string|null $newPasswordResetTime, time of reset or null if set to current date and time
+	 * @throws \InvalidArgumentException if argument does not cooperate
+	 * @throws \RangeException if argument is out of bounds
+	 * @throws \TypeError if type is invalid
+	 * @throws \Exception to handle edge cases
+	 **/
 	public function __construct(int $newPasswordResetId = null, int $newPasswordResetProfileId, string $newPasswordResetProfileEmail, string $newPasswordResetToken, $newPasswordResetTime = null) {
 		try {
 			$this->setPasswordResetId($newPasswordResetId);
