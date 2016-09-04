@@ -260,6 +260,66 @@ class PasswordReset implements \JsonSerializable {
 		$this->passwordResetId = intval($pdo->lastInsertId());
 	}
 
+	/**
+	 * deletes this passwordReset from mySQL
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @throws \PDOException when mySQL related errors occur
+	 * @throws \TypeError if $pdo is not a PDO connection object
+	 */
+	public function delete(\PDO $pdo) {
+		// enforce the passwordResetId is not null (don't delete a passwordReset that has just been inserted)
+		if($this->passwordResetId === null) {
+			throw(new \PDOException("unable to delete a passwordReset that does not exist"));
+		}
+
+		// create query template
+		$query = "DELETE FROM passwordReset WHERE passwordResetId = :passwordResetId";
+		$statement = $pdo->prepare($query);
+
+		// bind the member variables to the place holder in the template
+		$parameters = ["passwordResetId" => $this->passwordResetId];
+		$statement->execute($parameters);
+	}
+
+	/**
+	 * gets the passwordReset by passwordReset id
+	 *
+	 * @param \PDO $pdo PDO connection object
+	 * @param int $passwordResetId - passwordReset id to search for
+	 * @return PasswordReset|null - passwordReset found or null if not
+	 * @throws \PDOException when mySQL related error occurs
+	 * @throws \TypeError when variables are not the correct data type
+	 */
+
+	public static function getPasswordResetByPasswordResetId(\PDO $pdo, int $passwordResetId) {
+		// sanitize the passwordResetId before searching
+		if($passwordResetId <= 0) {
+			throw(new \PDOException("passwordReset id is not positive"));
+		}
+		// create query template
+		$query = "SELECT passwordResetId, passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime FROM passwordReset WHERE passwordResetId = :passwordResetId";
+		$statement = $pdo->prepare($query);
+
+		// bind the passwordReset id to the place holder in the template
+		$parameters = array("passwordResetId" => $passwordResetId);
+		$statement->execute($parameters);
+
+		// grab the passwordReset from mySQL
+		try {
+			$passwordReset = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$passwordReset = new PasswordReset($row["passwordResetId"], $row["passwordResetProfileId"], $row["passwordResetProfileEmail"], $row["passwordResetToken"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["passwordResetTime"]));
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($passwordReset);
+	}
+
 	// get all passwordResets
 	/**
 	 * gets all passwordResets

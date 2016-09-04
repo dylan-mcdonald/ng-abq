@@ -74,6 +74,20 @@ try {
 			// update reply
 			$reply->message = "PasswordReset created ok";
 		}
+	} else if($method === "DELETE") {
+		verifyXsrf();
+
+		// retrieve the Password Reset to be deleted
+		$passwordReset = Beta\PasswordReset::getPasswordResetByPasswordResetId($pdo, $id);
+		if($passwordReset === null) {
+			throw(new RuntimeException("Password Reset does not exist", 404));
+		}
+
+		// delete image
+		$passwordReset->delete($pdo);
+
+		// update reply
+		$reply->message = "Password Reset deleted OK";
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
