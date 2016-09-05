@@ -191,7 +191,7 @@ class Comment implements \JsonSerializable {
 	 *
 	 * @param string $newCommentSubmission new value of comment submission
 	 * @throws \InvalidArgumentException if $newCommentSubmission is not a string or insecure
-	 * @throws \RangeException if $newCommentSubmission is > 25 characters
+	 * @throws \RangeException if $newCommentSubmission is > 150 characters
 	 * @throws \TypeError if $newCommentSubmission is not a string
 	 */
 	public function setCommentSubmission(string $newCommentSubmission) {

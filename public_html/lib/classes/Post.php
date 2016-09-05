@@ -156,7 +156,7 @@ class Post implements \JsonSerializable {
 	 *
 	 * @param string $newPostSubmission new value of post submission
 	 * @throws \InvalidArgumentException if $newPostSubmission is not a string or insecure
-	 * @throws \RangeException if $newPostSubmission is > 25 characters
+	 * @throws \RangeException if $newPostSubmission is > 150 characters
 	 * @throws \TypeError if $newPostSubmission is not a string
 	 */
 	public function setPostSubmission(string $newPostSubmission) {

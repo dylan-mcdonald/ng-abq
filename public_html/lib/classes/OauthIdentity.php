@@ -122,7 +122,66 @@ class OauthIdentitiy implements \JsonSerializable {
 		$this->oauthIdentityId = $newOauthIdentityId;
 	}
 
+	/**
+	 * accessor method for oauthIdentity profile id
+	 *
+	 * @return int value of oauthIdentity profile id
+	 */
 
+	public function getOauthIdentityProfileId() {
+		return ($this->oauthIdentityProfileId);
+	}
+
+	/**
+	 * mutator method for oauthIdentity id
+	 *
+	 * @param int|null $newOauthIdentityProfileId new value of oauthIdentity profile id
+	 * @throws \RangeException if $newOauthIdentityProfileId is not positive
+	 * @throws \TypeError if $newOauthIdentityProfileId is not an integer
+	 */
+	public function setOauthIdentityProfileId(int $newOauthIdentityProfileId) {
+		// verify the oauthIdentityProfileId is positive
+		if($newOauthIdentityProfileId <= 0) {
+			throw(new \RangeException("oauthIdentityProfileId is not positive"));
+		}
+
+		// convert and store the account id
+		$this->oauthIdentityProfileId = $newOauthIdentityProfileId;
+	}
+
+	/**
+	 * accessor method for oauthIdentity provider id
+	 *
+	 * @return string value of oauthIdentity provider id
+	 */
+	public function getOauthIdentityProviderId() {
+		return ($this->oauthIdentityProviderId);
+	}
+
+	/**
+	 * mutator method for oauthIdentity provider id
+	 *
+	 * @param string $newOauthIdentityProviderId new value of oauthIdentity provider id
+	 * @throws \InvalidArgumentException if $newOauthIdentityProviderId is not a string or insecure
+	 * @throws \RangeException if $newOauthIdentityProviderId is > 28 characters
+	 * @throws \TypeError if $newOauthIdentityProviderId is not a string
+	 */
+	public function setOauthIdentityProviderId(string $newOauthIdentityProviderId) {
+		// verify the oauthIdentity provider id is secure
+		$newOauthIdentityProviderId = trim($newOauthIdentityProviderId);
+		$newOauthIdentityProviderId = filter_var($newOauthIdentityProviderId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOauthIdentityProviderId) === true) {
+			throw(new \InvalidArgumentException("oauthIdentity provider id is empty or insecure"));
+		}
+
+		// verify the oauthIdentity provider id will fit in the database
+		if(strlen($newOauthIdentityProviderId) > 28) {
+			throw(new \RangeException("oauthIdentity provider id is too long"));
+		}
+
+		// store the product description
+		$this->oauthIdentityProviderId = $newOauthIdentityProviderId;
+	}
 
 	//TODO
 	public function jsonSerialize() {
