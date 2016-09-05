@@ -57,12 +57,12 @@ class OauthIdentitiy implements \JsonSerializable {
 	/**
 	 * Constructor for oauthIdentity
 	 *
-	 * @param int|null $newOauthIdentityId, primary key, null if new oauthIdentity
-	 * @param int $newOauthIdentityProfileId, profile id of authorized access
-	 * @param string $newOauthIdentityProviderId, id of provider
-	 * @param string $newOauthIdentityProvider, name of provider of authorization
-	 * @param string $newOauthIdentityAccessToken, token from provider
-	 * @param \DateTime|string|null $newOauthIdentityTimeStamp, time of authorization or null if set to current date and time
+	 * @param int|null $newOauthIdentityId , primary key, null if new oauthIdentity
+	 * @param int $newOauthIdentityProfileId , profile id of authorized access
+	 * @param string $newOauthIdentityProviderId , id of provider
+	 * @param string $newOauthIdentityProvider , name of provider of authorization
+	 * @param string $newOauthIdentityAccessToken , token from provider
+	 * @param \DateTime|string|null $newOauthIdentityTimeStamp , time of authorization or null if set to current date and time
 	 * @throws \InvalidArgumentException if argument does not cooperate
 	 * @throws \RangeException if argument is out of bounds
 	 * @throws \TypeError if type is invalid
@@ -103,19 +103,19 @@ class OauthIdentitiy implements \JsonSerializable {
 
 	/**
 	 * Mutator for oauthIdentity ID
-	 * @param int|null $newOauthIdentityId, primary key
+	 * @param int|null $newOauthIdentityId , primary key
 	 * @throws \RangeException if oauthIdentity ID is not > 0
 	 * @throws \TypeError if oauthIdentity ID is not an integer
 	 **/
 	public function setOauthIdentityId(int $newOauthIdentityId = null) {
 		// Let oauthIdentity ID = null
-		if ($newOauthIdentityId === null) {
+		if($newOauthIdentityId === null) {
 			$this->oauthIdentityId = null;
 			return;
 		}
 
 		// Make sure oauthIdentity ID > 0
-		if ($newOauthIdentityId <= 0) {
+		if($newOauthIdentityId <= 0) {
 			throw new \RangeException("OauthIdentity ID must be positive");
 		}
 
@@ -147,6 +147,40 @@ class OauthIdentitiy implements \JsonSerializable {
 
 		// convert and store the account id
 		$this->oauthIdentityProfileId = $newOauthIdentityProfileId;
+	}
+
+	/**
+	 * accessor method for oauthIdentity provider id
+	 *
+	 * @return string value of oauthIdentity provider id
+	 */
+	public function getOauthIdentityProviderId() {
+		return ($this->oauthIdentityProviderId);
+	}
+
+	/**
+	 * mutator method for oauthIdentity provider id
+	 *
+	 * @param string $newOauthIdentityProviderId new value of oauthIdentity provider id
+	 * @throws \InvalidArgumentException if $newOauthIdentityProviderId is not a string or insecure
+	 * @throws \RangeException if $newOauthIdentityProviderId is > 28 characters
+	 * @throws \TypeError if $newOauthIdentityProviderId is not a string
+	 */
+	public function setOauthIdentityProviderId(string $newOauthIdentityProviderId) {
+		// verify the oauthIdentity provider id is secure
+		$newOauthIdentityProviderId = trim($newOauthIdentityProviderId);
+		$newOauthIdentityProviderId = filter_var($newOauthIdentityProviderId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOauthIdentityProviderId) === true) {
+			throw(new \InvalidArgumentException("oauthIdentity provider id is empty or insecure"));
+		}
+
+		// verify the oauthIdentity provider id will fit in the database
+		if(strlen($newOauthIdentityProviderId) > 28) {
+			throw(new \RangeException("oauthIdentity provider id is too long"));
+		}
+
+		// store the product description
+		$this->oauthIdentityProviderId = $newOauthIdentityProviderId;
 	}
 
 	/**
