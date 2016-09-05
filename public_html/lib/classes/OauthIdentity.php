@@ -133,7 +133,7 @@ class OauthIdentitiy implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for oauthIdentity id
+	 * mutator method for oauthIdentity profile id
 	 *
 	 * @param int|null $newOauthIdentityProfileId new value of oauthIdentity profile id
 	 * @throws \RangeException if $newOauthIdentityProfileId is not positive
@@ -145,7 +145,7 @@ class OauthIdentitiy implements \JsonSerializable {
 			throw(new \RangeException("oauthIdentityProfileId is not positive"));
 		}
 
-		// convert and store the account id
+		// convert and store oauthIdentity profile id
 		$this->oauthIdentityProfileId = $newOauthIdentityProfileId;
 	}
 
@@ -179,42 +179,110 @@ class OauthIdentitiy implements \JsonSerializable {
 			throw(new \RangeException("oauthIdentity provider id is too long"));
 		}
 
-		// store the product description
+		// store the oauthIdentity provider id
 		$this->oauthIdentityProviderId = $newOauthIdentityProviderId;
 	}
 
 	/**
-	 * accessor method for oauthIdentity provider id
+	 * accessor method for oauthIdentity provider
 	 *
-	 * @return string value of oauthIdentity provider id
+	 * @return string value of oauthIdentity provider
 	 */
-	public function getOauthIdentityProviderId() {
-		return ($this->oauthIdentityProviderId);
+	public function getOauthIdentityProvider() {
+		return ($this->oauthIdentityProvider);
 	}
 
 	/**
-	 * mutator method for oauthIdentity provider id
+	 * mutator method for oauthIdentity provider
 	 *
-	 * @param string $newOauthIdentityProviderId new value of oauthIdentity provider id
-	 * @throws \InvalidArgumentException if $newOauthIdentityProviderId is not a string or insecure
-	 * @throws \RangeException if $newOauthIdentityProviderId is > 28 characters
-	 * @throws \TypeError if $newOauthIdentityProviderId is not a string
+	 * @param string $newOauthIdentityProvider new value of oauthIdentity provider
+	 * @throws \InvalidArgumentException if $newOauthIdentityProvider is not a string or insecure
+	 * @throws \RangeException if $newOauthIdentityProvider is > 28 characters
+	 * @throws \TypeError if $newOauthIdentityProvider is not a string
 	 */
-	public function setOauthIdentityProviderId(string $newOauthIdentityProviderId) {
-		// verify the oauthIdentity provider id is secure
-		$newOauthIdentityProviderId = trim($newOauthIdentityProviderId);
-		$newOauthIdentityProviderId = filter_var($newOauthIdentityProviderId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
-		if(empty($newOauthIdentityProviderId) === true) {
-			throw(new \InvalidArgumentException("oauthIdentity provider id is empty or insecure"));
+	public function setOauthIdentityProvider(string $newOauthIdentityProvider) {
+		// verify the oauthIdentity provider is secure
+		$newOauthIdentityProvider = trim($newOauthIdentityProvider);
+		$newOauthIdentityProvider = filter_var($newOauthIdentityProvider, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOauthIdentityProvider) === true) {
+			throw(new \InvalidArgumentException("oauthIdentity provider is empty or insecure"));
 		}
 
-		// verify the oauthIdentity provider id will fit in the database
-		if(strlen($newOauthIdentityProviderId) > 28) {
-			throw(new \RangeException("oauthIdentity provider id is too long"));
+		// verify the oauthIdentity provider will fit in the database
+		if(strlen($newOauthIdentityProvider) > 28) {
+			throw(new \RangeException("oauthIdentity provider is too long"));
 		}
 
-		// store the product description
-		$this->oauthIdentityProviderId = $newOauthIdentityProviderId;
+		// store the oauthIdentity provider
+		$this->oauthIdentityProvider = $newOauthIdentityProvider;
+	}
+
+	/**
+	 * accessor method for oauthIdentity accessToken
+	 *
+	 * @return string value of oauthIdentity accessToken
+	 */
+	public function getOauthIdentityAccessToken() {
+		return ($this->oauthIdentityAccessToken);
+	}
+
+	/**
+	 * mutator method for oauthIdentity accessToken
+	 *
+	 * @param string $newOauthIdentityAccessToken new value of oauthIdentity accessToken
+	 * @throws \InvalidArgumentException if $newOauthIdentityAccessToken is not a string or insecure
+	 * @throws \RangeException if $newOauthIdentityAccessToken is > 28 characters
+	 * @throws \TypeError if $newOauthIdentityAccessToken is not a string
+	 */
+	public function setOauthIdentityAccessToken(string $newOauthIdentityAccessToken) {
+		// verify the oauthIdentity accessToken is secure
+		$newOauthIdentityAccessToken = trim($newOauthIdentityAccessToken);
+		$newOauthIdentityAccessToken = filter_var($newOauthIdentityAccessToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newOauthIdentityAccessToken) === true) {
+			throw(new \InvalidArgumentException("oauthIdentity accessToken is empty or insecure"));
+		}
+
+		// verify the oauthIdentity accessToken will fit in the database
+		if(strlen($newOauthIdentityAccessToken) > 28) {
+			throw(new \RangeException("oauthIdentity accessToken is too long"));
+		}
+
+		// store the oauthIdentity accessToken
+		$this->oauthIdentityAccessToken = $newOauthIdentityAccessToken;
+	}
+
+	/**
+	 * accessor method for oauthIdentity timeStamp
+	 *
+	 * @return \DateTime value of oauthIdentity timeStamp
+	 **/
+	public function getOauthIdentityTimeStamp() {
+		return ($this->oauthIdentityTimeStamp);
+	}
+
+	/**
+	 * mutator method for oauthIdentity timeStamp
+	 *
+	 * @param \DateTime|string|null $newOauthIdentityTimeStamp purchase timeStamp as a DateTime object or string (or null to load the current timeStamp)
+	 * @throws \InvalidArgumentException if $newOauthIdentityTimeStamp is not a valid object or string
+	 * @throws \RangeException if $newOauthIdentityTimeStamp is  a timeStamp that does not exist
+	 **/
+	public function setOauthIdentityTimeStamp($newOauthIdentityTimeStamp = null) {
+		// base case: if the time is null, use the current date and time
+		if($newOauthIdentityTimeStamp === null) {
+			$this->oauthIdentityTimeStamp = new \DateTime();
+			return;
+		}
+
+		// store the oauthIdentity timeStamp
+		try {
+			$newOauthIdentityTimeStamp = $this->validateDate($newOauthIdentityTimeStamp);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->oauthIdentityTimeStamp = $newOauthIdentityTimeStamp;
 	}
 
 	//TODO
