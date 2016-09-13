@@ -48,3 +48,38 @@ try {
             $reply->data = $attendee;
         }
     }
+    else if($method === "DELETE") {
+        verifyXsrf();
+
+        $attendee = Beta\Attendee::getAttendeetByAttendeeEventId($pdo, $attendeeEventId);
+        if($attendee === null) {
+            throw(new RuntimeException("", 404));
+        }
+
+        // delete link
+        $attendee->delete($pdo,$attendeeEventId);
+
+        // update reply
+        $reply->message = "";
+    } else {
+        throw (new InvalidArgumentException("Invalid HTTP method request"));
+    }
+
+
+
+} catch(Exception $exception) {
+    $reply->status = $exception->getCode();
+    $reply->message = $exception->getMessage();
+    $reply->trace = $exception->getTraceAsString();
+} catch(TypeError $typeError) {
+    $reply->status = $typeError->getCode();
+    $reply->message = $typeError->getMessage();
+}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+    unset($reply->data);
+}
+
+
+echo json_encode($reply);
