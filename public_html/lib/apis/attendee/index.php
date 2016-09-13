@@ -56,7 +56,6 @@ try {
             throw(new RuntimeException("", 404));
         }
 
-        // delete link
         $attendee->delete($pdo,$attendeeEventId);
 
         // update reply
