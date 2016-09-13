@@ -32,14 +32,68 @@ try {
         throw(new InvalidArgumentException("", 405));
     }
 
-    if($method === "GET") {
+    if ($method === "GET") {
         //set XSRF cookie
         setXsrfCookie();
-
-       
+        $events = Beta\Event::getAllEvents($pdo);
+        if ($events !== null) {
+            $reply->data = $events;
+        }
     }
 
-   
+    else if($method === "PUT") {
+        verifyXsrf();
+
+        $requestContent = file_get_contents("php://input");
+        $requestObject = json_decode($requestContent);
+
+
+        $events = Beta\Link::getEventByEventId($pdo, $id);
+        if($events === null) {
+            throw(new RuntimeException("", 404));
+        }
+        var_dump($requestObject);
+        $events->setEventId($requestObject->EventId);
+
+        // update link
+        $events->update($pdo);
+
+        // update reply
+        $reply->message = "Events updated OK";
+    }	else if($method === "DELETE") {
+        verifyXsrf();
+
+        // retrieve the Link to be deleted
+        $events = Beta\Event::getEventByEventId($pdo, $id);
+        if($events === null) {
+            throw(new RuntimeException("", 404));
+        }
+
+        // delete link
+        $events->delete($pdo);
+
+        // update reply
+        $reply->message = "Events deleted OK";
+    } else {
+        throw (new InvalidArgumentException("Invalid HTTP method request"));
+    }
+
+
+} catch(Exception $exception) {
+    $reply->status = $exception->getCode();
+    $reply->message = $exception->getMessage();
+    $reply->trace = $exception->getTraceAsString();
+} catch(TypeError $typeError) {
+    $reply->status = $typeError->getCode();
+    $reply->message = $typeError->getMessage();
+}
+
+header("Content-type: application/json");
+if($reply->data === null) {
+    unset($reply->data);
+}
+
+echo json_encode($reply);
   
 
 
