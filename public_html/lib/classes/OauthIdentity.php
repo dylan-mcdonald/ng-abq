@@ -12,7 +12,7 @@ require_once("autoload.php");
  *
  * @version 1.0.0
  **/
-class OauthIdentitiy implements \JsonSerializable {
+class OauthIdentity implements \JsonSerializable {
 
 	/* STATE VARIABLES */
 
@@ -23,7 +23,7 @@ class OauthIdentitiy implements \JsonSerializable {
 	private $oauthIdentityId;
 
 	/**
-	 * OauthIdentity profile id
+	 * OauthIdentity oauthIdentity id
 	 * @var int $oauthIdentityProfileId
 	 **/
 	private $oauthIdentityProfileId;
@@ -58,7 +58,7 @@ class OauthIdentitiy implements \JsonSerializable {
 	 * Constructor for oauthIdentity
 	 *
 	 * @param int|null $newOauthIdentityId , primary key, null if new oauthIdentity
-	 * @param int $newOauthIdentityProfileId , profile id of authorized access
+	 * @param int $newOauthIdentityProfileId , oauthIdentity id of authorized access
 	 * @param string $newOauthIdentityProviderId , id of provider
 	 * @param string $newOauthIdentityProvider , name of provider of authorization
 	 * @param string $newOauthIdentityAccessToken , token from provider
@@ -123,9 +123,9 @@ class OauthIdentitiy implements \JsonSerializable {
 	}
 
 	/**
-	 * accessor method for oauthIdentity profile id
+	 * accessor method for oauthIdentity oauthIdentity id
 	 *
-	 * @return int value of oauthIdentity profile id
+	 * @return int value of oauthIdentity oauthIdentity id
 	 */
 
 	public function getOauthIdentityProfileId() {
@@ -133,9 +133,9 @@ class OauthIdentitiy implements \JsonSerializable {
 	}
 
 	/**
-	 * mutator method for oauthIdentity profile id
+	 * mutator method for oauthIdentity oauthIdentity id
 	 *
-	 * @param int|null $newOauthIdentityProfileId new value of oauthIdentity profile id
+	 * @param int|null $newOauthIdentityProfileId new value of oauthIdentity oauthIdentity id
 	 * @throws \RangeException if $newOauthIdentityProfileId is not positive
 	 * @throws \TypeError if $newOauthIdentityProfileId is not an integer
 	 */
@@ -145,7 +145,7 @@ class OauthIdentitiy implements \JsonSerializable {
 			throw(new \RangeException("oauthIdentityProfileId is not positive"));
 		}
 
-		// convert and store oauthIdentity profile id
+		// convert and store oauthIdentity oauthIdentity id
 		$this->oauthIdentityProfileId = $newOauthIdentityProfileId;
 	}
 
@@ -297,7 +297,7 @@ class OauthIdentitiy implements \JsonSerializable {
 		}
 
 		// Create query template
-		$query = "SELECT profileId, profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName FROM profile WHERE :attribute $like :search";
+		$query = "SELECT oauthIdentityId, oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp FROM oauthIdentity WHERE :attribute $like :search";
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
@@ -305,15 +305,15 @@ class OauthIdentitiy implements \JsonSerializable {
 		$statement->execute($parameters);
 
 		// Build an array of matches
-		$profiles = new \SplFixedArray($statement->rowCount());
+		$oauthIdentities = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$profile = new Profile($row["profileId"], $row["profileAdmin"], $row["profileNameFirst"], $row["profileNameLast"], $row["profileEmail"], $row["profileUserName"]);
+				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], $row["oauthIdentityTimeStamp"]);
 
-				$profiles[$profiles->key()] = $profile;
-				$profile->next();
+				$oauthIdentities[$oauthIdentities->key()] = $oauthIdentity;
+				$oauthIdentity->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
