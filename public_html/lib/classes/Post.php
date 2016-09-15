@@ -225,22 +225,19 @@ class Post implements \JsonSerializable {
 		$parameters = ["postId" => $postId];
 		$statement->execute($parameters);
 
-		// Build an array of matches
-		$posts = new \SplFixedArray($statement->rowCount());
-		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		try {
+			$post = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
 
-		while (($row = $statement->fetch()) !== false) {
-			try {
+			if ($row !== false) {
 				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
-
-				$posts[$posts->key()] = $post;
-				$post->next();
-			} catch(\Exception $exception) {
-				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
+		} catch(\Exception $exception) {
+			throw new \PDOException($exception->getMessage(), 0, $exception);
 		}
 
-		return $posts;
+		return $post;
 	}
 
 	public static function getPostbyPostTime(\PDO $pdo, \DateTime $postTime) {
@@ -311,9 +308,9 @@ class Post implements \JsonSerializable {
 		return $posts;
 	}
 
-	public static function getAllEvents(\PDO $pdo) {
+	public static function getAllPosts(\PDO $pdo) {
 		// Create query template and execute
-		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE :attribute $like :search";
+		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 

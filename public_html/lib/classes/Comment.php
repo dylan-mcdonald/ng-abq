@@ -60,11 +60,11 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
-	public function __construct(int $newCommentId = null, string $newCommentProfileUserName, int $newCommentPostId, string $newCommentSubmission, string $newCommentTime = null) {
+	public function __construct(int $newCommentId = null, int $newCommentPostId, string $newCommentProfileUserName, string $newCommentSubmission, string $newCommentTime = null) {
 		try {
 			$this->setCommentId($newCommentId);
-			$this->setCommentProfileUserName($newCommentProfileUserName);
 			$this->setCommentPostId($newCommentPostId);
+			$this->setCommentProfileUserName($newCommentProfileUserName);
 			$this->setCommentSubmission($newCommentSubmission);
 			$this->setCommentTime($newCommentTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
@@ -245,8 +245,163 @@ class Comment implements \JsonSerializable {
 		$this->commentTime = $newCommentTime;
 	}
 
-	//TODO
+	/* PDO METHODS */
+
+	public static function getCommentByCommentId(\PDO $pdo, int $commentId) {
+		if ($postId <= 0) {
+			throw new \PDOException("Not a valid post ID.");
+		}
+
+		// Create query template
+		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["postId" => $postId];
+		$statement->execute($parameters);
+
+		try {
+			$comment = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+
+			if ($row !== false) {
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+			}
+		} catch(\Exception $exception) {
+			throw new \PDOException($exception->getMessage(), 0, $exception);
+		}
+
+		return $comment;
+	}
+
+	public static function getCommentByCommentPostId(\PDO $pdo, int $commentPostId) {
+		if ($postId <= 0) {
+			throw new \PDOException("Not a valid post ID.");
+		}
+
+		// Create query template
+		$query = "SELECT commentId, commentPostId, commentProfileUserName, commentSubmission, commentTime FROM comment WHERE commentPostId = :commentPostId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["commentPostId" => $commentPostId];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+
+				$comments[$comments->key()] = $comment;
+				$comment->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $comments;
+	}
+
+	public static function getCommentByCommentTime(\PDO $pdo, \DateTime $commentTime) {
+		try {
+			$commentTime = self::validateDateTime($commentTime);
+		} catch(\Exception $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// Create query template
+		$query = "SELECT commentId, commentPostId, commentProfileUserName, commentSubmission, commentTime FROM comment WHERE commentTime = :commentTime";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["commentTime" => $commentTime->format("Y-m-d H:i:s")];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+
+				$comments[$comments->key()] = $comment;
+				$comment->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $comments;
+	}
+
+	public static function getCommentByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
+		$like = $like ? "LIKE" : "="; // Optionally search using "LIKE"
+		$attribute = filter_var(trim($attribute), FILTER_SANITIZE_STRING);
+		$search = filter_var(trim($search), FILTER_SANITIZE_STRING);
+
+		if (empty($attribute) === true || empty($search) === true) {
+			throw new \PDOException("Invalid string.");
+		}
+
+		// Create query template
+		$query = "SELECT commentId, commentPostId, commentProfileUserName, commentSubmission, commentTime FROM comment WHERE :attribute $like :search";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["attribute" => $attribute, "search" => $search];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+
+				$comments[$comments->key()] = $comment;
+				$comment->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $comments;
+	}
+
+	public static function getAllComments(\PDO $pdo) {
+		// Create query template and execute
+		$query = "SELECT commentId, commentPostId, commentProfileUserName, commentSubmission, commentTime FROM comment";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// Build an array of matches
+		$comments = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+
+				$comments[$comments->key()] = $comment;
+				$comment->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $comments;
+	}
+
+	/* JSON SERIALIZE */
+
 	public function jsonSerialize() {
-		// TODO
+		$fields = get_object_vars($this);
+		return ($fields);
 	}
 }
