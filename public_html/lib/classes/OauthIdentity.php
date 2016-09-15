@@ -287,6 +287,34 @@ class OauthIdentity implements \JsonSerializable {
 
 	/* PDO METHODS */
 
+	public static function getOauthIdentityByOauthIdentityId(\PDO $pdo, int $oauthIdentityId) {
+		if ($oauthIdentityId <= 0) {
+			throw new \PDOException("Not a valid OAuth identity ID.");
+		}
+
+		// Create query template
+		$query = "SELECT oauthIdentityId, oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp FROM oauthIdentity WHERE oauthIdentityId = :oauthIdentityId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["oauthIdentityId" => $oauthIdentityId];
+		$statement->execute($parameters);
+
+		try {
+			$oauthIdentity = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+
+			if ($row !== false) {
+				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], $row["oauthIdentityTimeStamp"]);
+			}
+		} catch(\Exception $exception) {
+			throw new \PDOException($exception->getMessage(), 0, $exception);
+		}
+
+		return $oauthIdentity;
+	}
+
 	public static function getOauthIdentityByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
 		$like = $like ? "LIKE" : "="; // Optionally search using "LIKE"
 		$attribute = filter_var(trim($attribute), FILTER_SANITIZE_STRING);
