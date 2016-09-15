@@ -285,8 +285,45 @@ class OauthIdentitiy implements \JsonSerializable {
 		$this->oauthIdentityTimeStamp = $newOauthIdentityTimeStamp;
 	}
 
-	//TODO
+	/* PDO METHODS */
+
+	public static function getOauthIdentityByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
+		$like = $like ? "LIKE" : "="; // Optionally search using "LIKE"
+		$attribute = filter_var(trim($attribute), FILTER_SANITIZE_STRING);
+		$search = filter_var(trim($search), FILTER_SANITIZE_STRING);
+
+		if (empty($attribute) === true || empty($search) === true) {
+			throw new \PDOException("Invalid string.");
+		}
+
+		// Create query template
+		$query = "SELECT profileId, profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName FROM profile WHERE :attribute $like :search";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["attribute" => $attribute, "search" => $search];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileAdmin"], $row["profileNameFirst"], $row["profileNameLast"], $row["profileEmail"], $row["profileUserName"]);
+
+				$profiles[$profiles->key()] = $profile;
+				$profile->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+	}
+
+	/* JSON SERIALIZE */
+
 	public function jsonSerialize() {
-		// TODO
+		$fields = get_object_vars($this);
+		return ($fields);
 	}
 }
