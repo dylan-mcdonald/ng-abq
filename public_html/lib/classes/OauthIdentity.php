@@ -346,9 +346,11 @@ class OauthIdentity implements \JsonSerializable {
 		return $oauthIdentities;
 	}
 
-	public static function getOauthIdentityByOauthIdentityTimeStamp(\PDO $pdo, int $oauthIdentityTimeStamp) {
-		if ($oauthIdentityTimeStamp <= 0) {
-			throw new \PDOException("Not a valid OAuth identity time stamp.");
+	public static function getOauthIdentityByOauthIdentityTimeStamp(\PDO $pdo, \DateTime $oauthIdentityTimeStamp) {
+		try {
+			$oauthIdentityTimeStamp = self::validateDateTime($oauthIdentityTimeStamp);
+		} catch(\Exception $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 
 		// Create query template

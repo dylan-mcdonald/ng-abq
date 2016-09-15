@@ -210,9 +210,135 @@ class Post implements \JsonSerializable {
 		$this->postTime = $newPostTime;
 	}
 
+	/* PDO METHODS */
 
-	//TODO
+	public static function getPostByPostId(\PDO $pdo, int $postId) {
+		if ($postId <= 0) {
+			throw new \PDOException("Not a valid post ID.");
+		}
+
+		// Create query template
+		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["postId" => $postId];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
+
+				$posts[$posts->key()] = $post;
+				$post->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $posts;
+	}
+
+	public static function getPostbyPostTime(\PDO $pdo, \DateTime $postTime) {
+		try {
+			$postTime = self::validateDateTime($postTime);
+		} catch(\Exception $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// Create query template
+		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE postTime = :postTime";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["postTime" => $postTime->format("Y-m-d H:i:s")];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
+
+				$posts[$posts->key()] = $post;
+				$post->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $posts;
+	}
+
+	public static function getOauthIdentityByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
+		$like = $like ? "LIKE" : "="; // Optionally search using "LIKE"
+		$attribute = filter_var(trim($attribute), FILTER_SANITIZE_STRING);
+		$search = filter_var(trim($search), FILTER_SANITIZE_STRING);
+
+		if (empty($attribute) === true || empty($search) === true) {
+			throw new \PDOException("Invalid string.");
+		}
+
+		// Create query template
+		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE :attribute $like :search";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["attribute" => $attribute, "search" => $search];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
+
+				$posts[$posts->key()] = $post;
+				$post->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $posts;
+	}
+
+	public static function getAllEvents(\PDO $pdo) {
+		// Create query template and execute
+		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE :attribute $like :search";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// Build an array of matches
+		$posts = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
+
+				$posts[$posts->key()] = $post;
+				$post->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $posts;
+	}
+
+	/* JSON SERIALIZE */
+
 	public function jsonSerialize() {
-		// TODO
+		$fields = get_object_vars($this);
+		return ($fields);
 	}
 }
