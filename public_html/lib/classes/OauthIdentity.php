@@ -328,19 +328,22 @@ class OauthIdentity implements \JsonSerializable {
 		$parameters = ["oauthIdentityProfileId" => $oauthIdentityProfileId];
 		$statement->execute($parameters);
 
-		try {
-			$oauthIdentity = null;
-			$statement->setFetchMode(\PDO::FETCH_ASSOC);
-			$row = $statement->fetch();
+		// Build an array of matches
+		$oauthIdentities = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
-			if ($row !== false) {
+		while (($row = $statement->fetch()) !== false) {
+			try {
 				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], $row["oauthIdentityTimeStamp"]);
+
+				$oauthIdentities[$oauthIdentities->key()] = $oauthIdentity;
+				$oauthIdentity->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
-		} catch(\Exception $exception) {
-			throw new \PDOException($exception->getMessage(), 0, $exception);
 		}
 
-		return $oauthIdentity;
+		return $oauthIdentities;
 	}
 
 	public static function getOauthIdentityByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
