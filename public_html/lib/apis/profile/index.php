@@ -35,6 +35,8 @@ try {
 	}
 
 	if ($method === "GET") {
+		setXsrfCookie();
+
 		if (empty($id) === false) {
 			$profile = Profile::getProfileByProfileId($pdo, $id);
 			if ($profile !== null) {

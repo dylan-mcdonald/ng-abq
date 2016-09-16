@@ -35,6 +35,8 @@ try {
 	}
 
 	if ($method === "GET") {
+		setXsrfCookie();
+
 		if (empty($id) === false) {
 			$post = Post::getPostByPostId($pdo, $id);
 			if ($post !== null) {

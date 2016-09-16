@@ -35,6 +35,8 @@ try {
 	}
 
 	if ($method === "GET") {
+		setXsrfCookie();
+
 		if (empty($id) === false) {
 			$comment = Comment::getCommentByCommentId($pdo, $id);
 			if ($comment !== null) {
