@@ -83,7 +83,10 @@ try {
 
 			$reply->message = "Comment updated successfully.";
 		} else if ($method === "POST") {
-			// TODO
+			$comment = new Comment(null, $requestObject->commentPostId, $requestObject->commentProfileUserName, $requestObject->commentSubmission, $requestObject->commentTime);
+			$comment->insert($pdo);
+
+			$reply->message = "Comment successfully posted.";
 		}
 	} else if ($method === "DELETE") {
 		// TODO

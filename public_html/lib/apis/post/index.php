@@ -79,7 +79,10 @@ try {
 
 			$reply->message = "Post updated successfully.";
 		} else if ($method === "POST") {
-			// TODO
+			$post = new Post(null, $requestObject->postProfileUserName, $requestObject->postSubmission, $requestObject->postTime);
+			$post->insert($pdo);
+
+			$reply->message = "Post successfully posted.";
 		}
 	} else if ($method === "DELETE") {
 		// TODO
