@@ -80,6 +80,8 @@ try {
 			$comment->setCommentTime($pdo, $requestObject->commentTime);
 
 			$post->update($pdo);
+
+			$reply->message = "Comment updated successfully.";
 		} else if ($method === "POST") {
 			// TODO
 		}

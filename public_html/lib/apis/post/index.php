@@ -76,6 +76,8 @@ try {
 			$post->setPostTime($pdo, $requestObject->postTime);
 
 			$post->update($pdo);
+
+			$reply->message = "Post updated successfully.";
 		} else if ($method === "POST") {
 			// TODO
 		}
