@@ -41,6 +41,12 @@ try {
 				$reply->data = $comment;
 			}
 		}
+	} else if ($method === "PUT") {
+		// TODO
+	} else if ($method === "POST") {
+		// TODO
+	} else {
+		throw new \RuntimeException("Method not allowed.");
 	}
 } catch(Exception $exception) {
 	$reply->status = $exception->getCode();
@@ -52,6 +58,7 @@ try {
 }
 
 header("Content-type: application/json");
+
 if($reply->data === null) {
 	unset($reply->data);
 }
