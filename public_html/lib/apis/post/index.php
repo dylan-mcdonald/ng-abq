@@ -85,7 +85,16 @@ try {
 			$reply->message = "Post successfully posted.";
 		}
 	} else if ($method === "DELETE") {
-		// TODO
+		verifyXsrf();
+
+		$post = Post::getPostByPostId($pdo, $id);
+		if($post === null) {
+			throw(new RuntimeException("Post does not exist.", 404));
+		}
+
+		$post->delete($pdo);
+
+		$reply->message = "Post successfully deleted.";
 	} else {
 		throw new \RuntimeException("Method not allowed.");
 	}

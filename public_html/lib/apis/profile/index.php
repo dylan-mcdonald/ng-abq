@@ -80,7 +80,16 @@ try {
 
 		$reply->message = "Profile updated successfully.";
 	} else if ($method === "DELETE") {
-		// TODO
+		verifyXsrf();
+
+		$profile = Profile::getProfileByProfileId($pdo, $id);
+		if($profile === null) {
+			throw(new RuntimeException("Profile does not exist.", 404));
+		}
+
+		$profile->delete($pdo);
+
+		$reply->message = "Profile successfully deleted.";
 	} else {
 		throw new \RuntimeException("Method not allowed.");
 	}

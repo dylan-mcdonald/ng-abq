@@ -89,7 +89,16 @@ try {
 			$reply->message = "Comment successfully posted.";
 		}
 	} else if ($method === "DELETE") {
-		// TODO
+		verifyXsrf();
+
+		$comment = Comment::getCommentByCommentId($pdo, $id);
+		if($comment === null) {
+			throw(new RuntimeException("Comment does not exist.", 404));
+		}
+
+		$comment->delete($pdo);
+
+		$reply->message = "Comment successfully deleted.";
 	} else {
 		throw new \RuntimeException("Method not allowed.");
 	}
