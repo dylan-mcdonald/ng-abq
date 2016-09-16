@@ -42,6 +42,11 @@ try {
 			if ($post !== null) {
 				$reply->data = $post;
 			}
+		} else {
+			$posts = Post::getAllPosts($pdo)->toArray();
+			if (sizeof($posts) > 0) {
+				$reply->data = $posts;
+			}
 		}
 	} else if ($method === "PUT") {
 		// TODO

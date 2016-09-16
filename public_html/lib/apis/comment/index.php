@@ -42,6 +42,11 @@ try {
 			if ($comment !== null) {
 				$reply->data = $comment;
 			}
+		} else {
+			$comments = Comment::getAllComments($pdo)->toArray();
+			if (sizeof($comments) > 0) {
+				$reply->data = $comments;
+			}
 		}
 	} else if ($method === "PUT") {
 		// TODO
