@@ -43,7 +43,7 @@ try {
 		}
 	} else if ($method === "PUT") {
 		// TODO
-	} else if ($method === "POST") {
+	} else if ($method === "DELETE") {
 		// TODO
 	} else {
 		throw new \RuntimeException("Method not allowed.");
