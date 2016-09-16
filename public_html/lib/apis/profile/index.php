@@ -44,7 +44,41 @@ try {
 			}
 		} // TODO: Else if ... getProfileByProfileActivationToken
 	} else if ($method === "PUT") {
-		// TODO
+		verifyXsrf();
+
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+
+		if (empty($requestObject->profileAdmin)) {
+			throw new \InvalidArgumentException("Profile admin flag must exist.", 405);
+		}
+		if (empty($requestObject->profileNameFirst)) {
+			throw new \InvalidArgumentException("Profile first name must exist.", 405);
+		}
+		if (empty($requestObject->profileNameLast)) {
+			throw new \InvalidArgumentException("Profile last name must exist.", 405);
+		}
+		if (empty($requestObject->profileEmail)) {
+			throw new \InvalidArgumentException("Profile email must exist.", 405);
+		}
+		if (empty($requestObject->profileUserName)) {
+			throw new \InvalidArgumentException("Profile username must exist.", 405);
+		}
+
+		$profile = Profile::getProfileByProfileId($pdo, $id);
+		if ($profile === null) {
+			throw new \RuntimeException("Profile does not exist.", 404);
+		}
+
+		$profile->setProfileAdmin($requestObject->profileAdmin);
+		$profile->setProfileNameFirst($requestObject->profileNameFirst);
+		$profile->setProfileNameLast($requestObject->profileNameLast);
+		$profile->setProfileEmail($requestObject->profileEmail);
+		$profile->setProfileUserName($requestObject->profileUserName);
+
+		$profile->update($pdo);
+
+		$reply->message = "Profile updated successfully.";
 	} else if ($method === "DELETE") {
 		// TODO
 	} else {

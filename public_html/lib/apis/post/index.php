@@ -48,10 +48,37 @@ try {
 				$reply->data = $posts;
 			}
 		}
-	} else if ($method === "PUT") {
-		// TODO
-	} else if ($method === "POST") {
-		// TODO
+	} else if ($method === "PUT" || $method === "POST") {
+		verifyXsrf();
+
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+
+		if (empty($requestObject->postProfileUserName)) {
+			throw new \InvalidArgumentException("Post profile username must exist.", 405);
+		}
+		if (empty($requestObject->postSubmission)) {
+			throw new \InvalidArgumentException("Post content must exist.", 405);
+		}
+		if (empty($requestObject->postTime)) {
+			throw new \InvalidArgumentException("Post timestamp must exist.", 405);
+		}
+
+		// BEGIN PUT AND POST
+		if ($method === "PUT") {
+			$post = Post::getPostByPostId($pdo, $id);
+			if ($post === null) {
+				throw new \RuntimeException("Post does not exist.", 404);
+			}
+
+			$post->setPostProfileUserName($pdo, $requestObject->postProfileUserName);
+			$post->setPostSubmission($pdo, $requestObject->postSubmission);
+			$post->setPostTime($pdo, $requestObject->postTime);
+
+			$post->update($pdo);
+		} else if ($method === "POST") {
+			// TODO
+		}
 	} else if ($method === "DELETE") {
 		// TODO
 	} else {

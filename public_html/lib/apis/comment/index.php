@@ -48,10 +48,41 @@ try {
 				$reply->data = $comments;
 			}
 		}
-	} else if ($method === "PUT") {
-		// TODO
-	} else if ($method === "POST") {
-		// TODO
+	} else if ($method === "PUT" || $method === "POST") {
+		verifyXsrf();
+
+		$requestContent = file_get_contents("php://input");
+		$requestObject = json_decode($requestContent);
+
+		if (empty($requestObject->commentPostId)) {
+			throw new \InvalidArgumentException("Comment post ID must exist.", 405);
+		}
+		if (empty($requestObject->commentProfileUserName)) {
+			throw new \InvalidArgumentException("Comment profile username must exist.", 405);
+		}
+		if (empty($requestObject->commentSubmission)) {
+			throw new \InvalidArgumentException("Comment content must exist.", 405);
+		}
+		if (empty($requestObject->commentTime)) {
+			throw new \InvalidArgumentException("Comment timestamp must exist.", 405);
+		}
+
+		// BEGIN PUT AND POST
+		if ($method === "PUT") {
+			$comment = Comment::getCommentByCommentId($pdo, $id);
+			if ($comment === null) {
+				throw new \RuntimeException("Comment does not exist.", 404);
+			}
+
+			$comment->setCommentPostId($pdo, $requestObject->commentPostId);
+			$comment->setCommentProfileUserName($pdo, $requestObject->commentProfileUserName);
+			$comment->setCommentSubmission($pdo, $requestObject->commentSubmission);
+			$comment->setCommentTime($pdo, $requestObject->commentTime);
+
+			$post->update($pdo);
+		} else if ($method === "POST") {
+			// TODO
+		}
 	} else if ($method === "DELETE") {
 		// TODO
 	} else {
