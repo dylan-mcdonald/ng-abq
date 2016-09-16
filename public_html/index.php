@@ -6,5 +6,6 @@
 	</head>
 	<body>
 		<h1>We are under construction.  Come back and visit soon.</h1>
+		<ng-abq-app>Loading...</ng-abq-app>
 	</body>
 </html>
