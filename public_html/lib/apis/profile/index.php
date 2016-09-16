@@ -42,7 +42,7 @@ try {
 			if ($profile !== null) {
 				$reply->data = $profile;
 			}
-		}
+		} // TODO: Else if ... getProfileByProfileActivationToken
 	} else if ($method === "PUT") {
 		// TODO
 	} else if ($method === "DELETE") {
