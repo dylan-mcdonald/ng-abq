@@ -247,6 +247,51 @@ class Comment implements \JsonSerializable {
 
 	/* PDO METHODS */
 
+	public function insert(\PDO $pdo) {
+		if ($this->commentId !== null) {
+			throw new \PDOException("Cannot insert a comment which already exists.");
+		}
+
+		// Create query template
+		$query = "INSERT INTO comment(commentPostId, commentProfileUserName, commentSubmission, commentTime) VALUES(:commentPostId, :commentProfileUserName, :commentSubmission, :commentTime)";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["commentPostId" => $this->commentPostId, "commentProfileUserName" => $this->commentProfileUserName, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime];
+		$statement->execute($parameters);
+
+		// Grab primary key from MySQL
+		$this->commentId = intval($pdo->lastInsertId);
+	}
+
+	public function delete(\PDO $pdo) {
+		if ($this->commentId === null) {
+			throw new \PDOException("Cannot delete a comment which doesn't exist.");
+		}
+
+		// Create query template
+		$query = "DELETE FROM comment WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["commentId" => $this->commentId];
+		$statement->execute($parameters);
+	}
+
+	public function update(\PDO $pdo) {
+		if ($this->commentId === null) {
+			throw new \PDOException("Cannot update a comment which doesn't exist.");
+		}
+
+		// Create query template
+		$query = "UPDATE comment SET commentPostId = :commentPostId, commentProfileUserName = :commentProfileUserName, commentSubmission = :commentSubmission, commentTime = :commentTime WHERE commentId = :commentId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["commentPostId" => $this->commentPostId, "commentProfileUserName" => $this->commentProfileUserName, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime, "commentId" => $this->commentId];
+		$statement->execute($parameters);
+	}
+
 	public static function getCommentByCommentId(\PDO $pdo, int $commentId) {
 		if ($postId <= 0) {
 			throw new \PDOException("Not a valid post ID.");

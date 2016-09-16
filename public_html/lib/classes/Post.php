@@ -212,6 +212,51 @@ class Post implements \JsonSerializable {
 
 	/* PDO METHODS */
 
+	public function insert(\PDO $pdo) {
+		if ($this->postId !== null) {
+			throw new \PDOException("Cannot insert a post which already exists.");
+		}
+
+		// Create query template
+		$query = "INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES(:postProfileUserName, :postSubmission, :postTime)";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["postProfileUserName" => $this->postProfileUserName, "postSubmission" => $this->postSubmission, "postTime" => $this->postTime];
+		$statement->execute($parameters);
+
+		// Grab primary key from MySQL
+		$this->postId = intval($pdo->lastInsertId);
+	}
+
+	public function delete(\PDO $pdo) {
+		if ($this->postId === null) {
+			throw new \PDOException("Cannot delete a post which doesn't exist.");
+		}
+
+		// Create query template
+		$query = "DELETE FROM post WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["postId" => $this->postId];
+		$statement->execute($parameters);
+	}
+
+	public function update(\PDO $pdo) {
+		if ($this->postId === null) {
+			throw new \PDOException("Cannot update a post which doesn't exist.");
+		}
+
+		// Create query template
+		$query = "UPDATE post SET postProfileUserName = :postProfileUserName, postSubmission = :postSubmission, postTime = :postTime WHERE postId = :postId";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["postProfileUserName" => $this->postProfileUserName, "postSubmission" => $this->postSubmission, "postTime" => $this->postTime, "postId" => $this->postId];
+		$statement->execute($parameters);
+	}
+
 	public static function getPostByPostId(\PDO $pdo, int $postId) {
 		if ($postId <= 0) {
 			throw new \PDOException("Not a valid post ID.");

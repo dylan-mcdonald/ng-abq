@@ -255,7 +255,7 @@ class Profile implements \JsonSerializable {
 
 	public function insert(\PDO $pdo) {
 		if ($this->profileId !== null) {
-			throw new \PDOException("Cannot insert profile which already exists.");
+			throw new \PDOException("Cannot insert a profile which already exists.");
 		}
 
 		// Create query template
@@ -272,7 +272,7 @@ class Profile implements \JsonSerializable {
 
 	public function delete(\PDO $pdo) {
 		if ($this->profileId === null) {
-			throw new \PDOException("Cannot delete profile which doesn't exist.");
+			throw new \PDOException("Cannot delete a profile which doesn't exist.");
 		}
 
 		// Create query template
@@ -286,7 +286,7 @@ class Profile implements \JsonSerializable {
 
 	public function update(\PDO $pdo) {
 		if ($this->profileId === null) {
-			throw new \PDOException("Cannot update profile which doesn't exist.");
+			throw new \PDOException("Cannot update a profile which doesn't exist.");
 		}
 
 		// Create query template
