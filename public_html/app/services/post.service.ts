@@ -7,7 +7,7 @@ import {Observable} from "rxjs/Observable";
 export class Post{
     constructor (private http: Http ){}
 
-    private PostUrl = /lib/classes/Post;
+    private PostUrl = "/lib/classes/Post";
 
 
     getPost(): Observable<Post[]>{
