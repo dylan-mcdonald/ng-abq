@@ -2,6 +2,7 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 
 		<!-- Bootstrap CSS -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
@@ -17,6 +18,18 @@
 
 		<!-- Font Awesome -->
 		<script src="https://use.fontawesome.com/b51868143a.js"></script>
+
+		<!-- 1. Load libraries -->
+		<!-- Polyfill(s) for older browsers -->
+		<script src="../node_modules/core-js/client/shim.min.js"></script>
+		<script src="../node_modules/zone.js/dist/zone.js"></script>
+		<script src="../node_modules/reflect-metadata/Reflect.js"></script>
+		<script src="../node_modules/systemjs/dist/system.src.js"></script>
+		<!-- 2. Configure SystemJS -->
+		<script src="../systemjs.config.js"></script>
+		<script>
+			System.import('app').catch(function(err){ console.error(err); });
+		</script>
 
 		<title>ng-abq</title>
 	</head>
