@@ -8,7 +8,7 @@ export class Profile{
 
     constructor(private http: Http) {}
 
-    private ProfileURL = /lib/classes/Profile;
+    private ProfileUrl = /lib/classes/Profile;
 
     getProfile(): Observable<Profile[]>{
         return(this.http.get(this.ProfileUrl)
