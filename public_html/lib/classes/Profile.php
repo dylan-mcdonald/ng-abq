@@ -24,7 +24,7 @@ class Profile implements \JsonSerializable {
 
 	/**
 	 * Profile admin flag
-	 * @var boolean $profileAdmin
+	 * @var bool $profileAdmin
 	 **/
 	private $profileAdmin;
 
@@ -58,7 +58,7 @@ class Profile implements \JsonSerializable {
 	 * Constructor for profile
 	 *
 	 * @param int|null $newProfileId, primary key, null if new profile
-	 * @param boolean $newProfileAdmin, admin flag
+	 * @param bool $newProfileAdmin, admin flag
 	 * @param string $newProfileNameFirst, first name of human
 	 * @param string $newProfileNameLast, last name of human
 	 * @param string $newProfileEmail, email of human
@@ -68,7 +68,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if type is invalid
 	 * @throws \Exception to handle edge cases
 	 **/
-	public function __construct(int $newProfileId = null, boolean $newProfileAdmin, string $newProfileNameFirst, string $newProfileNameLast, string $newProfileEmail, string $newProfileUserName) {
+	public function __construct(int $newProfileId = null, bool $newProfileAdmin, string $newProfileNameFirst, string $newProfileNameLast, string $newProfileEmail, string $newProfileUserName) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileAdmin($newProfileAdmin);
@@ -124,7 +124,7 @@ class Profile implements \JsonSerializable {
 
 	/**
 	 * Accessor for profile admin flag
-	 * @return boolean admin flag
+	 * @return bool admin flag
 	 **/
 	public function getProfileAdmin() {
 		return $this->profileAdmin;
@@ -132,10 +132,10 @@ class Profile implements \JsonSerializable {
 
 	/**
 	 * Mutator for profile admin flag
-	 * @param boolean $newProfileId, admin flag
-	 * @throws \TypeError if profile admin flag is not a boolean
+	 * @param bool $newProfileId, admin flag
+	 * @throws \TypeError if profile admin flag is not a bool
 	 **/
-	public function setProfileAdmin(boolean $newProfileAdmin) {
+	public function setProfileAdmin(bool $newProfileAdmin) {
 		$this->profileAdmin = $newProfileAdmin;
 	}
 
@@ -153,7 +153,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if profile first name is out of bounds
 	 * @throws \TypeError if profile first name is not a string
 	 **/
-	public function setProfileNameFirst(int $newProfileNameFirst) {
+	public function setProfileNameFirst(string $newProfileNameFirst) {
 		// Sanitize dat string
 		$newProfileNameFirst = filter_var(trim($newProfileNameFirst), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -181,7 +181,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if profile last name is out of bounds
 	 * @throws \TypeError if profile last name is not a string
 	 **/
-	public function setProfileNameLast(int $newProfileNameLast) {
+	public function setProfileNameLast(string $newProfileNameLast) {
 		// Sanitize dat string
 		$newProfileNameLast = filter_var(trim($newProfileNameLast), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -209,7 +209,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if profile email is out of bounds
 	 * @throws \TypeError if profile email is not a string
 	 **/
-	public function setProfileEmail(int $newProfileEmail) {
+	public function setProfileEmail(string $newProfileEmail) {
 		// Sanitize dat string
 		$newProfileEmail = filter_var(trim($newProfileEmail), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
@@ -237,7 +237,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \RangeException if profile username is out of bounds
 	 * @throws \TypeError if profile username is not a string
 	 **/
-	public function setProfileUserName(int $newProfileUserName) {
+	public function setProfileUserName(string $newProfileUserName) {
 		// Sanitize dat string
 		$newProfileUserName = filter_var(trim($newProfileUserName), FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 
