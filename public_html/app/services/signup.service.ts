@@ -8,7 +8,7 @@ export class Profile{
     constructor(private http: Http) {}
 
 
-    protected extractData(response: Response) {
+    private extractData(response: Response) {
         if(response.status < 200 || response.status >= 300) {
             throw(new Error("Bad response status: " + response.status))
         }

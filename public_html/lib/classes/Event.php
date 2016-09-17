@@ -341,7 +341,7 @@ private $eventTime;
     
     public static function getAllEvents(\PDO $pdo)
     {
-        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM event";
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM Event";
         $statement = $pdo->prepare($query);
         $statement->execute();
         $event = new \SplFixedArray($statement->rowCount());
