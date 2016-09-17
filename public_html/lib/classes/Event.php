@@ -10,7 +10,7 @@ require_once("autoload.php");
  **/
 
 class Event implements \JsonSerializable {
-use ValidateDate;
+
 
 /*
  * Primary Key
@@ -143,6 +143,7 @@ private $eventDate;
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
 		$this->eventDate = $newEventDate;
+		echo 'eventProfileId';
 	}
 
 
