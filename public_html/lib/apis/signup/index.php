@@ -65,7 +65,7 @@ try {
 			throw new \InvalidArgumentException("Passwords do not match.", 405);
 		}
 
-		$profileActivationToken = bin2hex(random_bytes(32)); // TODO: 16 or 32?
+		$profileActivationToken = bin2hex(random_bytes(32));
 		$salt = bin2hex(random_bytes(32));
 		$hash = hash_pbkdf2("sha512", $password, $salt, 262144);
 
