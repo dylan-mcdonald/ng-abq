@@ -2,8 +2,6 @@
 /vendor
 /node_modules
 /.idea
-Homestead.yaml
-Homestead.json
 .env
 /.sync-config.cson
 *.js*
