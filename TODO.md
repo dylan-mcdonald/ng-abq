@@ -16,7 +16,9 @@ One Week:
 
 ## Data Design
 
-- ERD
+- profileHash CHAR(64)
+- profileSalt CHAR(64)
+- profileActivationToken CHAR(64)
 
 ## Classes
 
