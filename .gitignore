@@ -1,8 +1,8 @@
 .DS_Store
 /vendor
-/typings
-/npm-debug.log
-/node_modules
+**/typings
+**/npm-debug.log
+**/node_modules
 /.idea
 .env
 /.sync-config.cson
