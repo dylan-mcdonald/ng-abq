@@ -89,12 +89,6 @@ private $eventTime;
 //mutator
     public function setEventProfileId($newEventProfileId = null)
     {
-        if($newEventProfileId === null) {
-            $this->eventProfileId = null;
-            return;
-        }
-
-
         if($newEventProfileId <= 0) {
             throw(new \RangeException("Ok"));
         }
@@ -114,11 +108,11 @@ private $eventTime;
 		$newEventName = trim($newEventName);
 		$newEventName = filter_var($newEventName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
 		if(empty($newEventName) === true) {
-			throw(new \InvalidArgumentException("link profile username is empty or insecure"));
+			throw(new \InvalidArgumentException("event name is empty or insecure"));
 		}
 
 		// verify the link event name will fit in the database
-		if(strlen($newEventName) > 25) {
+		if(strlen($newEventName) > 50) {
 			throw(new \RangeException("link profile username is too long"));
 		}
 
@@ -132,42 +126,25 @@ private $eventTime;
     }
 
     //Mutator
-    public function setEventDate($newEventDate = null)
-    {
+	public function setEventDate($newEventDate = null) {
+		// base case: if the date is null, use the current date and time
+		if($newEventDate === null) {
+			$this->eventDate = new \DateTime();
+			return;
+		}
 
-        if($newEventDate === null) {
-            $this->eventDate = null;
-            return;
-        }
-
-
-        if($newEventDate <= 0) {
-            throw(new \RangeException("Date is somehow incorrect"));
-        }
-        //if it works this should happen
-        $this->eventDate = $newEventDate;
-    }
-
-    public function getEventTime()
-    {
-        return ($this->eventTime);
-    }
+		// store the event date
+		try {
+			$newEventDate = $this->validateDate($newEventDate);
+		} catch(\InvalidArgumentException $invalidArgument) {
+			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
+		} catch(\RangeException $range) {
+			throw(new \RangeException($range->getMessage(), 0, $range));
+		}
+		$this->eventDate = $newEventDate;
+	}
 
 
-    public function setEventTime($newEventTime = null)
-    {
-
-        if($newEventTime === null) {
-            $this->eventTime = null;
-            return;
-        }
-
-        if($newEventTime <= 0) {
-            throw(new \RangeException("No bueno"));
-        }
-        //if it's right this should happen
-        $this->eventTime = $newEventTime;
-    }
 
     public function insert(\PDO $pdo)
     {
@@ -176,12 +153,15 @@ private $eventTime;
             throw(new \PDOException("An event already exists"));
         }
         // create query template
-        $query = "INSERT INTO Event(eventProfileId, eventName, eventDate, eventTime) VALUES(:eventProfileId, :eventName, :eventDate, :eventTime)";
+        $query = "INSERT INTO Event(eventProfileId, eventName, eventDate) VALUES(:eventProfileId, :eventName, :eventDate)";
         $statement = $pdo->prepare($query);
-        // bind the member variables to the place holders in the template
-        $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $this->eventDate, "eventTime" => $this->eventTime];
+
+	    // bind the member variables to the place holders in the template
+	    $formattedDate = $this->linkDate->format("Y-m-d H:i:s");
+        $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $formattedDate];
         $statement->execute($parameters);
-        //update the null userId with what mySQL just gave us
+
+	    //update the null eventId with what mySQL just gave us
         $this->eventId = intval($pdo->lastInsertId());
     }
 
@@ -199,7 +179,7 @@ private $eventTime;
             throw(new \PDOException("unable to delete an event that does not exist"));
         }
         // create a query template
-        $query = "DELETE FROM Event WHERE eventId = :eventId";
+        $query = "DELETE FROM event WHERE eventId = :eventId";
         $statement = $pdo->prepare($query);
         //bind the member variables to the place holder in the template
         $parameters = ["eventId" => $this->eventId];
@@ -217,13 +197,15 @@ private $eventTime;
     {
         // enforce the userId is not null
         if($this->eventId === null) {
-            throw(new \PDOException("unable to udate an event that does not exist"));
+            throw(new \PDOException("unable to update an event that does not exist"));
         }
         // create a query template
-        $query = "UPDATE Event SET eventProfileId = :eventName, eventDate = :eventTime WHERE eventId = :eventId";
+        $query = "UPDATE event SET eventProfileId = :eventProfileId, eventName = :eventName, eventDate = :eventDate WHERE eventId = :eventId";
         $statement = $pdo->prepare($query);
-        // bind the member variables to the place holders in this template
-        $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $this->eventDate, "eventTime" => $this->eventTime];
+
+	    // bind the member variables to the place holders in this template
+	    $formattedDate = $this->linkDate->format("Y-m-d H:i:s");
+        $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $formattedDate];
         $statement->execute($parameters);
     }
 
@@ -233,113 +215,87 @@ private $eventTime;
         if($eventId <= 0) {
             throw(new \PDOException("This Event Id is incorrect"));
         }
-        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE eventId = :eventId";
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate  FROM event WHERE eventId = :eventId";
         $statement = $pdo->prepare($query);
         $parameters = array("eventId" => $eventId);
         $statement->execute($parameters);
         try {
-            $users = null;
+            $event = null;
             $statement->setFetchMode(\PDO::FETCH_ASSOC);
             $row = $statement->fetch();
             if($row !== false) {
-                $eventId = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+                $event = new event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"]);
             }
         } catch(\Exception $exception) {
             throw(new \PDOException($exception->getMessage(), 0, $exception));
         }
-        return ($eventId);
+        return ($event);
 
     }
 
     public static function getEventByEventProfileId(\PDO $pdo, $eventProfileId )
     {
-        $eventProfileId = trim($eventProfileId);
-        $eventProfileId = filter_var($eventProfileId, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
         if($eventProfileId<= 0){
             throw (new \PDOException("This is wrong on so many levels"));
-
         }
-        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime  FROM Event WHERE eventProfileId = :eventProfileId";
+
+        $query = "SELECT eventId, eventProfileId, eventName, eventDate  FROM event WHERE eventProfileId = :eventProfileId";
         $statement = $pdo->prepare($query);
         $parameters = array("eventProfileId" => $eventProfileId);
         $statement->execute($parameters);
 
-        $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        try {
-            $eventProfileId = null;
-            $statement->setFetchMode(\PDO::FETCH_ASSOC);
-            $row = $statement->fetch();
-            if($row !== false) {
-                $eventProfileId = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
-            }
-        } catch
-        (\Exception $exception) {
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
-        }
-
-        return ($eventProfileId);
-
-    }
-
-
-    public static function getEventByEventDate(\PDO $pdo, $eventDate)
-    {
-        $eventDate = trim($eventDate);
-        $eventDate = filter_var($eventDate, FILTER_SANITIZE_STRING,FILTER_FLAG_NO_ENCODE_QUOTES);
-        if($eventDate <=0){
-            throw (new \PDOException("Wrong"));
-        }
-
-        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventDate= :eventDate";
-        $statement = $pdo->prepare($query);
-        $parameters = array("eventDate" => $eventDate);
-        $statement->execute($parameters);
-
-        $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        try {
-            $eventDate = null;
-            $statement->setFetchMode(\PDO::FETCH_ASSOC);
-            $row = $statement->fetch();
-            if($row !== false) {
-                $eventDate = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
-            }
-        } catch
-        (\Exception $exception) {
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
-        }
-
-        return ($eventDate);
-    }
-
-    public static function getEventByEventTime(\PDO $pdo,$eventTime)
-    {
-        $eventTime - trim($eventTime);
-        if($eventTime <=0){
-            throw (new \PDOException("Wrong"));
-        }
-
-        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM EVENT WHERE eventTime= :eventTime";
-        $statement = $pdo->prepare($query);
-        $parameters = array("eventTime" => $eventTime);
-        $statement->execute($parameters);
-
-        $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        try {
-            $eventTime = null;
-            $statement->setFetchMode(\PDO::FETCH_ASSOC);
-            $row = $statement->fetch();
-            if($row !== false) {
-                $eventTime = new Event($row["userId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
-            }
-        } catch
-        (\Exception $exception) {
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
-        }
-
-        return ($eventTime);
+	    // build an array of events
+	    $events = new \SplFixedArray($statement->rowCount());
+	    $statement->setFetchMode(\PDO::FETCH_ASSOC);
+	    while(($row = $statement->fetch()) !== false) {
+		    try {
+			    $event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["eventDate"]));
+			    $events[$events->key()] = $event;
+			    $events->next();
+		    } catch(\Exception $exception) {
+			    // if the row couldn't be converted, rethrow it
+			    throw(new \PDOException($exception->getMessage(), 0, $exception));
+		    }
+	    }
+	    return ($events);
 
     }
-    
+
+
+	public static function getEventbyEventDate(\PDO $pdo, \DateTime $eventDate) {
+		try {
+			$eventDate = self::validateDateTime($eventDate);
+		} catch(\Exception $exception) {
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+
+		// Create query template
+		$query = "SELECT eventId, eventProfileId, eventName, eventDate FROM event WHERE eventDate = :eventDate";
+		$statement = $pdo->prepare($query);
+
+		// Bind member variables to query
+		$parameters = ["eventDate" => $eventDate->format("Y-m-d H:i:s")];
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$events = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], DateTime::createFromFormat("Y-m-d H:i:s", $row["eventDate"]));
+
+				$events[$events->key()] = $event;
+				$event->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $events;
+	}
+
+
     
 //    public static function getAllEvents(\PDO $pdo)
 //    {
