@@ -6,4 +6,4 @@
 .env
 /.sync-config.cson
 app/**/*.js
-app/**/*.js.min
+app/**/*.js.map
