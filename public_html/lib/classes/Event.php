@@ -28,21 +28,17 @@ private $eventName;
  *string
  */
 private $eventDate;
-/*
- *more string
- */
-private $eventTime;
 
 
-    public function __construct(int $newEventId = null, int $newEventProfileId, string $newEventName , string $newEventDate, string $newEventTime)
+
+    public function __construct(int $newEventId = null, int $newEventProfileId, string $newEventName , $newEventDate = null)
     {
         try {
             $this->setEventId($newEventId);
             $this->setEventProfileId($newEventProfileId);
             $this->setEventName($newEventName);
             $this->setEventDate($newEventDate);
-            $this->setEventTime($newEventTime);
-        } catch(\InvalidArgumentException $invalidArgument) {
+            } catch(\InvalidArgumentException $invalidArgument) {
             //rethrow the exception to the caller
             throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
         } catch(\RangeException $range) {
@@ -321,7 +317,7 @@ private $eventTime;
 
 	public static function getAllEvents(\PDO $pdo) {
 		// create query template
-		$query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM event";
+		$query = "SELECT eventId, eventProfileId, eventName, eventDate FROM event";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -330,7 +326,7 @@ private $eventTime;
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
 			try {
-				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"]);
 				$events[$events->key()] = $event;
 				$events->next();
 			} catch(\Exception $exception) {
