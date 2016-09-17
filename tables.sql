@@ -15,6 +15,9 @@ CREATE TABLE profile (
   	profileNameLast   VARCHAR(50)                 NOT NULL,
   	profileEmail      VARCHAR(75)                 NOT NULL,
   	profileUserName   VARCHAR(25)                 NOT NULL,
+	profileSalt		CHAR(64)		NOT NULL,
+	profileHash		CHAR(128)		NOT NULL,
+	profileActivationToken	CHAR(64)	NOT NULL,
   	UNIQUE (profileUserName),
   	UNIQUE (profileEmail),
   	PRIMARY KEY (profileId)
@@ -33,8 +36,7 @@ CREATE TABLE event (
 	eventId             INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	eventProfileId      INT UNSIGNED						NOT NULL,
 	eventName           VARCHAR(50)                 NOT NULL,
-	eventDate           VARCHAR(50)                 NOT NULL,
-	eventTime           VARCHAR(75)                 NOT NULL,
+	eventDate           DATETIME                 NOT NULL,
 	FOREIGN KEY (eventProfileId) REFERENCES profile (profileId),
 	PRIMARY KEY (eventId)
 );
@@ -55,7 +57,7 @@ CREATE TABLE oauthIdentity (
 	oauthIdentityId             INT UNSIGNED AUTO_INCREMENT NOT NULL,
 	oauthIdentityProfileId      INT UNSIGNED                NOT NULL,
 	oauthIdentityProviderId     CHAR(28)                    NOT NULL,
-	oauthIdentityProvider       CHAR(28)                    NOT NULL,
+	oauthIdentityProvider       VARCHAR(28)                    NOT NULL,
 	oauthIdentityAccessToken    CHAR(28)                    NOT NULL,
 	oauthIdentityTimeStamp      DATETIME                    NOT NULL,
 	FOREIGN KEY (oauthIdentityProfileId) REFERENCES profile (profileId),
