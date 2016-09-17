@@ -1,9 +1,30 @@
-h1 {
-	color: blue;
-	font-size: large;
+.under-construction {
+	margin-bottom: 5vh;
+	color: #fff;
+	text-shadow: 0 0 10px rgba(0, 0, 0, 0.42);
+	background:repeating-linear-gradient(
+			45deg,
+			#333,
+			#333 100px,
+			#ff0 100px,
+			#ff0 200px
+		);
 }
 
-p {
-	color: red;
-	font-size: 12px;
+.under-construction h2 {
+	font-size: 4vh;
+	padding: 1vh 0;
+}
+
+.progress {
+	border-radius: 100px;
+}
+
+.site-loading-bar {
+	height: 4vh;
+}
+
+.site-loading-bar .progress-bar {
+	padding: 1vh 0;
+	font-size: 2vh;
 }

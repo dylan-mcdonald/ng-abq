@@ -1,6 +1,21 @@
-INSERT INTO profile(profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName) VALUES(1, "billy", "bob", "billybob@silly.com", "billybob");
-INSERT INTO profile(profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName) VALUES(1, "hannah", "sue", "hannahsue@silly.com", "hannahsue");
+INSERT INTO profile(profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName, profileSalt, profileHash, profileActivationToken) VALUES(1, "billy", "bob", "billybob@silly.com", "billybob", "1234567890098765432112345678900987654321123456789009876543211234", "12345678900987654321123456789009876543211234567890098765432112341234567890098765432112345678900987654321123456789009876543211234", "1234567890098765432112345678900987654321123456789009876543211234" );
+INSERT INTO profile(profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName, profileSalt, profileHash, profileActivationToken) VALUES(1, "hannah", "sue", "hannahsue@silly.com", "hannahsue", "1234567890098765432112345678900987654321123456789009876543211231", "12345678900987654321123456789009876543211234567890098765432112321234567890098765432112345678900987654321123456789009876543211232", "1234567890098765432112345678900987654321123456789009876543211233" );
 INSERT INTO image(imageProfileId, imageFileName, imageType) VALUES(1, "testing1", "jpeg");
 INSERT INTO image(imageProfileId, imageFileName, imageType) VALUES(2, "testing2", "jpeg");
 INSERT INTO link(linkProfileId, linkProfileUserName, linkUrl, linkDate) VALUES(1, "billybob", "sillyquotes.com", "2016-05-12 12:12:12");
 INSERT INTO link(linkProfileId, linkProfileUserName, linkUrl, linkDate) VALUES(1, "hannahsue", "sillierquotes.com", "2016-05-12 12:12:15");
+INSERT INTO event(eventProfileId, eventName, eventDate) VALUES (1, "Angular ABQ October Meeting @ Tractor Brewing", "2016-10-03 18:00:00");
+INSERT INTO event(eventProfileId, eventName, eventDate) VALUES (1, "Angular ABQ November Meeting @ Tractor Brewing", "2016-11-07 18:00:00");
+INSERT INTO attendee(attendeeEventId, attendeeProfileId) VALUES(1, 1);
+INSERT INTO attendee(attendeeEventId, attendeeProfileId) VALUES(1, 2);
+INSERT INTO attendee(attendeeEventId, attendeeProfileId) VALUES(2, 1);
+INSERT INTO attendee(attendeeEventId, attendeeProfileId) VALUES(2, 2);
+INSERT INTO passwordReset(passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime) VALUES(1, "billybob@silly.com", "1234567890", "2016-09-01 12:00:00");
+INSERT INTO passwordReset(passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime) VALUES(1, "billybob@silly.com", "0987654321", "2016-09-01 12:55:00");
+INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES("billybob", "when is the site going to be going again?", "2016-09-01 12:55:00");
+INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES("billybob", "is anybody out there?", "2016-09-01 14:00:00");
+INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES("hannahsue", 1, "the site is being worked on, be patient", "2016-09-01 14:00:00");
+INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES("hannahsue", 2, "read comment on previous site question and continue to be patient", "2016-09-01 14:01:00");
+INSERT INTO oauthIdentity(oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp) VALUES(1, "1234567890098765432112345678", "github", "1234567890098765432112345678", "2016-09-01 14:02:00");
+INSERT INTO oauthIdentity(oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp) VALUES(1, "1234567890098765432112345679", "twitter", "1234567890098765432112345679", "2016-09-01 15:02:00");
+

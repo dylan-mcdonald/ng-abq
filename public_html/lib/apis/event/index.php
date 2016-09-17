@@ -1,8 +1,8 @@
 <?php
-use Com\NgAbq\Beta;
+use Com\NgAbq\Beta\Event;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 2) . "/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
@@ -22,7 +22,7 @@ $reply->data = null;
 
 try {
 
-    $pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/encrypted-config.php");
+    $pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
 
     $method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
@@ -35,9 +35,12 @@ try {
     if ($method === "GET") {
         //set XSRF cookie
         setXsrfCookie();
-        $events = Beta\Event::getAllEvents($pdo);
+        $events = Event::getAllEvents($pdo);
         if ($events !== null) {
             $reply->data = $events;
+        }
+        if ($events == null) {
+        	var_dump($events);
         }
     }
 

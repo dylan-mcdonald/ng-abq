@@ -77,7 +77,7 @@ private $eventTime;
         if($newEventId <= 0) {
             throw(new \RangeException("Ok"));
         }
-        //convert and store the user id
+        //convert and store the event id
         $this->eventId = $newEventId;
     }
 
@@ -109,20 +109,22 @@ private $eventTime;
     }
 
     //mutator
-    public function setEventName($newEventName = null)
-    {
-        if($newEventName === null) {
-            $this->eventName = $newEventName;
-            return;
-        }
+	public function setEventName(string $newEventName) {
+		// verify the link profile username is secure
+		$newEventName = trim($newEventName);
+		$newEventName = filter_var($newEventName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($newEventName) === true) {
+			throw(new \InvalidArgumentException("link profile username is empty or insecure"));
+		}
 
+		// verify the link event name will fit in the database
+		if(strlen($newEventName) > 25) {
+			throw(new \RangeException("link profile username is too long"));
+		}
 
-        if($newEventName <= 0) {
-            throw(new \RangeException(""));
-        }
-
-        $this->eventName = $newEventName;
-    }
+		// store the event name
+		$this->eventName = $newEventName;
+	}
 //accessor
     public function getEventDate()
     {
@@ -134,7 +136,7 @@ private $eventTime;
     {
 
         if($newEventDate === null) {
-            $this->eventDate = $newEventDate;
+            $this->eventDate = null;
             return;
         }
 
@@ -152,11 +154,26 @@ private $eventTime;
     }
 
 
+    public function setEventTime($newEventTime = null)
+    {
+
+        if($newEventTime === null) {
+            $this->eventTime = null;
+            return;
+        }
+
+        if($newEventTime <= 0) {
+            throw(new \RangeException("No bueno"));
+        }
+        //if it's right this should happen
+        $this->eventTime = $newEventTime;
+    }
+
     public function insert(\PDO $pdo)
     {
 
         if($this->eventId !== null) {
-            throw(new \PDOException("An event already exist"));
+            throw(new \PDOException("An event already exists"));
         }
         // create query template
         $query = "INSERT INTO Event(eventProfileId, eventName, eventDate, eventTime) VALUES(:eventProfileId, :eventName, :eventDate, :eventTime)";
@@ -324,27 +341,49 @@ private $eventTime;
     }
     
     
-    public static function getAllEvents(\PDO $pdo)
-    {
-        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM Event";
-        $statement = $pdo->prepare($query);
-        $statement->execute();
-        $event = new \SplFixedArray($statement->rowCount());
-        $statement->setFetchMode(\PDO::FETCH_ASSOC);
-        while(($row = $statement->fetch()) !== false) {
-            try {
-                $event = new Image($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"],$row["eventTime"]);
-                $event[$event->key()] = $event;
-                $event->next();
-            } catch(\Exception $exception) {
-                throw(new \PDOException($exception->getMessage(), 0, $exception));
-            }
-        }
-        return ($event);
+//    public static function getAllEvents(\PDO $pdo)
+//    {
+//        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM event";
+//        $statement = $pdo->prepare($query);
+//        $statement->execute();
+//
+//	    $events = new \SplFixedArray($statement->rowCount());
+//	    var_dump($events);
+//        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+//        while(($row = $statement->fetch()) !== false) {
+//            try {
+//                $event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+//                $events[$events->key()] = $event;
+//                $events->next();
+//            } catch(\Exception $exception) {
+//                throw(new \PDOException($exception->getMessage(), 0, $exception));
+//            }
+//        }
+//        return ($events);
+//
+//    }
 
+	public static function getAllEvents(\PDO $pdo) {
+		// create query template
+		$query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM event";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
 
-
-    }
+		// build an array of events
+		$events = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
+				$events[$events->key()] = $event;
+				$events->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return ($events);
+	}
 
     public function jsonSerialize() {
         $fields = get_object_vars($this);
