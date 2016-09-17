@@ -10,7 +10,7 @@ require_once("autoload.php");
  **/
 
 class Event implements \JsonSerializable {
-
+use ValidateDate;
 
 /*
  * Primary Key
@@ -34,10 +34,12 @@ private $eventDate;
     public function __construct(int $newEventId = null, int $newEventProfileId, string $newEventName , $newEventDate = null)
     {
         try {
+        	echo 'help me more';
             $this->setEventId($newEventId);
             $this->setEventProfileId($newEventProfileId);
             $this->setEventName($newEventName);
             $this->setEventDate($newEventDate);
+
             } catch(\InvalidArgumentException $invalidArgument) {
             //rethrow the exception to the caller
             throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -63,7 +65,7 @@ private $eventDate;
      * mutator method
      *
      **/
-    public function setEventId($newEventId = null)
+    public function setEventId(int $newEventId = null)
     {
         if($newEventId === null) {
             $this->eventId = null;
@@ -75,6 +77,7 @@ private $eventDate;
         }
         //convert and store the event id
         $this->eventId = $newEventId;
+
     }
 
 //accessor
@@ -83,13 +86,14 @@ private $eventDate;
         return ($this->eventProfileId);
     }
 //mutator
-    public function setEventProfileId($newEventProfileId = null)
+    public function setEventProfileId(int $newEventProfileId)
     {
         if($newEventProfileId <= 0) {
-            throw(new \RangeException("Ok"));
+            throw(new \RangeException("not Ok"));
         }
 
         $this->eventProfileId = $newEventProfileId;
+
     }
 
     //accessor
@@ -114,6 +118,7 @@ private $eventDate;
 
 		// store the event name
 		$this->eventName = $newEventName;
+
 	}
 //accessor
     public function getEventDate()
@@ -292,42 +297,28 @@ private $eventDate;
 	}
 
 
-    
-//    public static function getAllEvents(\PDO $pdo)
-//    {
-//        $query = "SELECT eventId, eventProfileId, eventName, eventDate, eventTime FROM event";
-//        $statement = $pdo->prepare($query);
-//        $statement->execute();
-//
-//	    $events = new \SplFixedArray($statement->rowCount());
-//	    var_dump($events);
-//        $statement->setFetchMode(\PDO::FETCH_ASSOC);
-//        while(($row = $statement->fetch()) !== false) {
-//            try {
-//                $event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"], $row["eventTime"]);
-//                $events[$events->key()] = $event;
-//                $events->next();
-//            } catch(\Exception $exception) {
-//                throw(new \PDOException($exception->getMessage(), 0, $exception));
-//            }
-//        }
-//        return ($events);
-//
-//    }
-
 	public static function getAllEvents(\PDO $pdo) {
 		// create query template
 		$query = "SELECT eventId, eventProfileId, eventName, eventDate FROM event";
+
 		$statement = $pdo->prepare($query);
+
 		$statement->execute();
 
 		// build an array of events
 		$events = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
+			echo 'row';
+			var_dump($row);
 			try {
-				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"]);
+				echo 'help';
+				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["eventDate"]));
+				echo 'event';
+				var_dump($event);
 				$events[$events->key()] = $event;
+				echo 'events';
+				var_dump($events);
 				$events->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it
