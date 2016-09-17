@@ -1,13 +1,22 @@
+.site-loading-bar {
+	height: 4vh;
+}
+
+.site-loading-bar .progress-bar {
+	padding: 1vh 0;
+	font-size: 2vh;
+}
+
 .under-construction {
 	margin-bottom: 5vh;
 	color: #fff;
-	text-shadow: 0 0 4px #000;
+	text-shadow: 0 0 10px rgba(0, 0, 0, 0.42);
 	background:repeating-linear-gradient(
 			45deg,
 			#333,
-			#333 10px,
-			#ff0 10px,
-			#ff0 20px
+			#333 100px,
+			#ff0 100px,
+			#ff0 200px
 		);
 }
 
