@@ -112,7 +112,7 @@ private $eventTime;
     public function setEventName($newEventName = null)
     {
         if($newEventName === null) {
-            $this->eventName = null;
+            $this->eventName = $newEventName;
             return;
         }
 
@@ -134,7 +134,7 @@ private $eventTime;
     {
 
         if($newEventDate === null) {
-            $this->eventDate = null;
+            $this->eventDate = $newEventDate;
             return;
         }
 
@@ -151,21 +151,6 @@ private $eventTime;
         return ($this->eventTime);
     }
 
-
-    public function setEventTime($newEventTime = null)
-    {
-
-        if($newEventTime === null) {
-            $this->eventTime = null;
-            return;
-        }
-
-        if($newEventTime <= 0) {
-            throw(new \RangeException("No bueno"));
-        }
-        //if it's right this should happen
-        $this->eventTime = $newEventTime;
-    }
 
     public function insert(\PDO $pdo)
     {
