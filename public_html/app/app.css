@@ -1,5 +1,4 @@
 .under-construction {
-	margin-bottom: 5vh;
 	color: #fff;
 	text-shadow: 0 0 10px rgba(0, 0, 0, 0.42);
 	background:repeating-linear-gradient(
@@ -12,16 +11,14 @@
 }
 
 .under-construction h2 {
-	font-size: 4vh;
-	padding: 1vh 0;
-}
-
-.progress {
-	border-radius: 100px;
+	font-size: 2vh;
+	padding: 0.5vh 0;
 }
 
 .site-loading-bar {
+	margin-top: 5vh;
 	height: 4vh;
+	border-radius: 100px;
 }
 
 .site-loading-bar .progress-bar {
