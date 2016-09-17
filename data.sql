@@ -12,10 +12,10 @@ INSERT INTO attendee(attendeeEventId, attendeeProfileId) VALUES(2, 1);
 INSERT INTO attendee(attendeeEventId, attendeeProfileId) VALUES(2, 2);
 INSERT INTO passwordReset(passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime) VALUES(1, "billybob@silly.com", "1234567890", "2016-09-01 12:00:00");
 INSERT INTO passwordReset(passwordResetProfileId, passwordResetProfileEmail, passwordResetToken, passwordResetTime) VALUES(1, "billybob@silly.com", "0987654321", "2016-09-01 12:55:00");
-INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES(billybob, "when is the site going to be going again?", "2016-09-01 12:55:00");
-INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES(billybob, "is anybody out there?", "2016-09-01 14:00:00");
-INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES(hannahsue, 1, "the site is being worked on, be patient", "2016-09-01 14:00:00");
-INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES(hannahsue, 2, "read comment on previous site question and continue to be patient", "2016-09-01 14:01:00");
+INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES("billybob", "when is the site going to be going again?", "2016-09-01 12:55:00");
+INSERT INTO post(postProfileUserName, postSubmission, postTime) VALUES("billybob", "is anybody out there?", "2016-09-01 14:00:00");
+INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES("hannahsue", 1, "the site is being worked on, be patient", "2016-09-01 14:00:00");
+INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES("hannahsue", 2, "read comment on previous site question and continue to be patient", "2016-09-01 14:01:00");
 INSERT INTO oauthIdentity(oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp) VALUES(1, "1234567890098765432112345678", "github", "1234567890098765432112345678", "2016-09-01 14:02:00");
 INSERT INTO oauthIdentity(oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp) VALUES(1, "1234567890098765432112345679", "twitter", "1234567890098765432112345679", "2016-09-01 15:02:00");
 
