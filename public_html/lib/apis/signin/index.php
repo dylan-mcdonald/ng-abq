@@ -24,7 +24,7 @@ $reply->status = 200;
 $reply->data = null;
 
 try {
-	$config = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
+	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
 
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
