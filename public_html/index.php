@@ -18,7 +18,11 @@
 		<title>ng-abq</title>
 	</head>
 	<body>
-		<h1>We are under construction. Come back and visit soon.</h1>
-		<ng-abq-app><i class="fa fa-fw fa-3x fa-circle-o-notch fa-spin text-success"></i><span class="sr-only">Loading...</span></ng-abq-app>
+		<h1 class="under-construction text-center">We are under construction. Come back and visit soon.</h1>
+		<ng-abq-app>
+			<div class="text-center">
+				<i class="fa fa-fw fa-5x fa-circle-o-notch fa-spin"></i><span class="sr-only">Loading...</span>
+			</div>
+		</ng-abq-app>
 	</body>
 </html>
