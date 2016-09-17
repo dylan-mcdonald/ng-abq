@@ -1,4 +1,4 @@
-import {Component} from 'angular2/core';
+wimport {Component} from 'angular2/core';
 
 @Component({
 	selector: 'news',
