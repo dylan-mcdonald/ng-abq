@@ -1,12 +1,3 @@
-.site-loading-bar {
-	height: 4vh;
-}
-
-.site-loading-bar .progress-bar {
-	padding: 1vh 0;
-	font-size: 2vh;
-}
-
 .under-construction {
 	margin-bottom: 5vh;
 	color: #fff;
@@ -23,4 +14,15 @@
 .under-construction h2 {
 	font-size: 4vh;
 	padding: 1vh 0;
+}
+
+.progress
+
+.site-loading-bar {
+	height: 4vh;
+}
+
+.site-loading-bar .progress-bar {
+	padding: 1vh 0;
+	font-size: 2vh;
 }
