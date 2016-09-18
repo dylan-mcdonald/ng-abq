@@ -10,7 +10,7 @@ require_once("autoload.php");
  **/
 
 class Event implements \JsonSerializable {
-
+use ValidateDate;
 
 /*
  * Primary Key

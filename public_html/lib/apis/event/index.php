@@ -1,5 +1,5 @@
 <?php
-use Com\NgAbq\Beta\Event;
+use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
 require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
@@ -26,6 +26,8 @@ try {
 
     $method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
+	var_dump($method);
+
     $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
     if (($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -35,9 +37,10 @@ try {
     if ($method === "GET") {
         //set XSRF cookie
         setXsrfCookie();
-        $events = Event::getAllEvents($pdo);
+        $events = Beta\Event::getAllEvents($pdo);
         if ($events !== null) {
             $reply->data = $events;
+	        var_dump($events);
         }
         if ($events == null) {
         	var_dump($events);

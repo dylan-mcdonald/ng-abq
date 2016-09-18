@@ -68,6 +68,7 @@ class Link implements \JsonSerializable {
 			$this->setLinkProfileUserName($newLinkProfileUserName);
 			$this->setLinkUrl($newLinkUrl);
 			$this->setLinkDate($newLinkDate);
+
 		} catch(\InvalidArgumentException $invalidArgument) {
 			//rethrow the exception to the caller
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
