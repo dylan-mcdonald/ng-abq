@@ -5,8 +5,6 @@ import {HttpModule} from "@angular/http";
 import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
 import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
-import {MailService} from "./services/mail-service";
-import {ResumeService} from "./services/resume-service";
 
 const moduleDeclarations = [AppComponent];
 
