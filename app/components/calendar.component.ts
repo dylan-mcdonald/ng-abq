@@ -26,8 +26,8 @@ export class CalendarComponent {
 		let reply = [];
 		let body = response.json();
 		body.forEach(function(item) {
-			let sch = {id: item.FIELD1, time: item.FIELD2, station: item.FIELD4, stop: item.FIELD5};
-			reply.push(sch);
+			let clndr = {eventName: item.FIELD1, eventTime: item.FIELD2};
+			reply.push(clndr);
 		});
 		return(reply);
 
