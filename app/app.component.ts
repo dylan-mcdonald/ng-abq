@@ -1,7 +1,7 @@
 import {Component} from "@angular/core";
 
 @Component({
-	selector: 'ng-bq-app',
+	selector: 'ng-abq-app',
 	templateUrl: './templates/app.php'
 })
 
