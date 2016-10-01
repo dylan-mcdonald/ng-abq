@@ -15,7 +15,7 @@ export const routes: Routes = [
 	{path: "login", component: LoginComponent},
 	{path: "news", component: NewsComponent},
 	{path: "signup", component: SignupComponent},
-	{path: "", component: IntroComponent}
+	{path: "intro", component: IntroComponent}
 ];
 
 export const appRoutingProviders: any[] = [];
