@@ -6,7 +6,6 @@
 		</div>
 		<div class="col-md-8">
 			<router-outlet></router-outlet>
-			<h1>Testing</h1>
 		</div>
 	</div>
 </div>
