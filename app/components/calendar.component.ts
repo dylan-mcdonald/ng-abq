@@ -1,6 +1,6 @@
 import {Component} from "@angular/core";
 
 @Component({
-	templateUrl: "./templates/calendar.html"
+	templateUrl: "./templates/calendar.php"
 })
 export class CalendarComponent {}
