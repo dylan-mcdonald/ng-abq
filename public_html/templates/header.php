@@ -6,7 +6,7 @@
         <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars"></i>
       </button>
-      <a class="navbar-brand" href="/"><code>ng-abq</code></a>
+      <a class="navbar-brand" routerLink="/"><code>ng-abq</code></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
