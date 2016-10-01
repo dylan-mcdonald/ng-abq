@@ -11,7 +11,7 @@ export class CommentService extends BaseService {
 		super(http);
 	}
 
-	private commentUrl = "api/comment/";
+	private commentUrl = "./lib/apis/comment/";
 
 	deleteComment(commentId: number) : Observable<Status> {
 		return(this.http.delete(this.commentUrl + commentId)

@@ -11,7 +11,7 @@ export class AttendeeService extends BaseService {
 		super(http);
 	}
 
-	private attendeeUrl = "api/attendee/";
+	private attendeeUrl = "./lib/apis/attendee/";
 
 	deleteAttendee(attendeeId: number) : Observable<Status> {
 		return(this.http.delete(this.attendeeUrl + attendeeId)

@@ -11,7 +11,7 @@ export class EventService extends BaseService {
 		super(http);
 	}
 
-	private eventUrl = "api/event/";
+	private eventUrl = "./lib/apis/event/";
 
 	deleteEvent(eventId: number) : Observable<Status> {
 		return(this.http.delete(this.eventUrl + eventId)

@@ -11,7 +11,7 @@ export class PasswordResetService extends BaseService {
 		super(http);
 	}
 
-	private passwordResetUrl = "api/passwordReset/";
+	private passwordResetUrl = "./lib/apis/passwordReset/";
 
 	deletePasswordReset(passwordResetId: number) : Observable<Status> {
 		return(this.http.delete(this.passwordResetUrl + passwordResetId)

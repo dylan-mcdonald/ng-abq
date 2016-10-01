@@ -11,7 +11,7 @@ export class ImageService extends BaseService {
 		super(http);
 	}
 
-	private imageUrl = "api/image/";
+	private imageUrl = "./lib/apis/image/";
 
 	deleteImage(imageId: number) : Observable<Status> {
 		return(this.http.delete(this.imageUrl + imageId)

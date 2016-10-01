@@ -11,7 +11,7 @@ export class LinkService extends BaseService {
 		super(http);
 	}
 
-	private linkUrl = "api/link/";
+	private linkUrl = "./lib/apis/link/";
 
 	deleteLink(linkId: number) : Observable<Status> {
 		return(this.http.delete(this.linkUrl + linkId)
