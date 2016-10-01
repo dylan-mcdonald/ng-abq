@@ -36,14 +36,18 @@ try {
     if ($method === "GET") {
         //set XSRF cookie
         setXsrfCookie();
-        $events = Beta\Event::getAllEvents($pdo);
-        if ($events !== null) {
-            $reply->data = $events;
-	        var_dump($events);
-        }
-        if ($events == null) {
-        	var_dump($events);
-        }
+
+		if (empty($id) === false) {
+			$event = Event::getEventByEventId($pdo);
+			if ($event !== null) {
+				$reply->data = $event;
+			}
+		} else {
+			$events = Event::getAllEvents($pdo);
+			if($events !== null) {
+				$reply->data = $events;
+			}
+		}
     }
 
     else if($method === "PUT") {
@@ -99,6 +103,3 @@ if($reply->data === null) {
 }
 
 echo json_encode($reply);
-  
-
-
