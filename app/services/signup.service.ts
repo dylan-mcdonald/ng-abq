@@ -1,26 +1,15 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
+import {BaseService} from "./base.service";
+import {Profile} from "../classes/profile";
+import {Status} from "../classes/status";
 
-@injectable()
-export class Profile{
+@Injectable()
+export class SignupService extends BaseService {
+	constructor(protected http: Http) {
+		super(http);
+	}
 
-    constructor(private http: Http) {}
-
-
-    private extractData(response: Response) {
-        if(response.status < 200 || response.status >= 300) {
-            throw(new Error("Bad response status: " + response.status))
-        }
-        return(response.json());
-    }
-
-
-
-
-
-
-
-
-
+	private signupUrl = "api/signup/";
 }
