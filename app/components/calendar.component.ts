@@ -10,7 +10,7 @@ import {Status} from "../classes/status";
 export class CalendarComponent implements OnInit {
 	deleted: boolean = false;
 	events: Event[] = [];
-	event: Event = new Event(null, null, null, null);
+	event: Event = new Event(0, 0, "", "");
 	status: Status = null;
 
 	constructor(private eventService: EventService, private router: Router, private route: ActivatedRoute) {}
@@ -39,7 +39,7 @@ export class CalendarComponent implements OnInit {
 			.subscribe(status => {
 				this.deleted = true;
 				this.status = status;
-				this.event = new Event(null, null, null, null);
+				this.event = new Event(0, 0, "", "");
 			});
 	}
 
