@@ -1,34 +1,45 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
+import {BaseService} from "./base.service";
+import {Profile} from "../classes/profile";
+import {Status} from "../classes/status";
 
-@injectable()
+@Injectable()
+export class ProfileService extends BaseService {
+	constructor(protected http: Http) {
+		super(http);
+	}
 
-export class Profile{
+	private profileUrl = "api/profile/";
 
-    constructor(private http: Http) {}
+	deleteProfile(profileId: number) : Observable<Status> {
+		return(this.http.delete(this.profileUrl + profileId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
-    private ProfileUrl = "/lib/classes/Profile";
+	getAllProfiles() : Observable<Profile[]> {
+		return(this.http.get(this.profileUrl)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
-    getProfile(): Observable<Profile[]>{
-        return(this.http.get(this.ProfileUrl)
-            .map(this.extractData)
-            .catch(this.handleError));
+	getProfile(profileId: number) : Observable<Profile> {
+		return(this.http.get(this.profileUrl + profileId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
-    }
+	createProfile(profile: Profile) : Observable<Status> {
+		return(this.http.post(this.profileUrl, profile)
+			.map(this.extractMessage)
+			.catch(this.handleError));
+	}
 
-    private extractData(response: Response) {
-        if(response.status < 200 || response.status >= 300) {
-            throw(new Error("Bad response status: " + response.status))
-        }
-        return(response.json());
-    }
-
-    protected handleError(error:any) {
-        let message = error.message;
-        console.log(message);
-        return(Observable.throw(message));
-
-}
-
+	editProfile(profile: Profile) : Observable<Status> {
+		return(this.http.put(this.profileUrl + profile.profileId, profile)
+			.map(this.extractMessage)
+			.catch(this.handleError));
+	}
 }
