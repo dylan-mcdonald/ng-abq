@@ -1,37 +1,45 @@
 import {Injectable} from "@angular/core";
-import {Http, Response} from "@angular/http";
+import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
+import {BaseService} from "./base.service";
+import {Post} from "../classes/post";
+import {Status} from "../classes/status";
 
-@injectable()
+@Injectable()
+export class PostService extends BaseService {
+	constructor(protected http: Http) {
+		super(http);
+	}
 
-export class Post{
-    constructor (private http: Http ){}
+	private postUrl = "api/post/";
 
-    private PostUrl = "/lib/classes/Post";
+	deletePost(postId: number) : Observable<Status> {
+		return(this.http.delete(this.postUrl + postId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
+	getAllPosts() : Observable<Post[]> {
+		return(this.http.get(this.postUrl)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
-    getPost(): Observable<Post[]>{
-        return(this.http.get(this.PostUrl)
-            .map(this.extractData)
-            .catch(this.handleError));
+	getPost(postId: number) : Observable<Post> {
+		return(this.http.get(this.postUrl + postId)
+			.map(this.extractData)
+			.catch(this.handleError));
+	}
 
-    }
+	createPost(post: Post) : Observable<Status> {
+		return(this.http.post(this.postUrl, post)
+			.map(this.extractMessage)
+			.catch(this.handleError));
+	}
 
-
-    private extractData(response: Response) {
-        if(response.status < 200 || response.status >= 300) {
-            throw(new Error("Bad response status: " + response.status))
-        }
-        return(response.json());
-    }
-
-
-    protected handleError(error:any) {
-        let message = error.message;
-        console.log(message);
-        return(Observable.throw(message));
-
-    }
-
-
+	editPost(post: Post) : Observable<Status> {
+		return(this.http.put(this.postUrl + post.postId, post)
+			.map(this.extractMessage)
+			.catch(this.handleError));
+	}
 }
