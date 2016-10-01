@@ -2,7 +2,7 @@ import {Injectable} from "@angular/core";
 import {Http} from "@angular/http";
 import {Observable} from "rxjs/Observable";
 import {BaseService} from "./base.service";
-import {OauthIdentity} from "../classes/oauthIdentity";
+import {OauthIdentity} from "../classes/oauth-identity";
 import {Status} from "../classes/status";
 
 @Injectable()
@@ -11,7 +11,7 @@ export class OauthIdentityService extends BaseService {
 		super(http);
 	}
 
-	private oauthIdentityUrl = "api/oauthIdentity/";
+	private oauthIdentityUrl = "./lib/apis/oauthIdentity/";
 
 	deleteOauthIdentity(oauthIdentityId: number) : Observable<Status> {
 		return(this.http.delete(this.oauthIdentityUrl + oauthIdentityId)
