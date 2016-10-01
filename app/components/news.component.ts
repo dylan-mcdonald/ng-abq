@@ -1,9 +1,7 @@
-import {Component} from '@angular/core';
+import {Component} from "@angular/core";
 
 @Component({
-	selector: 'news',
-	templateUrl: 'app/templates/news.component.html',
-	styleUrls: ['app/app.css']
+	templateUrl: "./templates/news.php"
 })
 
 export class NewsComponent {}

@@ -1,9 +1,7 @@
-import {Component} from '@angular/core';
+import {Component} from "@angular/core";
 
 @Component({
-	selector: 'intro',
-	templateUrl: 'app/templates/intro.component.html',
-	styleUrls: ['app/app.css']
+	templateUrl: "./templates/intro.php"
 })
 
 export class IntroComponent {}
