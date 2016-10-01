@@ -8,7 +8,7 @@ import {SignupComponent} from "./components/signup.component";
 import {SplashComponent} from "./components/splash.component";
 
 
-export const allAppComponents = [CalendarComponent, HeaderComponent, IntroComponent, LoginComponent, NewsComponent, SignupComponent];
+export const allAppComponents = [CalendarComponent, HeaderComponent, IntroComponent, LoginComponent, NewsComponent, SignupComponent, SplashComponent];
 
 export const routes: Routes = [
 	{path: "calendar", component: CalendarComponent},
