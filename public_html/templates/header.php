@@ -6,13 +6,12 @@
         <span class="sr-only">Toggle navigation</span>
         <i class="fa fa-bars"></i>
       </button>
-      <a class="navbar-brand" href="#"><code>ng-abq</code></a>
+      <a class="navbar-brand" href="/"><code>ng-abq</code></a>
     </div>
 
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav navbar-right">
-        <li><a routerLink="/home">Home</a></li>
         <li><a routerLink="/members">Members</a></li>
 		<li><a routerLink="/discuss">Discuss</a></li>
 		<li><a routerLink="/photos">Photos</a></li>
