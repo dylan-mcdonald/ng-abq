@@ -15,7 +15,7 @@
         <li><a routerLink="/members">Members</a></li>
 		<li><a routerLink="/discuss">Discuss</a></li>
 		<li><a routerLink="/photos">Photos</a></li>
-		<li><a routerLink="/files">Files</a></li>
+		<li><a routerLink="/links">Links</a></li>
 		<li><a routerLink="/calendar">Calendar</a></li>
       </ul>
     </div><!-- /.navbar-collapse -->
