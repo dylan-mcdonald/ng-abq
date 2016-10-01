@@ -11,7 +11,7 @@ export class ProfileService extends BaseService {
 		super(http);
 	}
 
-	private profileUrl = "api/profile/";
+	private profileUrl = "./lib/apis/profile/";
 
 	deleteProfile(profileId: number) : Observable<Status> {
 		return(this.http.delete(this.profileUrl + profileId)

@@ -11,5 +11,5 @@ export class SigninService extends BaseService {
 		super(http);
 	}
 
-	private signinUrl = "api/signin/";
+	private signinUrl = "./lib/apis/signin/";
 }

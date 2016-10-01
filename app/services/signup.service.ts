@@ -11,5 +11,5 @@ export class SignupService extends BaseService {
 		super(http);
 	}
 
-	private signupUrl = "api/signup/";
+	private signupUrl = "./lib/apis/signup/";
 }

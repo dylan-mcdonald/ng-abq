@@ -11,7 +11,7 @@ export class PostService extends BaseService {
 		super(http);
 	}
 
-	private postUrl = "api/post/";
+	private postUrl = "./lib/apis/post/";
 
 	deletePost(postId: number) : Observable<Status> {
 		return(this.http.delete(this.postUrl + postId)

@@ -11,5 +11,5 @@ export class SignoutService extends BaseService {
 		super(http);
 	}
 
-	private signoutUrl = "api/signout/";
+	private signoutUrl = "./lib/apis/signout/";
 }
