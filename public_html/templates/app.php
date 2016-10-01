@@ -1,3 +1,12 @@
-<h1>NG ABQ</h1>
-<p>A great place to get to know what Angular is all about.</p>
-<router-outlet></router-outlet>
+<!-- <navbar></navbar> -->
+<div class="container">
+	<div class="row">
+		<div class="col-md-2">
+			<intro-panel></intro-panel>
+		</div>
+		<div class="col-md-8">
+			<router-outlet></router-outlet>
+			<h1>Testing</h1>
+		</div>
+	</div>
+</div>
