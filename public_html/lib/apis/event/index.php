@@ -29,10 +29,6 @@ try {
 
     $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
-    if (($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-        throw(new InvalidArgumentException("", 405));
-    }
-
     if ($method === "GET") {
         //set XSRF cookie
         setXsrfCookie();
