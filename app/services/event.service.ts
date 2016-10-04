@@ -5,6 +5,8 @@ import {BaseService} from "./base.service";
 import {Event} from "../classes/event";
 import {Status} from "../classes/status";
 
+
+
 @Injectable()
 export class EventService extends BaseService {
 	constructor(protected http: Http) {
