@@ -7,6 +7,7 @@ import {Status} from "../classes/status";
 @Component({
 	templateUrl: "./templates/calendar.php"
 })
+
 export class CalendarComponent implements OnInit {
 	deleted: boolean = false;
 	events: Event[] = [];

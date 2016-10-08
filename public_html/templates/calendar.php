@@ -4,10 +4,11 @@
 <h1>All Events</h1>
 <table class="table table-bordered table-responsive table-striped table-word-wrap">
 	<tr><th>Id</th><th>Event</th><th>Date</th></tr>
-	<tr *ngFor="let event of events">
-		<td>{{ event.eventId }}</td>
-		<td>{{ event.eventName }}</td>
-		<td>{{ event.eventDate }}</td>
+	<tr>{{ events | json }}
+<!--	<tr *ngFor="let event of events">-->
+<!--		<td>{{ event.eventId }}</td>-->
+<!--		<td>{{ event.eventName }}</td>-->
+<!--		<td>{{ event.eventDate }}</td>-->
 	</tr>
 
 </table>
