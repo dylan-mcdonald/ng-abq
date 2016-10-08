@@ -34,7 +34,6 @@ private $eventDate;
     public function __construct(int $newEventId = null, int $newEventProfileId, string $newEventName , $newEventDate = null)
     {
         try {
-        	echo 'help me more';
             $this->setEventId($newEventId);
             $this->setEventProfileId($newEventProfileId);
             $this->setEventName($newEventName);
@@ -143,7 +142,6 @@ private $eventDate;
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
 		$this->eventDate = $newEventDate;
-		echo 'eventProfileId';
 	}
 
 
@@ -310,16 +308,9 @@ private $eventDate;
 		$events = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 		while(($row = $statement->fetch()) !== false) {
-			echo 'row';
-			var_dump($row);
 			try {
-				echo 'help';
 				$event = new Event($row["eventId"], $row["eventProfileId"], $row["eventName"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["eventDate"]));
-				echo 'event';
-				var_dump($event);
 				$events[$events->key()] = $event;
-				echo 'events';
-				var_dump($events);
 				$events->next();
 			} catch(\Exception $exception) {
 				// if the row couldn't be converted, rethrow it

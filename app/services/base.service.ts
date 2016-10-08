@@ -14,6 +14,7 @@ export abstract class BaseService {
 		if(json.status !== 200) {
 			throw(new Error("Bad API status: " + json.status));
 		}
+		console.log(json.data);
 		return(json.data);
 	}
 

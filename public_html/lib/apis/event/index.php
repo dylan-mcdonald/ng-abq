@@ -25,21 +25,19 @@ try {
     $pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
     $method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-	var_dump($method);
-
-    $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
 
     if ($method === "GET") {
         //set XSRF cookie
         setXsrfCookie();
 
 		if (empty($id) === false) {
-			$event = Event::getEventByEventId($pdo);
+			$event = Beta\Event::getEventByEventId($pdo);
 			if ($event !== null) {
 				$reply->data = $event;
 			}
 		} else {
-			$events = Event::getAllEvents($pdo);
+			$events = Beta\Event::getAllEvents($pdo);
 			if($events !== null) {
 				$reply->data = $events;
 			}
@@ -57,7 +55,7 @@ try {
         if($events === null) {
             throw(new RuntimeException("", 404));
         }
-        var_dump($requestObject);
+
         $events->setEventId($requestObject->EventId);
 
         // update link
