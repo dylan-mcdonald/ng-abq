@@ -91,7 +91,7 @@ class Profile implements \JsonSerializable {
 	 * @throws \TypeError if type is invalid
 	 * @throws \Exception to handle edge cases
 	 **/
-	public function __construct(int $newProfileId = null, bool $newProfileAdmin, string $newProfileNameFirst, string $newProfileNameLast, string $newProfileEmail, string $newProfileUserName, string $newProfileSalt, string $newProfileHash, string $newProfileActivationToken) {
+	public function __construct(int $newProfileId = null, int $newProfileAdmin, string $newProfileNameFirst, string $newProfileNameLast, string $newProfileEmail, string $newProfileUserName, string $newProfileSalt, string $newProfileHash, string $newProfileActivationToken) {
 		try {
 			$this->setProfileId($newProfileId);
 			$this->setProfileAdmin($newProfileAdmin);
@@ -158,10 +158,10 @@ class Profile implements \JsonSerializable {
 
 	/**
 	 * Mutator for profile admin flag
-	 * @param bool $newProfileId, admin flag
+	 * @param bool $newProfileAdmin, admin flag
 	 * @throws \TypeError if profile admin flag is not a bool
 	 **/
-	public function setProfileAdmin(bool $newProfileAdmin) {
+	public function setProfileAdmin(int $newProfileAdmin = 0) {
 		$this->profileAdmin = $newProfileAdmin;
 	}
 
@@ -486,6 +486,30 @@ class Profile implements \JsonSerializable {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
 		}
+	}
+
+	public static function getAllProfiles(\PDO $pdo) {
+		// Create query template and execute
+		$query = "SELECT profileId, profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName, profileSalt, profileHash, profileActivationToken FROM profile";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
+
+		// Build an array of matches
+		$profiles = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$profile = new Profile($row["profileId"], $row["profileAdmin"], $row["profileNameFirst"], $row["profileNameLast"], $row["profileEmail"], $row["profileUserName"], $row["profileSalt"], $row["profileHash"], $row["profileActivationToken"]);
+
+				$profiles[$profiles->key()] = $profile;
+				$profiles->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $profiles;
 	}
 
 	/* JSON SERIALIZE */

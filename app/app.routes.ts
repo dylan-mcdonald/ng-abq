@@ -6,17 +6,19 @@ import {LinkComponent} from "./components/link.component";
 import {LoginComponent} from "./components/login.component";
 import {NewsComponent} from "./components/news.component";
 import {PostComponent} from "./components/post.component";
+import {ProfileComponent} from "./components/profile.component";
 import {SignupComponent} from "./components/signup.component";
 import {SplashComponent} from "./components/splash.component";
 
 
-export const allAppComponents = [CalendarComponent, HeaderComponent, IntroComponent, LinkComponent, LoginComponent, NewsComponent, PostComponent, SignupComponent, SplashComponent];
+export const allAppComponents = [CalendarComponent, HeaderComponent, IntroComponent, LinkComponent, LoginComponent, NewsComponent, PostComponent, ProfileComponent, SignupComponent, SplashComponent];
 
 export const routes: Routes = [
 	{path: "calendar", component: CalendarComponent},
-	//{path: "header", component: HeaderComponent},
-	{path: "links", component: LinkComponent},
 	{path: "discuss", component: PostComponent},
+	{path: "links", component: LinkComponent},
+	{path: "members", component: ProfileComponent},
+	//{path: "header", component: HeaderComponent},
 	//{path: "login", component: LoginComponent},
 	//{path: "news", component: NewsComponent},
 	//{path: "signup", component: SignupComponent},

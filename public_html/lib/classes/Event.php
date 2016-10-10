@@ -298,6 +298,7 @@ private $eventDate;
 
 	public static function getAllEvents(\PDO $pdo) {
 		// create query template
+
 		$query = "SELECT eventId, eventProfileId, eventName, eventDate FROM event";
 
 		$statement = $pdo->prepare($query);

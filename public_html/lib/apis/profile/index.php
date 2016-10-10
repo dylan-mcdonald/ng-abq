@@ -8,10 +8,10 @@
  * @version 1.0.0
  **/
 
-use Com\NgAbq\Beta\Profile;
+use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 2) . "/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 // Verify the session and start it if it's not active
@@ -22,6 +22,7 @@ if(session_status() !== PHP_SESSION_ACTIVE) {
 $reply = new stdClass();
 $reply->status = 200;
 $reply->data = null;
+
 
 try {
 	$pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
@@ -35,15 +36,26 @@ try {
 	}
 
 	if ($method === "GET") {
+		//set XSRF cookie
 		setXsrfCookie();
 
 		if (empty($id) === false) {
-			$profile = Profile::getProfileByProfileId($pdo, $id);
+			$profile = Beta\Profile::getProfileByProfileId($pdo);
 			if ($profile !== null) {
 				$reply->data = $profile;
 			}
-		} // TODO: Else if ... getProfileByProfileActivationToken
-	} else if ($method === "PUT") {
+		} else {
+
+			$profiles = Beta\Profile::getAllProfiles($pdo) -> toArray();
+
+			if($profiles !== null) {
+				$reply->data = $profiles;
+			}
+		}
+	}
+
+		// TODO: Else if ... getProfileByProfileActivationToken
+	  else if ($method === "PUT") {
 		verifyXsrf();
 
 		$requestContent = file_get_contents("php://input");
@@ -65,7 +77,7 @@ try {
 			throw new \InvalidArgumentException("Profile username must exist.", 405);
 		}
 
-		$profile = Profile::getProfileByProfileId($pdo, $id);
+		$profile = Beta\Profile::getProfileByProfileId($pdo, $id);
 		if ($profile === null) {
 			throw new \RuntimeException("Profile does not exist.", 404);
 		}
@@ -82,7 +94,7 @@ try {
 	} else if ($method === "DELETE") {
 		verifyXsrf();
 
-		$profile = Profile::getProfileByProfileId($pdo, $id);
+		$profile = Beta\Profile::getProfileByProfileId($pdo, $id);
 		if($profile === null) {
 			throw(new RuntimeException("Profile does not exist.", 404));
 		}
@@ -103,7 +115,6 @@ try {
 }
 
 header("Content-type: application/json");
-
 if($reply->data === null) {
 	unset($reply->data);
 }
