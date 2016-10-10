@@ -44,7 +44,7 @@ try {
 		setXsrfCookie();
 
 		//get all links and update reply
-		$links = Beta\Link::getAllLinks($pdo);
+		$links = Beta\Link::getAllLinks($pdo) -> toArray();
 		if($links !== null) {
 			$reply->data = $links;
 		}

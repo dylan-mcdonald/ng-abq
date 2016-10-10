@@ -7,13 +7,13 @@
 	<tr>
 		<th>Id</th>
 		<th>Event</th>
-		<th>Date</th>
+		<th>Date & Time</th>
 	</tr>
 
 	<tr *ngFor="let event of events">
 		<td>{{ event.eventId }}</td>
 		<td>{{ event.eventName }}</td>
-		<td>{{ event.eventDate.date | date: 'MMM-dd-y HH:mm' }}</td>
+		<td>{{ event.eventDate.date | date: 'MMM-dd-y @ HH:mm' }}</td>
 	</tr>
 
 </table>
