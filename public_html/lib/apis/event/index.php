@@ -37,7 +37,7 @@ try {
 				$reply->data = $event;
 			}
 		} else {
-			$events = Beta\Event::getAllEvents($pdo);
+			$events = Beta\Event::getAllEvents($pdo) -> toArray();
 			if($events !== null) {
 				$reply->data = $events;
 			}
