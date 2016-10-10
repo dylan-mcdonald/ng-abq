@@ -14,6 +14,7 @@ require_once("autoload.php");
  **/
 class Post implements \JsonSerializable {
 
+	use ValidateDate;
 	/* STATE VARIABLES */
 
 	/**
@@ -53,7 +54,7 @@ class Post implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
-	public function __construct(int $newPostId = null, string $newPostProfileUserName, string $newPostSubmission, string $newPostTime = null) {
+	public function __construct(int $newPostId = null, string $newPostProfileUserName, string $newPostSubmission, $newPostTime = null) {
 		try {
 			$this->setPostId($newPostId);
 			$this->setPostProfileUserName($newPostProfileUserName);
@@ -318,7 +319,7 @@ class Post implements \JsonSerializable {
 		return $posts;
 	}
 
-	public static function getOauthIdentityByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
+	public static function getPostByString(\PDO $pdo, string $attribute, string $search, bool $like = null) {
 		$like = $like ? "LIKE" : "="; // Optionally search using "LIKE"
 		$attribute = filter_var(trim($attribute), FILTER_SANITIZE_STRING);
 		$search = filter_var(trim($search), FILTER_SANITIZE_STRING);
@@ -365,10 +366,10 @@ class Post implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
+				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
 
 				$posts[$posts->key()] = $post;
-				$post->next();
+				$posts->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}

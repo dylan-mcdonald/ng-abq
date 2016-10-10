@@ -8,10 +8,10 @@
  * @version 1.0.0
  **/
 
-use Com\NgAbq\Beta\Post;
+use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 2) . "/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 // Verify the session and start it if it's not active
@@ -38,12 +38,12 @@ try {
 		setXsrfCookie();
 
 		if (empty($id) === false) {
-			$post = Post::getPostByPostId($pdo, $id);
+			$post = Beta\Post::getPostByPostId($pdo, $id);
 			if ($post !== null) {
 				$reply->data = $post;
 			}
 		} else {
-			$posts = Post::getAllPosts($pdo)->toArray();
+			$posts = Beta\Post::getAllPosts($pdo)->toArray();
 			if (sizeof($posts) > 0) {
 				$reply->data = $posts;
 			}
@@ -66,7 +66,7 @@ try {
 
 		// BEGIN PUT AND POST
 		if ($method === "PUT") {
-			$post = Post::getPostByPostId($pdo, $id);
+			$post = Beta\Post::getPostByPostId($pdo, $id);
 			if ($post === null) {
 				throw new \RuntimeException("Post does not exist.", 404);
 			}
@@ -79,7 +79,7 @@ try {
 
 			$reply->message = "Post updated successfully.";
 		} else if ($method === "POST") {
-			$post = new Post(null, $requestObject->postProfileUserName, $requestObject->postSubmission, $requestObject->postTime);
+			$post = new Beta\Post(null, $requestObject->postProfileUserName, $requestObject->postSubmission, $requestObject->postTime);
 			$post->insert($pdo);
 
 			$reply->message = "Post successfully posted.";
@@ -87,7 +87,7 @@ try {
 	} else if ($method === "DELETE") {
 		verifyXsrf();
 
-		$post = Post::getPostByPostId($pdo, $id);
+		$post = Beta\Post::getPostByPostId($pdo, $id);
 		if($post === null) {
 			throw(new RuntimeException("Post does not exist.", 404));
 		}
