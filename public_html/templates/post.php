@@ -8,14 +8,14 @@
 		<th>Id</th>
 		<th>Post</th>
 		<th>Submitter</th>
-		<th>Date & Time</th>
+		<th>Time & Date</th>
 	</tr>
 
 	<tr *ngFor="let post of posts">
 		<td>{{ post.postId }}</td>
 		<td>{{ post.postSubmission }}</td>
 		<td>{{ post.postProfileUserName }}</td>
-		<td>{{ post.postTime.date | date: 'MMM-dd-y @ HH:mm' }}</td>
+		<td>{{ post.postTime.date | date: 'HH:mm on MMM-dd-y' }}</td>
 	</tr>
 
 </table>
