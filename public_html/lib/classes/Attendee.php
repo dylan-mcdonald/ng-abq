@@ -141,28 +141,36 @@ class Attendee implements \JsonSerializable
     }
 
 
-    public static function getAttendeeByAttendeeEventId(\PDO $pdo, $attendeeEventId)
-    {
-        if($attendeeEventId <= 0) {
-            throw(new \PDOException(""));
-        }
-        $query = "SELECT attendeeId, attendeeEventId, attendeeProfileId  FROM Attendee WHERE attendeeEventId = :attendeeEventId";
-        $statement = $pdo->prepare($query);
-        $parameters = array("attendeeEventId" => $attendeeEventId);
-        $statement->execute($parameters);
-        try {
-            $attendeeEventId = null;
-            $statement->setFetchMode(\PDO::FETCH_ASSOC);
-            $row = $statement->fetch();
-            if($row !== false) {
-                $attendeeEventId = new Attendee($row["attendeeId"], $row["attendeeEventId"], $row["attendeeProfileId"]);
-            }
-        } catch(\Exception $exception) {
-            throw(new \PDOException($exception->getMessage(), 0, $exception));
-        }
-        return ($attendeeEventId);
+	public static function getAttendeesByEventId(\PDO $pdo, int $eventId) {
 
-    }
+		// sanitize the eventId before searching
+		if($eventId <= 0) {
+			throw(new \PDOException("event id is not positive"));
+		}
+
+		// Create query template and execute
+		$query = "SELECT attendeeId, attendeeEventId, attendeeProfileId FROM attendee WHERE attendeeEventId = :eventId";
+		$statement = $pdo->prepare($query);
+		$parameters = array("eventId" => $eventId);
+		$statement->execute($parameters);
+
+		// Build an array of matches
+		$attendees = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$attendee = new Attendee($row["attendeeId"], $row["attendeeEventId"], $row["attendeeProfileId"]);
+
+				$attendees[$attendees->key()] = $attendee;
+				$attendees->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $attendees;
+	}
 
 	public static function getAllAttendees(\PDO $pdo) {
 		// Create query template and execute
@@ -187,59 +195,6 @@ class Attendee implements \JsonSerializable
 
 		return $attendees;
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     public function jsonSerialize() {

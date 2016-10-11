@@ -1,10 +1,9 @@
-
 <?php
 use Com\NgAbq\Beta;
 
-require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
-require_once("/etc/apache2/encrypted-config/encrypted-config.php");
+require_once dirname( __DIR__, 2 ) . "/classes/autoload.php";
+require_once dirname( __DIR__, 3 ) . "/lib/xsrf.php";
+require_once( "/etc/apache2/encrypted-config/encrypted-config.php" );
 
 
 /**
@@ -14,76 +13,80 @@ require_once("/etc/apache2/encrypted-config/encrypted-config.php");
  **/
 
 
-if(session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
+if ( session_status() !== PHP_SESSION_ACTIVE ) {
+	session_start();
 }
 
 //prepare an empty reply
-$reply = new stdClass();
+$reply         = new stdClass();
 $reply->status = 200;
-$reply->data = null;
+$reply->data   = null;
 
 try {
-    // grab the mySQL connection
-    $pdo = connectToEncryptedMySQL("/etc/apache2/encrypted-config/ng-abq-dev.ini");
+	// grab the mySQL connection
+	$pdo = connectToEncryptedMySQL( "/etc/apache2/encrypted-config/ng-abq-dev.ini" );
 
-    //determine which HTTP method was used
-    $method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
+	//determine which HTTP method was used
+	$method = array_key_exists( "HTTP_X_HTTP_METHOD", $_SERVER ) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
-    //sanitize input
-    $id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	//sanitize input
+	$id      = filter_input( INPUT_GET, "id", FILTER_VALIDATE_INT );
+	$eventId = filter_input( INPUT_GET, "eventId", FILTER_VALIDATE_INT );
 
-    //make sure the id is valid for methods that require it
-    if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
-        throw(new InvalidArgumentException("id cannot be empty or negative", 405));
-    }
+	//make sure the id is valid for methods that require it
+	if ( ( $method === "DELETE" || $method === "PUT" ) && ( empty( $id ) === true || $id < 0 ) ) {
+		throw( new InvalidArgumentException( "id cannot be empty or negative", 405 ) );
+	}
 
-    // handle GET request - .
-    if($method === "GET") {
-        //set XSRF cookie
-        setXsrfCookie();
+	// handle GET request - .
+	if ( $method === "GET" ) {
+		//set XSRF cookie
+		setXsrfCookie();
 
-//        $attendee = Beta\Attendee::getAttendeetByAttendeeEventId($pdo,$attendeeEventId);
-//        if($attendee !== null) {
-//            $reply->data = $attendee;
-//        }
-	    //get all attendees and update reply
-	    $attendees = Beta\Attendee::getAllAttendees($pdo) -> toArray();
-	    if($attendees !== null) {
-		    $reply->data = $attendees;
-	    }
-    }
-    else if($method === "DELETE") {
-        verifyXsrf();
+		if ( ( ! empty( $eventId ) === true ) && $eventId >= 0 ) {
+			$attendees = Beta\Attendee::getAttendeesByEventId( $pdo, $eventId )->toArray();
 
-        $attendee = Beta\Attendee::getAttendeetByAttendeeEventId($pdo, $attendeeEventId);
-        if($attendee === null) {
-            throw(new RuntimeException("", 404));
-        }
+			if ( $attendees !== null ) {
+				$reply->data = $attendees;
+			}} else {
 
-        $attendee->delete($pdo,$attendeeEventId);
+			//get all attendees and update reply
+			$attendees = Beta\Attendee::getAllAttendees( $pdo )->toArray();
+			if ( $attendees !== null ) {
+				$reply->data = $attendees;
+			}}
+		} else if ( $method === "DELETE" ) {
+			verifyXsrf();
 
-        // update reply
-        $reply->message = "";
-    } else {
-        throw (new InvalidArgumentException("Invalid HTTP method request"));
-    }
+			$attendee = Beta\Attendee::getAttendeetByAttendeeEventId( $pdo, $attendeeEventId );
+			if ( $attendee === null ) {
+				throw( new RuntimeException( "", 404 ) );
+			}
+
+			$attendee->delete( $pdo, $attendeeEventId );
+
+			// update reply
+			$reply->message = "";
+		} else {
+			throw ( new InvalidArgumentException( "Invalid HTTP method request" ) );
+		}
 
 
+	}
+catch
+	( Exception $exception) {
+		$reply->status  = $exception->getCode();
+		$reply->message = $exception->getMessage();
+		$reply->trace   = $exception->getTraceAsString();
+	} catch( TypeError $typeError) {
+		$reply->status  = $typeError->getCode();
+		$reply->message = $typeError->getMessage();
+	}
 
-} catch(Exception $exception) {
-    $reply->status = $exception->getCode();
-    $reply->message = $exception->getMessage();
-    $reply->trace = $exception->getTraceAsString();
-} catch(TypeError $typeError) {
-    $reply->status = $typeError->getCode();
-    $reply->message = $typeError->getMessage();
+header( "Content-type: application/json" );
+if ( $reply->data === null ) {
+	unset( $reply->data );
 }
 
-header("Content-type: application/json");
-if($reply->data === null) {
-    unset($reply->data);
-}
 
-
-echo json_encode($reply);
+echo json_encode( $reply );
