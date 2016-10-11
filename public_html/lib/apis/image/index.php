@@ -44,7 +44,7 @@ try {
 		setXsrfCookie();
 
 		//get all images and update reply
-		$images = Beta\Image::getAllImages($pdo);
+		$images = Beta\Image::getAllImages($pdo) -> toArray();
 				if($images !== null) {
 					$reply->data = $images;
 				}
