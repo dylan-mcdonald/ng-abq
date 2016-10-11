@@ -3,7 +3,7 @@
 use Com\NgAbq\Beta;
 
 require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 3) . "/xsrf.php";
+require_once dirname(__DIR__, 3) . "/lib/xsrf.php";
 require_once("/etc/apache2/encrypted-config/encrypted-config.php");
 
 
@@ -43,10 +43,15 @@ try {
         //set XSRF cookie
         setXsrfCookie();
 
-        $attendee = Beta\Attendee::getAttendeetByAttendeeEventId($pdo,$attendeeEventId);
-        if($attendee !== null) {
-            $reply->data = $attendee;
-        }
+//        $attendee = Beta\Attendee::getAttendeetByAttendeeEventId($pdo,$attendeeEventId);
+//        if($attendee !== null) {
+//            $reply->data = $attendee;
+//        }
+	    //get all attendees and update reply
+	    $attendees = Beta\Attendee::getAllAttendees($pdo) -> toArray();
+	    if($attendees !== null) {
+		    $reply->data = $attendees;
+	    }
     }
     else if($method === "DELETE") {
         verifyXsrf();

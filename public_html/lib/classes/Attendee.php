@@ -111,7 +111,7 @@ class Attendee implements \JsonSerializable
         if($newAttendeeProfileId <= 0) {
             throw(new \RangeException("Ok"));
         }
-        $this->AttendeeProfileId = $newAttendeeProfileId;
+        $this->attendeeProfileId = $newAttendeeProfileId;
     }
 
     //Insert into the DB
@@ -141,7 +141,7 @@ class Attendee implements \JsonSerializable
     }
 
 
-    public static function getAttendeetByAttendeeEventId(\PDO $pdo, $attendeeEventId)
+    public static function getAttendeeByAttendeeEventId(\PDO $pdo, $attendeeEventId)
     {
         if($attendeeEventId <= 0) {
             throw(new \PDOException(""));
@@ -164,7 +164,29 @@ class Attendee implements \JsonSerializable
 
     }
 
+	public static function getAllAttendees(\PDO $pdo) {
+		// Create query template and execute
+		$query = "SELECT attendeeId, attendeeEventId, attendeeProfileId FROM attendee";
+		$statement = $pdo->prepare($query);
+		$statement->execute();
 
+		// Build an array of matches
+		$attendees = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+
+		while (($row = $statement->fetch()) !== false) {
+			try {
+				$attendee = new Attendee($row["attendeeId"], $row["attendeeEventId"], $row["attendeeProfileId"]);
+
+				$attendees[$attendees->key()] = $attendee;
+				$attendees->next();
+			} catch(\Exception $exception) {
+				throw new \PDOException($exception->getMessage(), 0, $exception);
+			}
+		}
+
+		return $attendees;
+	}
 
 
 
