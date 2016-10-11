@@ -140,6 +140,34 @@ class Attendee implements \JsonSerializable
         $statement->execute($parameters);
     }
 
+	public static function getAttendeeByAttendeeId(\PDO $pdo, int $attendeeId) {
+		// sanitize the attendeeId before searching
+		if($attendeeId <= 0) {
+			throw(new \PDOException("attendee id is not positive"));
+		}
+		// create query template
+		$query = "SELECT attendeeId, attendeeEventId, attendeeProfileId FROM attendee WHERE attendeeId = :attendeeId";
+		$statement = $pdo->prepare($query);
+
+		// bind the attendee id to the place holder in the template
+		$parameters = array("attendeeId" => $attendeeId);
+		$statement->execute($parameters);
+
+		// grab the attendee from mySQL
+		try {
+			$attendee = null;
+			$statement->setFetchMode(\PDO::FETCH_ASSOC);
+			$row = $statement->fetch();
+			if($row !== false) {
+				$attendee = new Attendee($row["attendeeId"], $row["attendeeEventId"], $row["attendeeProfileId"]);
+			}
+		} catch(\Exception $exception) {
+			// if the row couldn't be converted, rethrow it
+			throw(new \PDOException($exception->getMessage(), 0, $exception));
+		}
+		return ($attendee);
+	}
+
 
 	public static function getAttendeesByEventId(\PDO $pdo, int $eventId) {
 

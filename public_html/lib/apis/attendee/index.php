@@ -58,12 +58,12 @@ try {
 		} else if ( $method === "DELETE" ) {
 			verifyXsrf();
 
-			$attendee = Beta\Attendee::getAttendeetByAttendeeEventId( $pdo, $attendeeEventId );
+			$attendee = Beta\Attendee::getAttendeeByAttendeeId( $pdo, $id );
 			if ( $attendee === null ) {
 				throw( new RuntimeException( "", 404 ) );
 			}
 
-			$attendee->delete( $pdo, $attendeeEventId );
+			$attendee->delete( $pdo, $id );
 
 			// update reply
 			$reply->message = "";
