@@ -322,7 +322,7 @@ class Comment implements \JsonSerializable {
 			$row = $statement->fetch();
 
 			if ($row !== false) {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+				$comment = new Comment($row["commentId"], $row["commentProfileUserName"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 			}
 		} catch(\Exception $exception) {
 			throw new \PDOException($exception->getMessage(), 0, $exception);
@@ -350,10 +350,10 @@ class Comment implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+				$comment = new Comment($row["commentId"], $row["commentProfileUserName"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 
 				$comments[$comments->key()] = $comment;
-				$comment->next();
+				$comments->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}

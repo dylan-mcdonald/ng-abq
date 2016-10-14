@@ -29,6 +29,7 @@ try {
 	$method = array_key_exists("HTTP_X_HTTP_METHOD", $_SERVER) ? $_SERVER["HTTP_X_HTTP_METHOD"] : $_SERVER["REQUEST_METHOD"];
 
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$commentPostId = filter_input(INPUT_GET, "commentPostId", FILTER_VALIDATE_INT);
 
 	if (($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
 		throw(new InvalidArgumentException("", 405));
@@ -41,6 +42,11 @@ try {
 			$comment = Beta\Comment::getCommentByCommentId($pdo, $id);
 			if ($comment !== null) {
 				$reply->data = $comment;
+			}
+		} else if (empty($commentPostId) === false) {
+			$comments = Beta\Comment::getCommentByCommentPostId($pdo, $commentPostId);
+			if ($comments !== null) {
+				$reply->data = $comments;
 			}
 		} else {
 			$comments = Beta\Comment::getAllComments($pdo)->toArray();
