@@ -8,11 +8,11 @@
  * @version 1.0.0
  **/
 
-use Com\NgAbq\Beta\Comment;
+use Com\NgAbq\Beta;
 
-require_once dirname(__DIR__, 2) . "/classes/autoload.php";
-require_once dirname(__DIR__, 2) . "/xsrf.php";
-require_once("/etc/apache2/encrypted-config/encrypted-config.php");
+require_once dirname( __DIR__, 2 ) . "/classes/autoload.php";
+require_once dirname( __DIR__, 3 ) . "/lib/xsrf.php";
+require_once( "/etc/apache2/encrypted-config/encrypted-config.php" );
 
 // Verify the session and start it if it's not active
 if(session_status() !== PHP_SESSION_ACTIVE) {
@@ -38,12 +38,12 @@ try {
 		setXsrfCookie();
 
 		if (empty($id) === false) {
-			$comment = Comment::getCommentByCommentId($pdo, $id);
+			$comment = Beta\Comment::getCommentByCommentId($pdo, $id);
 			if ($comment !== null) {
 				$reply->data = $comment;
 			}
 		} else {
-			$comments = Comment::getAllComments($pdo)->toArray();
+			$comments = Beta\Comment::getAllComments($pdo)->toArray();
 			if (sizeof($comments) > 0) {
 				$reply->data = $comments;
 			}
@@ -69,7 +69,7 @@ try {
 
 		// BEGIN PUT AND POST
 		if ($method === "PUT") {
-			$comment = Comment::getCommentByCommentId($pdo, $id);
+			$comment = Beta\Comment::getCommentByCommentId($pdo, $id);
 			if ($comment === null) {
 				throw new \RuntimeException("Comment does not exist.", 404);
 			}
@@ -83,7 +83,7 @@ try {
 
 			$reply->message = "Comment updated successfully.";
 		} else if ($method === "POST") {
-			$comment = new Comment(null, $requestObject->commentPostId, $requestObject->commentProfileUserName, $requestObject->commentSubmission, $requestObject->commentTime);
+			$comment = new Beta\Comment(null, $requestObject->commentPostId, $requestObject->commentProfileUserName, $requestObject->commentSubmission, $requestObject->commentTime);
 			$comment->insert($pdo);
 
 			$reply->message = "Comment successfully posted.";
@@ -91,7 +91,7 @@ try {
 	} else if ($method === "DELETE") {
 		verifyXsrf();
 
-		$comment = Comment::getCommentByCommentId($pdo, $id);
+		$comment = Beta\Comment::getCommentByCommentId($pdo, $id);
 		if($comment === null) {
 			throw(new RuntimeException("Comment does not exist.", 404));
 		}

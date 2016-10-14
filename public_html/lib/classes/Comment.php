@@ -14,6 +14,8 @@ require_once("autoload.php");
  **/
 class Comment implements \JsonSerializable {
 
+	use ValidateDate;
+
 	/* STATE VARIABLES */
 
 	/**
@@ -60,11 +62,12 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if data types violate type hints
 	 * @throws \Exception if some other exception occurs
 	 */
-	public function __construct(int $newCommentId = null, int $newCommentPostId, string $newCommentProfileUserName, string $newCommentSubmission, string $newCommentTime = null) {
+	public function __construct(int $newCommentId = null, string $newCommentProfileUserName, int $newCommentPostId, string $newCommentSubmission, $newCommentTime = null) {
 		try {
+
 			$this->setCommentId($newCommentId);
-			$this->setCommentPostId($newCommentPostId);
 			$this->setCommentProfileUserName($newCommentProfileUserName);
+			$this->setCommentPostId($newCommentPostId);
 			$this->setCommentSubmission($newCommentSubmission);
 			$this->setCommentTime($newCommentTime);
 		} catch(\InvalidArgumentException $invalidArgument) {
@@ -100,6 +103,7 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $newCommentId is not an integer
 	 */
 	public function setCommentId(int $newCommentId = null) {
+
 		// base case: if the comment id is null, this is a new comment without a mySQL assigned id
 		if($newCommentId === null) {
 			$this->commentId = null;
@@ -134,6 +138,7 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $newCommentProfileUserName is not a string
 	 */
 	public function setCommentProfileUserName(string $newCommentProfileUserName) {
+
 		// verify the comment profile username is secure
 		$newCommentProfileUserName = trim($newCommentProfileUserName);
 		$newCommentProfileUserName = filter_var($newCommentProfileUserName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -168,9 +173,10 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $newCommentPostId is not an integer
 	 */
 	public function setCommentPostId(int $newCommentPostId) {
+
 		// verify the commentPostId is positive
 		if($newCommentPostId <= 0) {
-			throw(new \RangeException("commentProstId is not positive"));
+			throw(new \RangeException("commentPostId is not positive"));
 		}
 
 		// convert and store the account id
@@ -195,6 +201,7 @@ class Comment implements \JsonSerializable {
 	 * @throws \TypeError if $newCommentSubmission is not a string
 	 */
 	public function setCommentSubmission(string $newCommentSubmission) {
+
 		// verify the comment submission is secure
 		$newCommentSubmission = trim($newCommentSubmission);
 		$newCommentSubmission = filter_var($newCommentSubmission, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
@@ -228,6 +235,7 @@ class Comment implements \JsonSerializable {
 	 * @throws \RangeException if $newCommentTime is  a time that does not exist
 	 **/
 	public function setCommentTime($newCommentTime = null) {
+
 		// base case: if the time is null, use the current date and time
 		if($newCommentTime === null) {
 			$this->commentTime = new \DateTime();
@@ -236,12 +244,15 @@ class Comment implements \JsonSerializable {
 
 		// store the comment time
 		try {
+
 			$newCommentTime = $this->validateDate($newCommentTime);
+
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
 			throw(new \RangeException($range->getMessage(), 0, $range));
 		}
+
 		$this->commentTime = $newCommentTime;
 	}
 
@@ -253,11 +264,11 @@ class Comment implements \JsonSerializable {
 		}
 
 		// Create query template
-		$query = "INSERT INTO comment(commentPostId, commentProfileUserName, commentSubmission, commentTime) VALUES(:commentPostId, :commentProfileUserName, :commentSubmission, :commentTime)";
+		$query = "INSERT INTO comment(commentProfileUserName, commentPostId, commentSubmission, commentTime) VALUES(:commentProfileUserName, :commentPostId, :commentSubmission, :commentTime)";
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["commentPostId" => $this->commentPostId, "commentProfileUserName" => $this->commentProfileUserName, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime];
+		$parameters = ["commentProfileUserName" => $this->commentProfileUserName, "commentPostId" => $this->commentPostId, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime];
 		$statement->execute($parameters);
 
 		// Grab primary key from MySQL
@@ -284,25 +295,25 @@ class Comment implements \JsonSerializable {
 		}
 
 		// Create query template
-		$query = "UPDATE comment SET commentPostId = :commentPostId, commentProfileUserName = :commentProfileUserName, commentSubmission = :commentSubmission, commentTime = :commentTime WHERE commentId = :commentId";
+		$query = "UPDATE comment SET commentProfileUserName = :commentProfileUserName, commentPostId = :commentPostId,  commentSubmission = :commentSubmission, commentTime = :commentTime WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["commentPostId" => $this->commentPostId, "commentProfileUserName" => $this->commentProfileUserName, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime, "commentId" => $this->commentId];
+		$parameters = ["commentProfileUserName" => $this->commentProfileUserName, "commentPostId" => $this->commentPostId, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime, "commentId" => $this->commentId];
 		$statement->execute($parameters);
 	}
 
 	public static function getCommentByCommentId(\PDO $pdo, int $commentId) {
-		if ($postId <= 0) {
-			throw new \PDOException("Not a valid post ID.");
+		if ($commentId <= 0) {
+			throw new \PDOException("Not a valid comment ID.");
 		}
 
 		// Create query template
-		$query = "SELECT postId, postProfileUserName, postSubmission, postTime FROM post WHERE postId = :postId";
+		$query = "SELECT commentId, commentProfileUserName, commentPostId, commentSubmission, commentTime FROM comment WHERE commentId = :commentId";
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["postId" => $postId];
+		$parameters = ["commentId" => $commentId];
 		$statement->execute($parameters);
 
 		try {
@@ -311,7 +322,7 @@ class Comment implements \JsonSerializable {
 			$row = $statement->fetch();
 
 			if ($row !== false) {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 			}
 		} catch(\Exception $exception) {
 			throw new \PDOException($exception->getMessage(), 0, $exception);
@@ -321,7 +332,7 @@ class Comment implements \JsonSerializable {
 	}
 
 	public static function getCommentByCommentPostId(\PDO $pdo, int $commentPostId) {
-		if ($postId <= 0) {
+		if ($commentPostId <= 0) {
 			throw new \PDOException("Not a valid post ID.");
 		}
 
@@ -339,7 +350,7 @@ class Comment implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 
 				$comments[$comments->key()] = $comment;
 				$comment->next();
@@ -372,7 +383,7 @@ class Comment implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 
 				$comments[$comments->key()] = $comment;
 				$comment->next();
@@ -407,7 +418,7 @@ class Comment implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 
 				$comments[$comments->key()] = $comment;
 				$comment->next();
@@ -421,7 +432,8 @@ class Comment implements \JsonSerializable {
 
 	public static function getAllComments(\PDO $pdo) {
 		// Create query template and execute
-		$query = "SELECT commentId, commentPostId, commentProfileUserName, commentSubmission, commentTime FROM comment";
+
+		$query = "SELECT commentId, commentProfileUserName, commentPostId, commentSubmission, commentTime FROM comment";
 		$statement = $pdo->prepare($query);
 		$statement->execute();
 
@@ -431,10 +443,11 @@ class Comment implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$comment = new Comment($row["commentId"], $row["commentPostId"], $row["commentSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
+
+				$comment = new Comment($row["commentId"], $row["commentProfileUserName"], $row["commentPostId"], $row["commentSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["commentTime"]));
 
 				$comments[$comments->key()] = $comment;
-				$comment->next();
+				$comments->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
