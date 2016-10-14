@@ -13,6 +13,7 @@ require_once("autoload.php");
  * @version 1.0.0
  **/
 class OauthIdentity implements \JsonSerializable {
+	use ValidateDate;
 
 	/* STATE VARIABLES */
 
@@ -75,7 +76,7 @@ class OauthIdentity implements \JsonSerializable {
 			$this->setOauthIdentityProviderId($newOauthIdentityProviderId);
 			$this->setOauthIdentityProvider($newOauthIdentityProvider);
 			$this->setOauthIdentityAccessToken($newOauthIdentityAccessToken);
-			$this->setOauthIdentityTimeStam($newOauthIdentityTimeStamp);
+			$this->setOauthIdentityTimeStamp($newOauthIdentityTimeStamp);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			// Rethrow the exception
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
@@ -97,7 +98,7 @@ class OauthIdentity implements \JsonSerializable {
 	 * Accessor for oauthIdentity ID
 	 * @return int|null primary key
 	 **/
-	public function getoauthIdentityId() {
+	public function getOauthIdentityId() {
 		return $this->oauthIdentityId;
 	}
 
@@ -287,26 +288,23 @@ class OauthIdentity implements \JsonSerializable {
 
 	/* PDO METHODS */
 
-	public static function getOauthIdentityByOauthIdentityId(\PDO $pdo, int $oauthIdentityId) {
-		if ($oauthIdentityId <= 0) {
+	public static function getOauthIdentityByOauthIdentityId(\PDO $pdo, int $id) {
+		if ($id <= 0) {
 			throw new \PDOException("Not a valid OAuth identity ID.");
 		}
-
 		// Create query template
 		$query = "SELECT oauthIdentityId, oauthIdentityProfileId, oauthIdentityProviderId, oauthIdentityProvider, oauthIdentityAccessToken, oauthIdentityTimeStamp FROM oauthIdentity WHERE oauthIdentityId = :oauthIdentityId";
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["oauthIdentityId" => $oauthIdentityId];
+		$parameters = ["oauthIdentityId" => $id];
 		$statement->execute($parameters);
-
 		try {
 			$oauthIdentity = null;
 			$statement->setFetchMode(\PDO::FETCH_ASSOC);
 			$row = $statement->fetch();
-
 			if ($row !== false) {
-				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
+				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
 			}
 		} catch(\Exception $exception) {
 			throw new \PDOException($exception->getMessage(), 0, $exception);
@@ -315,8 +313,8 @@ class OauthIdentity implements \JsonSerializable {
 		return $oauthIdentity;
 	}
 
-	public static function getOauthIdentityByOauthIdentityProfileId(\PDO $pdo, int $oauthIdentityProfileId) {
-		if ($oauthIdentityProfileId <= 0) {
+	public static function getOauthIdentityByOauthIdentityProfileId(\PDO $pdo, int $profileId) {
+		if ($profileId <= 0) {
 			throw new \PDOException("Not a valid OAuth identity profile ID.");
 		}
 
@@ -325,19 +323,18 @@ class OauthIdentity implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["oauthIdentityProfileId" => $oauthIdentityProfileId];
+		$parameters = ["oauthIdentityProfileId" => $profileId];
 		$statement->execute($parameters);
-
 		// Build an array of matches
 		$oauthIdentities = new \SplFixedArray($statement->rowCount());
 		$statement->setFetchMode(\PDO::FETCH_ASSOC);
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
+				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
 
 				$oauthIdentities[$oauthIdentities->key()] = $oauthIdentity;
-				$oauthIdentity->next();
+				$oauthIdentities->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
@@ -346,10 +343,11 @@ class OauthIdentity implements \JsonSerializable {
 		return $oauthIdentities;
 	}
 
-	public static function getOauthIdentityByOauthIdentityTimeStamp(\PDO $pdo, \DateTime $oauthIdentityTimeStamp) {
+	public static function getOauthIdentityByOauthIdentityTimeStamp(\PDO $pdo, $oauthIdentityTimeStamp) {
 		try {
 			$oauthIdentityTimeStamp = self::validateDateTime($oauthIdentityTimeStamp);
-		} catch(\Exception $exception) {
+		}
+	catch(\Exception $exception) {
 			throw(new \PDOException($exception->getMessage(), 0, $exception));
 		}
 
@@ -367,10 +365,10 @@ class OauthIdentity implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
+				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
 
 				$oauthIdentities[$oauthIdentities->key()] = $oauthIdentity;
-				$oauthIdentity->next();
+				$oauthIdentities->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
@@ -402,10 +400,10 @@ class OauthIdentity implements \JsonSerializable {
 
 		while (($row = $statement->fetch()) !== false) {
 			try {
-				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
+				$oauthIdentity = new OauthIdentity($row["oauthIdentityId"], $row["oauthIdentityProfileId"], $row["oauthIdentityProviderId"], $row["oauthIdentityProvider"], $row["oauthIdentityAccessToken"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["oauthIdentityTimeStamp"]));
 
 				$oauthIdentities[$oauthIdentities->key()] = $oauthIdentity;
-				$oauthIdentity->next();
+				$oauthIdentities->next();
 			} catch(\Exception $exception) {
 				throw new \PDOException($exception->getMessage(), 0, $exception);
 			}
