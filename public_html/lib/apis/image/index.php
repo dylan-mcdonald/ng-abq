@@ -43,12 +43,19 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
+		if ( empty( $id ) === false ) {
+			$image = Beta\Image::getImageByImageId( $pdo, $id );
+			if ( $image !== null ) {
+				$reply->data = $image;
+			}
+		} else {
+
 		//get all images and update reply
 		$images = Beta\Image::getAllImages($pdo) -> toArray();
 				if($images !== null) {
 					$reply->data = $images;
 				}
-			} else if($method === "POST") {
+			}} else if($method === "POST") {
 
 			verifyXsrf();
 			$requestContent = file_get_contents("php://input");
