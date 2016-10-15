@@ -77,7 +77,8 @@ try {
 		$attendee->delete( $pdo, $id );
 
 		// update reply
-		$reply->message = "";
+		$reply->message = "Attendee deleted.";
+
 	} else if ( $method === "POST" ) {
 		verifyXsrf();
 		$requestContent = file_get_contents( "php://input" );
