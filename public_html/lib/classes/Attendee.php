@@ -121,7 +121,7 @@ class Attendee implements \JsonSerializable
         if($this->attendeeId !== null) {
             throw(new \PDOException("Attendee exists"));
         }
-        $query = "INSERT INTO Attendee(attendeeId, attendeeEventId, attendeeProfileId) VALUES(:attendeeId, :attendeeEventId, :attendeeProfileId)";
+        $query = "INSERT INTO attendee(attendeeId, attendeeEventId, attendeeProfileId) VALUES(:attendeeId, :attendeeEventId, :attendeeProfileId)";
         $statement = $pdo->prepare($query);
         $parameters = ["attendeeId" => $this->attendeeId, "attendeeEventId" => $this->attendeeEventId, "attendeeProfileId" => $this->attendeeProfileId];
         $statement->execute($parameters);
@@ -134,23 +134,22 @@ class Attendee implements \JsonSerializable
         if($this->attendeeId === null) {
             throw(new \PDOException(""));
         }
-        $query = "DELETE FROM Attendee WHERE attendeeId = :attendeeId";
+        $query = "DELETE FROM attendee WHERE attendeeId = :attendeeId";
         $statement = $pdo->prepare($query);
         $parameters = ["attendeeId" => $this->attendeeId];
         $statement->execute($parameters);
     }
 
-	public static function getAttendeeByAttendeeId(\PDO $pdo, int $attendeeId) {
+	public static function getAttendeeByAttendeeId(\PDO $pdo, int $id) {
 		// sanitize the attendeeId before searching
-		if($attendeeId <= 0) {
+		if($id <= 0) {
 			throw(new \PDOException("attendee id is not positive"));
 		}
 		// create query template
 		$query = "SELECT attendeeId, attendeeEventId, attendeeProfileId FROM attendee WHERE attendeeId = :attendeeId";
 		$statement = $pdo->prepare($query);
-
 		// bind the attendee id to the place holder in the template
-		$parameters = array("attendeeId" => $attendeeId);
+		$parameters = array("attendeeId" => $id);
 		$statement->execute($parameters);
 
 		// grab the attendee from mySQL
