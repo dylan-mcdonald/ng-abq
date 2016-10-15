@@ -90,8 +90,6 @@ try {
 				// put the new comment content into the feedback
 				$comment->setCommentSubmission( $requestObject->commentSubmission );
 			}
-var_dump($comment);
-//			$comment->setCommentTime( $pdo, $requestObject->commentTime );
 
 			$comment->update( $pdo );
 

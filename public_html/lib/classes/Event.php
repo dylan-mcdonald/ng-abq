@@ -135,7 +135,7 @@ private $eventDate;
 
 		// store the event date
 		try {
-			$newEventDate = $this->validateDate($newEventDate);
+			$newEventDate = $this->validateDateTime($newEventDate);
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -148,16 +148,16 @@ private $eventDate;
 
     public function insert(\PDO $pdo)
     {
-
         if($this->eventId !== null) {
             throw(new \PDOException("An event already exists"));
         }
+
         // create query template
-        $query = "INSERT INTO Event(eventProfileId, eventName, eventDate) VALUES(:eventProfileId, :eventName, :eventDate)";
+        $query = "INSERT INTO event(eventProfileId, eventName, eventDate) VALUES(:eventProfileId, :eventName, :eventDate)";
         $statement = $pdo->prepare($query);
 
 	    // bind the member variables to the place holders in the template
-	    $formattedDate = $this->linkDate->format("Y-m-d H:i:s");
+	    $formattedDate = $this->eventDate->format("Y-m-d H:i:s");
         $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $formattedDate];
         $statement->execute($parameters);
 
@@ -204,8 +204,8 @@ private $eventDate;
         $statement = $pdo->prepare($query);
 
 	    // bind the member variables to the place holders in this template
-	    $formattedDate = $this->linkDate->format("Y-m-d H:i:s");
-        $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $formattedDate];
+	    $formattedDate = $this->eventDate->format("Y-m-d H:i:s");
+        $parameters = ["eventProfileId" => $this->eventProfileId, "eventName" => $this->eventName, "eventDate" => $formattedDate, "eventId" => $this->eventId];
         $statement->execute($parameters);
     }
 
@@ -224,7 +224,7 @@ private $eventDate;
             $statement->setFetchMode(\PDO::FETCH_ASSOC);
             $row = $statement->fetch();
             if($row !== false) {
-                $event = new event($row["eventId"], $row["eventProfileId"], $row["eventName"], $row["eventDate"]);
+                $event = new event($row["eventId"], $row["eventProfileId"], $row["eventName"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["eventDate"]));
             }
         } catch(\Exception $exception) {
             throw(new \PDOException($exception->getMessage(), 0, $exception));
@@ -236,7 +236,7 @@ private $eventDate;
     public static function getEventByEventProfileId(\PDO $pdo, $eventProfileId )
     {
         if($eventProfileId<= 0){
-            throw (new \PDOException("This is wrong on so many levels"));
+            throw (new \PDOException("Profile id is not valid"));
         }
 
         $query = "SELECT eventId, eventProfileId, eventName, eventDate  FROM event WHERE eventProfileId = :eventProfileId";

@@ -12,11 +12,13 @@ namespace Com\NgAbq\Beta;
 trait ValidateDate {
 	private static function validateDate($newDate) {
 		// base case: if the date is a DateTime object, there's no work to be done
+
 		if(is_object($newDate) === true && get_class($newDate) === "DateTime") {
 			return ($newDate);
 		}
 		// treat the date as a mySQL date string: Y-m-d
 		$newDate = trim($newDate);
+
 		if((preg_match("/^(\d{4})-(\d{2})-(\d{2})$/", $newDate, $matches)) !== 1) {
 			throw(new \InvalidArgumentException("date is not a valid date"));
 		}

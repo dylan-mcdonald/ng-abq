@@ -227,7 +227,7 @@ class Post implements \JsonSerializable {
 		$statement->execute($parameters);
 
 		// Grab primary key from MySQL
-		$this->postId = intval($pdo->lastInsertId);
+		$this->postId = intval($pdo->lastInsertId());
 	}
 
 	public function delete(\PDO $pdo) {
