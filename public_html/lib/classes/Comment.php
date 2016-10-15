@@ -268,11 +268,12 @@ class Comment implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["commentProfileUserName" => $this->commentProfileUserName, "commentPostId" => $this->commentPostId, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime];
+		$formattedDate = $this->commentTime->format("Y-m-d H:i:s");
+		$parameters = ["commentProfileUserName" => $this->commentProfileUserName, "commentPostId" => $this->commentPostId, "commentSubmission" => $this->commentSubmission, "commentTime" => $formattedDate];
 		$statement->execute($parameters);
 
 		// Grab primary key from MySQL
-		$this->commentId = intval($pdo->lastInsertId);
+		$this->commentId = intval($pdo->lastInsertId());
 	}
 
 	public function delete(\PDO $pdo) {
@@ -299,7 +300,8 @@ class Comment implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["commentProfileUserName" => $this->commentProfileUserName, "commentPostId" => $this->commentPostId, "commentSubmission" => $this->commentSubmission, "commentTime" => $this->commentTime, "commentId" => $this->commentId];
+		$formattedDate = $this->commentTime->format("Y-m-d H:i:s");
+		$parameters = ["commentProfileUserName" => $this->commentProfileUserName, "commentPostId" => $this->commentPostId, "commentSubmission" => $this->commentSubmission, "commentTime" => $formattedDate, "commentId" => $this->commentId];
 		$statement->execute($parameters);
 	}
 
