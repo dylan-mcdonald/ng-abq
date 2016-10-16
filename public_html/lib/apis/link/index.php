@@ -93,12 +93,12 @@ try {
 			throw(new \InvalidArgumentException ("no content for link.", 405));
 		}
 
-		// retrieve the Link to be deleted
+		// retrieve the Link to be updated
 		$link = Beta\Link::getLinkByLinkId($pdo, $id);
 		if($link === null) {
 			throw(new RuntimeException("Link does not exist", 404));
 		}
-var_dump($requestObject);
+
 		// put the new link url into the link and update
 		$link->setLinkUrl($requestObject->linkUrl);
 
