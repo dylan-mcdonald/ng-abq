@@ -358,6 +358,39 @@ class Link implements \JsonSerializable {
 		return ($link);
 	}
 
+	public static function getLinksByLinkProfileUserName(\PDO $pdo, string $userName) {
+		// sanitize the user name before searching
+		$userName = trim($userName);
+		$userName = filter_var($userName, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+		if(empty($userName) === true) {
+			throw(new \PDOException("user name is invalid"));
+		}
+
+		// create query template
+		$query = "SELECT linkId, linkProfileId, linkProfileUserName, linkUrl, linkDate FROM link WHERE linkProfileUserName LIKE :userName";
+		$statement = $pdo->prepare($query);
+
+		// bind the link profile user name to the place holder in the template
+		$userName = "%$userName%";
+		$parameters = array("userName" => $userName);
+		$statement->execute($parameters);
+
+		// build an array of products
+		$links = new \SplFixedArray($statement->rowCount());
+		$statement->setFetchMode(\PDO::FETCH_ASSOC);
+		while(($row = $statement->fetch()) !== false) {
+			try {
+				$link = new Link($row["linkId"], $row["linkProfileId"], $row["linkProfileUserName"], $row["linkUrl"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["linkDate"]));
+				$links[$links->key()] = $link;
+				$links->next();
+			} catch(\Exception $exception) {
+				// if the row couldn't be converted, rethrow it
+				throw(new \PDOException($exception->getMessage(), 0, $exception));
+			}
+		}
+		return($links);
+	}
+
 	// get all links
 	/**
 	 * gets all links

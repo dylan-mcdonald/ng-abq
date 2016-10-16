@@ -32,6 +32,7 @@ try {
 
 	//sanitize input
 	$id = filter_input(INPUT_GET, "id", FILTER_VALIDATE_INT);
+	$userName = filter_input(INPUT_GET, "userName", FILTER_SANITIZE_STRING);
 
 	//make sure the id is valid for methods that require it
 	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
@@ -43,12 +44,23 @@ try {
 		//set XSRF cookie
 		setXsrfCookie();
 
-		//get all links and update reply
-		$links = Beta\Link::getAllLinks($pdo) -> toArray();
+		if ( empty( $id ) === false ) {
+			$link = Beta\Link::getLinkByLinkId( $pdo, $id );
+			if ( $link !== null ) {
+				$reply->data = $link;
+			}
+		} else if ( empty( $userName ) === false ) {
+			$links = Beta\Link::getLinksByLinkProfileUserName( $pdo, $userName );
+			if ( $links !== null ) {
+				$reply->data = $links;
+			}
+		} else {
+			$links = Beta\Link::getAllLinks($pdo) -> toArray();
+
 		if($links !== null) {
 			$reply->data = $links;
 		}
-	}
+	} }
 	else if($method === "POST") {
 
 		verifyXsrf();
