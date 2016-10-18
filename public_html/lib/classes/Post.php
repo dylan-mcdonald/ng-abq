@@ -223,7 +223,8 @@ class Post implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["postProfileUserName" => $this->postProfileUserName, "postSubmission" => $this->postSubmission, "postTime" => $this->postTime];
+		$formattedDate = $this->postTime->format("Y-m-d H:i:s");
+		$parameters = ["postProfileUserName" => $this->postProfileUserName, "postSubmission" => $this->postSubmission, "postTime" => $formattedDate];
 		$statement->execute($parameters);
 
 		// Grab primary key from MySQL
@@ -254,7 +255,8 @@ class Post implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["postProfileUserName" => $this->postProfileUserName, "postSubmission" => $this->postSubmission, "postTime" => $this->postTime, "postId" => $this->postId];
+		$formattedDate = $this->postTime->format("Y-m-d H:i:s");
+		$parameters = ["postProfileUserName" => $this->postProfileUserName, "postSubmission" => $this->postSubmission, "postTime" => $formattedDate, "postId" => $this->postId];
 		$statement->execute($parameters);
 	}
 
@@ -277,7 +279,7 @@ class Post implements \JsonSerializable {
 			$row = $statement->fetch();
 
 			if ($row !== false) {
-				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
+				$post = new Post($row["postId"], $row["postProfileUserName"], $row["postSubmission"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["postTime"]));
 			}
 		} catch(\Exception $exception) {
 			throw new \PDOException($exception->getMessage(), 0, $exception);
@@ -286,7 +288,7 @@ class Post implements \JsonSerializable {
 		return $post;
 	}
 
-	public static function getPostbyPostTime(\PDO $pdo, \DateTime $postTime) {
+	public static function getPostByPostTime(\PDO $pdo, \DateTime $postTime) {
 		try {
 			$postTime = self::validateDateTime($postTime);
 		} catch(\Exception $exception) {

@@ -60,9 +60,9 @@ try {
 		if (empty($requestObject->postSubmission)) {
 			throw new \InvalidArgumentException("Post content must exist.", 405);
 		}
-		if (empty($requestObject->postTime)) {
-			throw new \InvalidArgumentException("Post timestamp must exist.", 405);
-		}
+//		if (empty($requestObject->postTime)) {
+//			throw new \InvalidArgumentException("Post timestamp must exist.", 405);
+//		}
 
 		// BEGIN PUT AND POST
 		if ($method === "PUT") {
@@ -71,9 +71,9 @@ try {
 				throw new \RuntimeException("Post does not exist.", 404);
 			}
 
-			$post->setPostProfileUserName($pdo, $requestObject->postProfileUserName);
-			$post->setPostSubmission($pdo, $requestObject->postSubmission);
-			$post->setPostTime($pdo, $requestObject->postTime);
+			$post->setPostProfileUserName($requestObject->postProfileUserName);
+			$post->setPostSubmission($requestObject->postSubmission);
+//			$post->setPostTime($requestObject->postTime);
 
 			$post->update($pdo);
 
