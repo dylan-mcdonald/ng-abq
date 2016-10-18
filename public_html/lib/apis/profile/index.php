@@ -40,7 +40,7 @@ try {
 		setXsrfCookie();
 
 		if (empty($id) === false) {
-			$profile = Beta\Profile::getProfileByProfileId($pdo);
+			$profile = Beta\Profile::getProfileByProfileId($pdo, $id);
 			if ($profile !== null) {
 				$reply->data = $profile;
 			}
