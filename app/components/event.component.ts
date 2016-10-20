@@ -5,7 +5,7 @@ import {Event} from "../classes/event";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/event.php"
+	templateUrl: "./templates/events.php"
 })
 
 export class EventComponent implements OnInit {

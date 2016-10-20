@@ -5,7 +5,7 @@ import {Image} from "../classes/image";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/image.php"
+	templateUrl: "./templates/images.php"
 })
 
 export class ImageComponent implements OnInit {

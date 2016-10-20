@@ -5,7 +5,7 @@ import {Link} from "../classes/link";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "./templates/link.php"
+	templateUrl: "./templates/links.php"
 })
 export class LinkComponent implements OnInit {
 	deleted: boolean = false;

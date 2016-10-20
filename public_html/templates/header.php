@@ -18,7 +18,7 @@
 				<li><a routerLink="/discussions">Discussions</a></li>
 				<li><a routerLink="/post_or_comment">Post or Comment</a></li>
 				<li><a routerLink="/photos">Photos</a></li>
-				<li><a routerLink="/photo-ced">Photo - CED</a></li>
+				<li><a routerLink="/photo-cd">Photo - CED</a></li>
 				<li><a routerLink="/links">Links</a></li>
 				<li><a routerLink="/link-ced">Link - CED</a></li>
 				<li><a routerLink="/events">Events</a></li>

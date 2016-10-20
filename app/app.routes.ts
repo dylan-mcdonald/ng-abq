@@ -3,8 +3,10 @@ import {EventComponent} from "./components/event.component";
 import {EventCedComponent} from "./components/event-ced.component";
 import {HeaderComponent} from "./components/header.component";
 import {ImageComponent} from "./components/image.component";
+import {ImageCdComponent} from "./components/image-cd.component";
 import {IntroComponent} from "./components/intro.component";
 import {LinkComponent} from "./components/link.component";
+import {LinkCedComponent} from "./components/link-ced.component";
 import {LoginComponent} from "./components/login.component";
 import {NewsComponent} from "./components/news.component";
 import {PostComponent} from "./components/post.component";
@@ -13,14 +15,16 @@ import {SignupComponent} from "./components/signup.component";
 import {SplashComponent} from "./components/splash.component";
 
 
-export const allAppComponents = [EventComponent, EventCedComponent, HeaderComponent, ImageComponent, IntroComponent, LinkComponent, LoginComponent, NewsComponent, PostComponent, ProfileComponent, SignupComponent, SplashComponent];
+export const allAppComponents = [EventComponent, EventCedComponent, HeaderComponent, ImageComponent, ImageCdComponent, IntroComponent, LinkComponent, LinkCedComponent, LoginComponent, NewsComponent, PostComponent, ProfileComponent, SignupComponent, SplashComponent];
 
 export const routes: Routes = [
 	{path: "events", component: EventComponent},
 	{path: "event-ced", component: EventCedComponent},
 	{path: "discussions", component: PostComponent},
 	{path: "photos", component: ImageComponent},
+	{path: "photo-cd", component: ImageCdComponent},
 	{path: "links", component: LinkComponent},
+	{path: "link-ced", component: LinkCedComponent},
 	{path: "members", component: ProfileComponent},
 
 	//{path: "header", component: HeaderComponent},
