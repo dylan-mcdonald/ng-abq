@@ -11,6 +11,7 @@ import {Status} from "../classes/status";
 export class EventCedComponent implements OnInit {
 	@ViewChild("addEventForm") addEventForm;
 
+	deleted: boolean = false;
 	events: Event[] = [];
 	event: Event = new Event(0, 0, "", "");
 	status: Status = null;
