@@ -1,5 +1,5 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
-import {Router} from "@angular/router";
+import {Router, ActivatedRoute, Params} from "@angular/router";
 import {LinkService} from "../services/link.service";
 import {Link} from "../classes/link";
 import {Status} from "../classes/status";
@@ -10,14 +10,25 @@ import {Status} from "../classes/status";
 
 export class LinkCedComponent implements OnInit {
 	@ViewChild("addLinkForm") addLinkForm;
-
+	deleted: boolean = false;
+	edited: boolean = false;
 	links: Link[] = [];
 	link: Link = new Link(0, 0, "", "", "");
 	status: Status = null;
 
-	constructor(private linkService: LinkService, private router: Router) {}
+	constructor(private linkService: LinkService, private router: Router, private route: ActivatedRoute) {}
 
-	ngOnInit() : void {
+	// ngOnInit() : void {
+	// 	this.reloadLinks();
+	// }
+
+	ngOnInit(): void {
+
+			let id = this.link.linkId;
+			console.log(id);
+			this.linkService.getLink(id)
+				.subscribe(link => this.link = link);
+
 		this.reloadLinks();
 	}
 
@@ -26,15 +37,19 @@ export class LinkCedComponent implements OnInit {
 			.subscribe(links => this.links = links);
 	}
 
-	switchLink(link : Link) : void {
+	changeLink(link : Link) : void {
+		this.edited = true;
 		console.log(link.linkId);
-		this.router.navigate(["/link"], link.linkId);
+		this.linkService.getLink(link.linkId)
+			.subscribe(link => this.link = link);
+		// this.router.navigate(["/link-ced"], link.linkId);
 	}
-//, link.linkId
+
 	createLink() : void {
 		this.link.linkId = null;
 		this.link.linkProfileId = 1;
-
+		this.link.linkProfileUserName = "hannahsue";
+		this.link.linkDate = null;
 		this.linkService.createLink(this.link)
 			.subscribe(status => {
 				this.status = status;
@@ -44,4 +59,6 @@ export class LinkCedComponent implements OnInit {
 				}
 			});
 	}
+
+
 }

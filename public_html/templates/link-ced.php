@@ -1,5 +1,7 @@
 <form #addLinkForm="ngForm" name="addLinkForm" id="addLinkForm" class="form-horizontal well" (ngSubmit)="createLink();" novalidate>
-	<h2>Create Link</h2>
+	<h2 *ngIf="edited === true">Edit Link</h2>
+	<h2 *ngIf="edited === false">Create Link</h2>
+
 
 	<div class="form-group" [ngClass]="{ 'has-error': linkUrl.touched && linkUrl.invalid }">
 		<label for="link">Link Url</label>
@@ -28,7 +30,7 @@
 		<td>{{ link.linkProfileUserName }}</td>
 		<td>{{ link.linkUrl }}</td>
 		<td>{{ link.linkDate.date | date: 'mm-dd-y @ HH:mm' }}</td>
-		<td><a class="btn btn-warning" (click)="switchLink(link)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-		<td><a class="btn btn-warning" (click)="switchLink(link);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
+		<td><a class="btn btn-warning" (click)="changeLink(link)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
+		<td><a class="btn btn-warning" (click)="deleteLink(link);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>
 </table>
