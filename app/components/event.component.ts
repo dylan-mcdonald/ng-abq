@@ -9,7 +9,7 @@ import {Status} from "../classes/status";
 })
 
 export class EventComponent implements OnInit {
-	deleted: boolean = false;
+	delete: boolean = false;
 	events: Event[] = [];
 	event: Event = new Event(0, 0, "", "");
 	status: Status = null;

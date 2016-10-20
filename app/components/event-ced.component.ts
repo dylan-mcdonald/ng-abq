@@ -4,6 +4,7 @@ import {EventService} from "../services/event.service";
 import {Event} from "../classes/event";
 import {Status} from "../classes/status";
 
+
 @Component({
 	templateUrl: "/templates/event-ced.php"
 })
@@ -42,6 +43,15 @@ export class EventCedComponent implements OnInit {
 					this.reloadEvents();
 					this.addEventForm.reset();
 				}
+			});
+	}
+
+	deleteEvent() : void {
+		this.eventService.deleteEvent(this.event.eventId)
+			.subscribe(status => {
+				this.delete = true;
+				this.status = status;
+				this.event = new Event(0, 0, "", "");
 			});
 	}
 }
