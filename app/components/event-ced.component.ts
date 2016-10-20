@@ -5,11 +5,12 @@ import {Event} from "../classes/event";
 import {Status} from "../classes/status";
 
 @Component({
-	templateUrl: "/templates/calendar-form.php"
+	templateUrl: "/templates/event-ced.php"
 })
 
-export class CalendarFormComponent implements OnInit {
-	@ViewChild("eventForm") eventForm;
+export class EventCedComponent implements OnInit {
+	@ViewChild("addEventForm") addEventForm;
+
 	events: Event[] = [];
 	event: Event = new Event(0, 0, "", "");
 	status: Status = null;
@@ -26,16 +27,20 @@ export class CalendarFormComponent implements OnInit {
 	}
 
 	switchEvent(event : Event) : void {
-		this.router.navigate(["/event/", event.eventId]);
+		console.log(event.eventId);
+		this.router.navigate(["/event"], event.eventId);
 	}
-
+//, event.eventId
 	createEvent() : void {
+		this.event.eventId = null;
+		this.event.eventProfileId = 1;
+
 		this.eventService.createEvent(this.event)
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {
 					this.reloadEvents();
-					this.eventForm.reset();
+					this.addEventForm.reset();
 				}
 			});
 	}

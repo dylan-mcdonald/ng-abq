@@ -38,8 +38,8 @@ try {
 				$reply->data = $event;
 			}
 		} else if ( empty( $profileId ) === false ) {
-			$events = Beta\Event::getEventByEventProfileId( $pdo, $profileId );
-			echo 'test1';
+			$events = Beta\Event::getEventByEventProfileId( $pdo, $profileId )->toArray();
+
 			if ( $events !== null ) {
 				$reply->data = $events;
 			}

@@ -14,11 +14,15 @@
 		<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 			<ul class="nav navbar-nav navbar-right">
 				<li><a routerLink="/members">Members</a></li>
-				<li><a routerLink="/discuss">Discuss</a></li>
+				<li><a routerLink="/profile-ced">Profile - CED</a></li>
+				<li><a routerLink="/discussions">Discussions</a></li>
+				<li><a routerLink="/post_or_comment">Post or Comment</a></li>
 				<li><a routerLink="/photos">Photos</a></li>
+				<li><a routerLink="/photo-ced">Photo - CED</a></li>
 				<li><a routerLink="/links">Links</a></li>
-				<li><a routerLink="/calendar">Calendar</a></li>
-				<li><a routerLink="/create-event">New Event</a></li>
+				<li><a routerLink="/link-ced">Link - CED</a></li>
+				<li><a routerLink="/events">Events</a></li>
+				<li><a routerLink="/event-ced">Event - CED</a></li>
 			</ul>
 		</div><!-- /.navbar-collapse -->
 	</div><!-- /.container-fluid -->

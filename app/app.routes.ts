@@ -1,6 +1,6 @@
 import {RouterModule, Routes} from "@angular/router";
-import {CalendarComponent} from "./components/calendar.component";
-import {CalendarFormComponent} from "./components/calendar-form.component";
+import {EventComponent} from "./components/event.component";
+import {EventCedComponent} from "./components/event-ced.component";
 import {HeaderComponent} from "./components/header.component";
 import {ImageComponent} from "./components/image.component";
 import {IntroComponent} from "./components/intro.component";
@@ -13,15 +13,16 @@ import {SignupComponent} from "./components/signup.component";
 import {SplashComponent} from "./components/splash.component";
 
 
-export const allAppComponents = [CalendarComponent, CalendarFormComponent, HeaderComponent, ImageComponent, IntroComponent, LinkComponent, LoginComponent, NewsComponent, PostComponent, ProfileComponent, SignupComponent, SplashComponent];
+export const allAppComponents = [EventComponent, EventCedComponent, HeaderComponent, ImageComponent, IntroComponent, LinkComponent, LoginComponent, NewsComponent, PostComponent, ProfileComponent, SignupComponent, SplashComponent];
 
 export const routes: Routes = [
-	{path: "calendar", component: CalendarComponent},
-	{path: "create-event", component: CalendarFormComponent},
-	{path: "discuss", component: PostComponent},
+	{path: "events", component: EventComponent},
+	{path: "event-ced", component: EventCedComponent},
+	{path: "discussions", component: PostComponent},
 	{path: "photos", component: ImageComponent},
 	{path: "links", component: LinkComponent},
 	{path: "members", component: ProfileComponent},
+
 	//{path: "header", component: HeaderComponent},
 	//{path: "login", component: LoginComponent},
 	//{path: "news", component: NewsComponent},
