@@ -3,7 +3,7 @@ import {Router} from "@angular/router";
 import {EventService} from "../services/event.service";
 import {Event} from "../classes/event";
 import {Status} from "../classes/status";
-
+//superflous comment
 @Component({
 	templateUrl: "/templates/event-ced.php"
 })
