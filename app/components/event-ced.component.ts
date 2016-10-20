@@ -44,4 +44,13 @@ export class EventCedComponent implements OnInit {
 				}
 			});
 	}
+
+	deleteEvent() : void {
+		this.eventService.deleteEvent(this.event.eventId)
+			.subscribe(status => {
+				this.deleted = true;
+				this.status = status;
+				this.event = new Event(0, 0, "", "");
+			});
+	}
 }
