@@ -16,36 +16,55 @@ export class LinkCedComponent implements OnInit {
 	link: Link = new Link(0, 0, "", "", "");
 	status: Status = null;
 
-	constructor(private linkService: LinkService, private router: Router, private route: ActivatedRoute) {}
+	constructor(private linkService: LinkService, private router: Router, private route: ActivatedRoute) {
+	}
 
-	// ngOnInit() : void {
-	// 	this.reloadLinks();
-	// }
-
-	ngOnInit(): void {
-
-			let id = this.link.linkId;
-			console.log(id);
-			this.linkService.getLink(id)
-				.subscribe(link => this.link = link);
-
+	ngOnInit() : void {
 		this.reloadLinks();
 	}
 
-	reloadLinks() : void {
+	reloadLinks(): void {
 		this.linkService.getAllLinks()
 			.subscribe(links => this.links = links);
 	}
 
-	changeLink(link : Link) : void {
+	// changeLink(link : Link) : void {
+	// 	this.edited = true;
+	// 	console.log(link.linkId);
+	// 	this.linkService.editLink(link.linkId)
+	// 		.subscribe(link => this.link = link);
+	// 	// this.router.navigate(["/link-ced"], link.linkId);
+	// }
+
+	changeLink(link: Link): void {
 		this.edited = true;
-		console.log(link.linkId);
-		this.linkService.getLink(link.linkId)
-			.subscribe(link => this.link = link);
-		// this.router.navigate(["/link-ced"], link.linkId);
+		console.log(this.link);
+		this.linkService.editLink(this.link)
+			.subscribe(status => {
+				this.status = status;
+				if(status.status === 200) {
+					this.reloadLinks();
+					this.addLinkForm.reset();
+				}
+			});
 	}
 
-	createLink() : void {
+	// 	switchLink(link : Link) : void {
+	// 	this.router.navigate(["/link-ced/", link.linkId]);
+	// }
+
+	switchLink(link : Link): void {
+		this.edited = true;
+
+		// let id = this.link.linkId;
+		console.log(this.link);
+		// this.linkService.getLink(id)
+		// 	.subscribe(link => this.link = link);
+
+		this.reloadLinks();
+	}
+
+	createLink(): void {
 		this.link.linkId = null;
 		this.link.linkProfileId = 1;
 		this.link.linkProfileUserName = "hannahsue";
@@ -60,5 +79,13 @@ export class LinkCedComponent implements OnInit {
 			});
 	}
 
+	deleteLink() : void {
+		this.linkService.deleteLink(this.link.linkId)
+			.subscribe(status => {
+				this.deleted = true;
+				this.status = status;
+				this.link = new Link(0, 0, "", "", "");
+			});
+	}
 
 }
