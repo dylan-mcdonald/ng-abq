@@ -19,7 +19,7 @@ export class LinkCedComponent implements OnInit {
 	constructor(private linkService: LinkService, private router: Router, private route: ActivatedRoute) {
 	}
 
-	ngOnInit() : void {
+	ngOnInit(): void {
 		this.reloadLinks();
 	}
 
@@ -27,14 +27,6 @@ export class LinkCedComponent implements OnInit {
 		this.linkService.getAllLinks()
 			.subscribe(links => this.links = links);
 	}
-
-	// changeLink(link : Link) : void {
-	// 	this.edited = true;
-	// 	console.log(link.linkId);
-	// 	this.linkService.editLink(link.linkId)
-	// 		.subscribe(link => this.link = link);
-	// 	// this.router.navigate(["/link-ced"], link.linkId);
-	// }
 
 	changeLink(link: Link): void {
 		this.edited = true;
@@ -50,24 +42,12 @@ export class LinkCedComponent implements OnInit {
 			});
 	}
 
-		switchLink(link : Link) : void {
-			this.edited = true;
-			console.log(link);
-			this.linkService.getLink(link.linkId)
-				.subscribe(link => this.link = link);
-			// this.router.navigate(["/link-ced/", link.linkId]);
+	switchLink(link: Link): void {
+		this.edited = true;
+		console.log(link);
+		this.linkService.getLink(link.linkId)
+			.subscribe(link => this.link = link);
 	}
-
-	// switchLink(link): void {
-	// 	this.edited = true;
-	// 	this.addLinkForm.reset();
-	// 	// let id = this.link.linkId;
-	// 	console.log(this.link);
-	// 	// this.linkService.getLink(id)
-	// 	// 	.subscribe(link => this.link = link);
-	//
-	// 	// this.reloadLinks();
-	// }
 
 	createLink(): void {
 		this.link.linkId = null;
@@ -84,13 +64,24 @@ export class LinkCedComponent implements OnInit {
 			});
 	}
 
-	deleteLink() : void {
-		this.linkService.deleteLink(this.link.linkId)
+	deleteLink(link: Link): void {
+		console.log(link);
+		this.linkService.deleteLink(link.linkId)
 			.subscribe(status => {
-				this.deleted = true;
 				this.status = status;
-				this.link = new Link(0, 0, "", "", "");
+				console.log(10);
+				// if(status.status === 200) {
+					this.deleted = true;
+					console.log(11);
+					this.reloadLinks();
+					console.log(12);
+					this.addLinkForm.reset();
+					console.log(13);
+				console.log(this.status);
+				// }
+					// this.link = new Link(0, 0, "", "", "");
 			});
+		// this.reloadLinks();
 	}
 
 }

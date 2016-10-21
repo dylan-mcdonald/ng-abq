@@ -107,6 +107,7 @@ try {
 
 		// update reply
 		$reply->message = "Link updated OK";
+
 	}	else if($method === "DELETE") {
 		verifyXsrf();
 
@@ -121,6 +122,7 @@ try {
 
 		// update reply
 		$reply->message = "Link deleted OK";
+
 	} else {
 		throw (new InvalidArgumentException("Invalid HTTP method request"));
 	}
