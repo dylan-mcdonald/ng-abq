@@ -43,26 +43,31 @@ export class LinkCedComponent implements OnInit {
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {
+					this.edited = false;
 					this.reloadLinks();
 					this.addLinkForm.reset();
 				}
 			});
 	}
 
-	// 	switchLink(link : Link) : void {
-	// 	this.router.navigate(["/link-ced/", link.linkId]);
-	// }
-
-	switchLink(link : Link): void {
-		this.edited = true;
-
-		// let id = this.link.linkId;
-		console.log(this.link);
-		// this.linkService.getLink(id)
-		// 	.subscribe(link => this.link = link);
-
-		this.reloadLinks();
+		switchLink(link : Link) : void {
+			this.edited = true;
+			console.log(link);
+			this.linkService.getLink(link.linkId)
+				.subscribe(link => this.link = link);
+			// this.router.navigate(["/link-ced/", link.linkId]);
 	}
+
+	// switchLink(link): void {
+	// 	this.edited = true;
+	// 	this.addLinkForm.reset();
+	// 	// let id = this.link.linkId;
+	// 	console.log(this.link);
+	// 	// this.linkService.getLink(id)
+	// 	// 	.subscribe(link => this.link = link);
+	//
+	// 	// this.reloadLinks();
+	// }
 
 	createLink(): void {
 		this.link.linkId = null;

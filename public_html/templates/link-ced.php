@@ -19,8 +19,18 @@
 
 <form *ngIf="edited === true" #addLinkForm="ngForm" name="addLinkForm" id="addLinkForm" class="form-horizontal well" (ngSubmit)="changeLink();" novalidate>
 
-	<!--	<h2 *ngIf="edited === true">Edit Link</h2>-->
 	<h2>Edit Link</h2>
+
+	<table class="table table-bordered table-responsive table-striped table-word-wrap">
+		<tr><th>Id</th><th>Submitter</th><th>Url</th><th>Submitted</th><th>Edit</th><th>Delete</th></tr>
+
+			<td>{{ link.linkId }}</td>
+			<td>{{ link.linkProfileUserName }}</td>
+			<td>{{ link.linkUrl }}</td>
+			<td>{{ link.linkDate.date | date: 'mm-dd-y @ HH:mm' }}</td>
+
+
+	</table>
 
 	<div class="form-group" [ngClass]="{ 'has-error': linkUrl.touched && linkUrl.invalid }">
 		<label for="link">Link Url</label>
