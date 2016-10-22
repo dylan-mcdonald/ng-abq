@@ -30,8 +30,8 @@ try {
     if($method === "GET") {
 //set Xsrf cookie
         setXsrfCookie("/");
-        $userActivationToken = $_GET["ActivationToken"];
-        if(empty($userActivationToken) === true|| ctype_xdigit($userActivationToken) === false) {
+        $profileActivationToken = $_GET["ActivationToken"];
+        if(empty($profileActivationToken) === true|| ctype_xdigit($profileActivationToken) === false) {
             throw(new \RangeException ("No ActivationToken Code"));
         }
         $profile = profile::getProfileByProifleActivationToken($pdo, $profileActivationToken);
