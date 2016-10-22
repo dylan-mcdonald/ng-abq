@@ -52,6 +52,9 @@ export class EventCedComponent implements OnInit {
 				this.deleted = true;
 				this.status = status;
 				this.event = new Event(0, 0, "", "");
+
 			});
+		this.reloadEvents();
 	}
+
 }

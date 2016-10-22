@@ -487,6 +487,34 @@ class Profile implements \JsonSerializable {
 			}
 		}
 	}
+    public static function getProfileByProfileActivationToken(\PDO $pdo, $profileActivationToken) {
+        $profileActivationToken = trim($profileActivationToken);
+        $profileActivationToken = filter_var($profileActivationToken, FILTER_SANITIZE_STRING, FILTER_FLAG_NO_ENCODE_QUOTES);
+        if(empty($profileActivationToken) === true) {
+            throw(new \PDOException ("Your activation token is invalid"));
+        }
+        $query = "SELECT profileId, profileAdmin, profileNameFirst, profileNameLast, profileEmail, profileUserName, profileSalt, profileHash, profileActivationToken FROM profile WHERE :attribute like :search";
+        $statement = $pdo->prepare($query);
+
+        $parameters = array("profileActivationToken" => $profileActivationToken);
+        $statement->execute($parameters);
+
+        $statement->setFetchMode(\PDO::FETCH_ASSOC);
+        try {
+            $profile = null;
+            $statement->setFetchMode(\PDO::FETCH_ASSOC);
+            $row = $statement->fetch();
+            if($row !== false) {
+                $profile = new Profile($row["profileId"], $row["profileAdmin"], $row["profileNameFirst"], $row["profileNameLast"], $row["profileEmail"], $row["profileUserName"],$row["profileSalt"],$row["profileHash"], $row["profileActivationToken"]);
+            }
+        } catch
+        (\Exception $exception) {
+            throw(new \PDOException($exception->getMessage(), 0, $exception));
+        }
+        return ($profile);
+    }
+
+
 
 	public static function getAllProfiles(\PDO $pdo) {
 		// Create query template and execute
