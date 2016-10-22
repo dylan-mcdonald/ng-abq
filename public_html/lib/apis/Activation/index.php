@@ -36,9 +36,9 @@ try {
         }
         $profile = profile::getProfileByProifleActivationToken($pdo, $profileActivationToken);
         if(empty($profile)) {
-            throw(new \InvalidArgumentException ("no user for activation token"));
+            throw(new \InvalidArgumentException ("nope"));
         }
-        $profile->setUserActivationToken(null);
+        $profile->setProfileActivationToken(null);
         $profile->update($pdo);
         $reply->message = "Thank you This is halloween, I mean this is Angular!";
         $message = <<< EOF
