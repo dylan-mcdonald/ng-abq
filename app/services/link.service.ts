@@ -15,7 +15,7 @@ export class LinkService extends BaseService {
 
 	deleteLink(linkId: number) : Observable<Status> {
 		return(this.http.delete(this.linkUrl + linkId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

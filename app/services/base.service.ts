@@ -13,6 +13,7 @@ export abstract class BaseService {
 		if(json.status !== 200) {
 			throw(new Error("Bad API status: " + json.status));
 		}
+		console.log(json.status);
 		return(json.data);
 	}
 
@@ -20,7 +21,7 @@ export abstract class BaseService {
 		if(response.status < 200 || response.status >= 300) {
 			throw(new Error("Bad response status: " + response.status))
 		}
-
+		console.log("test1");
 		let json = response.json();
 		let jsonStatus = "alert-success";
 		if(json.status !== 200) {
@@ -31,8 +32,8 @@ export abstract class BaseService {
 	}
 
 	protected handleError(error:any) {
+		console.log("test2");
 		let message = error.message;
-		console.log(message);
 		return(Observable.throw(message));
 	}
 }

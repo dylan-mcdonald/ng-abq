@@ -22,7 +22,7 @@
 	<h2>Edit Link</h2>
 
 	<table class="table table-bordered table-responsive table-striped table-word-wrap">
-		<tr><th>Id</th><th>Submitter</th><th>Url</th><th>Submitted</th><th>Edit</th><th>Delete</th></tr>
+		<tr><th>Id</th><th>Submitter</th><th>Url</th><th>Submitted</th></tr>
 
 			<td>{{ link.linkId }}</td>
 			<td>{{ link.linkProfileUserName }}</td>

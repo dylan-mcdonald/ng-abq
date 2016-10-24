@@ -34,6 +34,7 @@ export class LinkCedComponent implements OnInit {
 		this.linkService.editLink(this.link)
 			.subscribe(status => {
 				this.status = status;
+				console.log(status.status);
 				if(status.status === 200) {
 					this.edited = false;
 					this.reloadLinks();
@@ -44,11 +45,10 @@ export class LinkCedComponent implements OnInit {
 
 	switchLink(link: Link): void {
 		this.edited = true;
-		console.log(link);
+		console.log("edit linkId",link.linkId);
 		this.linkService.getLink(link.linkId)
 			.subscribe(link => this.link = link);
 	}
-
 	createLink(): void {
 		this.link.linkId = null;
 		this.link.linkProfileId = 1;
@@ -65,23 +65,15 @@ export class LinkCedComponent implements OnInit {
 	}
 
 	deleteLink(link: Link): void {
-		console.log(link);
+		console.log("delete linkId", link.linkId);
 		this.linkService.deleteLink(link.linkId)
 			.subscribe(status => {
 				this.status = status;
-				console.log(10);
-				// if(status.status === 200) {
-					this.deleted = true;
-					console.log(11);
+				if(status.status === 200) {
 					this.reloadLinks();
-					console.log(12);
 					this.addLinkForm.reset();
-					console.log(13);
-				console.log(this.status);
-				// }
-					// this.link = new Link(0, 0, "", "", "");
+				}
 			});
-		// this.reloadLinks();
 	}
 
 }
