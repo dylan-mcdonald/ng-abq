@@ -44,7 +44,7 @@ export class EventCedComponent implements OnInit {
 				console.log(status.status);
 				if(status.status === 200) {
 					this.edited = false;
-					this.reloadEvents();
+					this.ngOnInit();
 					this.addEventForm.reset();
 				}
 			});

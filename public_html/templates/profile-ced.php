@@ -60,6 +60,6 @@
 		<td>{{ profile.profileUserName }}</td>
 		<td>{{ profile.profileEmail }}</td>
 		<td><a class="btn btn-warning" (click)="switchProfile(profile)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
-		<td><a class="btn btn-warning" (click)="switchProfile(profile);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
+		<td><a class="btn btn-warning" (click)="deleteProfile(profile);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>
 </table>

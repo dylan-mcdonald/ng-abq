@@ -32,6 +32,9 @@ export class ProfileService extends BaseService {
 	}
 
 	createProfile(profile: Profile) : Observable<Status> {
+		profile.profileSalt = "1234567890098765432112345678900987654321123456789009876543211234";
+		profile.profileHash = "12345678900987654321123456789009876543211234567890098765432112341234567890098765432112345678900987654321123456789009876543211234";
+		profile.profileActivationToken = "1234567890098765432112345678900987654321123456789009876543211234";
 		return(this.http.post(this.profileUrl, profile)
 			.map(this.extractMessage)
 			.catch(this.handleError));

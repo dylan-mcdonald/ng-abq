@@ -37,7 +37,7 @@ export class LinkCedComponent implements OnInit {
 				console.log(status.status);
 				if(status.status === 200) {
 					this.edited = false;
-					this.reloadLinks();
+					this.ngOnInit();
 					this.addLinkForm.reset();
 				}
 			});

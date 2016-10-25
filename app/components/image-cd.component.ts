@@ -44,7 +44,7 @@ export class ImageCdComponent implements OnInit {
 				console.log(status.status);
 				if(status.status === 200) {
 					this.edited = false;
-					this.reloadImages();
+					this.ngOnInit();
 					this.addImageForm.reset();
 				}
 			});

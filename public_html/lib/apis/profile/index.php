@@ -91,7 +91,47 @@ try {
 		$profile->update($pdo);
 
 		$reply->message = "Profile updated successfully.";
-	} else if ($method === "DELETE") {
+	} else if ($method === "POST") {
+
+		  $requestContent = file_get_contents("php://input");
+		  $requestObject = json_decode($requestContent);
+
+		  if (empty($requestObject->profileAdmin)) {
+			  throw new \InvalidArgumentException("Profile admin flag must exist.", 405);
+		  }
+		  if (empty($requestObject->profileNameFirst)) {
+			  throw new \InvalidArgumentException("Profile first name must exist.", 405);
+		  }
+		  if (empty($requestObject->profileNameLast)) {
+			  throw new \InvalidArgumentException("Profile last name must exist.", 405);
+		  }
+		  if (empty($requestObject->profileEmail)) {
+			  throw new \InvalidArgumentException("Profile email must exist.", 405);
+		  }
+		  if (empty($requestObject->profileUserName)) {
+			  throw new \InvalidArgumentException("Profile username must exist.", 405);
+		  }
+
+		  $profile = Beta\Profile::getProfileByProfileId($pdo, $id);
+		  if ($profile === null) {
+			  throw new \RuntimeException("Profile does not exist.", 404);
+		  }
+
+		  $profile->setProfileAdmin($requestObject->profileAdmin);
+		  $profile->setProfileNameFirst($requestObject->profileNameFirst);
+		  $profile->setProfileNameLast($requestObject->profileNameLast);
+		  $profile->setProfileEmail($requestObject->profileEmail);
+		  $profile->setProfileUserName($requestObject->profileUserName);
+
+		  // create new profile and insert into the database
+		  $profile = new Beta\Profile(null, $requestObject->profileAdmin, $requestObject->profileNameFirst, $requestObject->profileNameLast, $requestObject->profileEmail, $requestObject->profileUserName, $requestObject->profileSalt, $requestObject->profileHash, $requestObject->profileActivationToken);
+		  $profile->insert($pdo);
+
+		  // update reply
+		  $reply->message = "Profile created ok";
+	  }
+
+		else if ($method === "DELETE") {
 		verifyXsrf();
 
 		$profile = Beta\Profile::getProfileByProfileId($pdo, $id);

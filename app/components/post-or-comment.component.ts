@@ -10,7 +10,8 @@ import {Status} from "../classes/status";
 
 export class PostOrCommentComponent implements OnInit {
 	@ViewChild("addPostForm") addPostForm;
-
+	deleted: boolean = false;
+	edited: boolean = false;
 	posts: Post[] = [];
 	post: Post = new Post(0, "", "", "");
 	status: Status = null;
@@ -26,16 +27,44 @@ export class PostOrCommentComponent implements OnInit {
 			.subscribe(posts => this.posts = posts);
 	}
 
-	switchPost(post : Post) : void {
-		console.log(post.postId);
-		this.router.navigate(["/post"], post.postId);
+	switchPost(post: Post): void {
+		this.edited = true;
+		console.log("edit postId",post.postId);
+		this.postService.getPost(post.postId)
+			.subscribe(post => this.post = post);
 	}
-//, post.postId
-	createPost() : void {
+
+	changePost(post: Post): void {
+		this.edited = true;
+		console.log(this.post);
+		this.postService.editPost(this.post)
+			.subscribe(status => {
+				this.status = status;
+				console.log(status.status);
+				if(status.status === 200) {
+					this.edited = false;
+					this.ngOnInit();
+					this.addPostForm.reset();
+				}
+			});
+	}
+
+	createPost(): void {
 		this.post.postId = null;
 		this.post.postProfileUserName = "billybob";
-
 		this.postService.createPost(this.post)
+			.subscribe(status => {
+				this.status = status;
+				if(status.status === 200) {
+					this.reloadPosts();
+					this.addPostForm.reset();
+				}
+			});
+	}
+
+	deletePost(post: Post): void {
+		console.log("delete postId", post.postId);
+		this.postService.deletePost(post.postId)
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {

@@ -10,7 +10,8 @@ import {Status} from "../classes/status";
 
 export class ProfileCedComponent implements OnInit {
 	@ViewChild("addProfileForm") addProfileForm;
-
+	deleted: boolean = false;
+	edited: boolean = false;
 	profiles: Profile[] = [];
 	profile: Profile = new Profile(0, 0, "", "", "", "", "", "", "");
 	status: Status = null;
@@ -26,16 +27,44 @@ export class ProfileCedComponent implements OnInit {
 			.subscribe(profiles => this.profiles = profiles);
 	}
 
-	switchProfile(profile : Profile) : void {
-		console.log(profile.profileId);
-		this.router.navigate(["/profile"], profile.profileId);
+	switchProfile(profile: Profile): void {
+		this.edited = true;
+		console.log("edit profileId",profile.profileId);
+		this.profileService.getProfile(profile.profileId)
+			.subscribe(profile => this.profile = profile);
 	}
-//, profile.profileId
-	createProfile() : void {
-		this.profile.profileId = null;
-		this.profile.profileId = 1;
 
+	changeProfile(profile: Profile): void {
+		this.edited = true;
+		console.log(this.profile);
+		this.profileService.editProfile(this.profile)
+			.subscribe(status => {
+				this.status = status;
+				console.log(status.status);
+				if(status.status === 200) {
+					this.edited = false;
+					this.ngOnInit();
+					this.addProfileForm.reset();
+				}
+			});
+	}
+
+	createProfile(): void {
+		console.log("create");
+		this.profile.profileId = null;
 		this.profileService.createProfile(this.profile)
+			.subscribe(status => {
+				this.status = status;
+				if(status.status === 200) {
+					this.reloadProfiles();
+					this.addProfileForm.reset();
+				}
+			});
+	}
+
+	deleteProfile(profile: Profile): void {
+		console.log("delete profileId", profile.profileId);
+		this.profileService.deleteProfile(profile.profileId)
 			.subscribe(status => {
 				this.status = status;
 				if(status.status === 200) {
