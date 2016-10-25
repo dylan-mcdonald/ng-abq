@@ -2,12 +2,22 @@
 	<h2>Create Image</h2>
 
 	<div class="form-group" [ngClass]="{ 'has-error': imageFileName.touched && imageFileName.invalid }">
-		<label for="image">Image FileName</label>
+		<label for="name">Image FileName</label>
 		<div class="input-group">
 			<div class="input-group-addon">
 				<i class="fa fa-comment" aria-hidden="true"></i>
 			</div>
-			<input type="text" name="image" id="image" class="form-control" maxlength="50" required [(ngModel)]="image.imageFileName" #imageFileName="ngModel" />
+			<input type="text" name="name" id="name" class="form-control" maxlength="50" required [(ngModel)]="image.imageFileName" #imageFileName="ngModel" />
+		</div>
+	</div>
+
+	<div class="form-group" [ngClass]="{ 'has-error': imageType.touched && imageType.invalid }">
+		<label for="type">Image Type</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-comment" aria-hidden="true"></i>
+			</div>
+			<input type="text" name="type" id="type" class="form-control" maxlength="50" required [(ngModel)]="image.imageType" #imageType="ngModel" />
 		</div>
 	</div>
 
@@ -28,6 +38,6 @@
 		<td>{{ image.imageProfileId }}</td>
 		<td>{{ image.imageFileName }}</td>
 		<td>{{ image.imageType }}</td>
-		<td><a class="btn btn-warning" (click)="switchImage(image);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
+		<td><a class="btn btn-warning" (click)="deleteImage(image);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>
 </table>
