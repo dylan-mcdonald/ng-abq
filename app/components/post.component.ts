@@ -35,7 +35,7 @@ export class PostComponent implements OnInit {
 			.subscribe(status => {
 				this.deleted = true;
 				this.status = status;
-				this.post = new Post(0,  , "", "");
+				this.post = new Post(0, "" , "", "");
 			});
 	}
 

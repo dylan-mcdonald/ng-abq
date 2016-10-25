@@ -1,13 +1,43 @@
 <form #addProfileForm="ngForm" name="addProfileForm" id="addProfileForm" class="form-horizontal well" (ngSubmit)="createProfile();" novalidate>
 	<h2>Create Profile</h2>
 
-	<div class="form-group" [ngClass]="{ 'has-error': profileUserName.touched && profileUserName.invalid }">
-		<label for="profile">Profile UserName</label>
+	<div class="form-group" [ngClass]="{ 'has-error': profileNameFirst.touched && profileUserName.invalid }">
+		<label for="first">First Name</label>
 		<div class="input-group">
 			<div class="input-group-addon">
 				<i class="fa fa-comment" aria-hidden="true"></i>
 			</div>
-			<input type="text" name="profile" id="profile" class="form-control" maxlength="50" required [(ngModel)]="profile.profileUserName" #profileUserName="ngModel" />
+			<input type="text" name="first" id="first" class="form-control" maxlength="50" required [(ngModel)]="profile.profileNameFirst" #profileNameFirst="ngModel" />
+		</div>
+	</div>
+
+	<div class="form-group" [ngClass]="{ 'has-error': profileNameLast.touched && profileUserName.invalid }">
+		<label for="last">Last Name</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-comment" aria-hidden="true"></i>
+			</div>
+			<input type="text" name="last" id="last" class="form-control" maxlength="50" required [(ngModel)]="profile.profileNameLast" #profileNameLast="ngModel" />
+		</div>
+	</div>
+
+	<div class="form-group" [ngClass]="{ 'has-error': profileUserName.touched && profileUserName.invalid }">
+		<label for="user">Username</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-comment" aria-hidden="true"></i>
+			</div>
+			<input type="text" name="user" id="user" class="form-control" maxlength="50" required [(ngModel)]="profile.profileUserName" #profileUserName="ngModel" />
+		</div>
+	</div>
+
+	<div class="form-group" [ngClass]="{ 'has-error': profileEmail.touched && profileUserName.invalid }">
+		<label for="email">Email</label>
+		<div class="input-group">
+			<div class="input-group-addon">
+				<i class="fa fa-comment" aria-hidden="true"></i>
+			</div>
+			<input type="text" name="email" id="email" class="form-control" maxlength="50" required [(ngModel)]="profile.profileEmail" #profileEmail="ngModel" />
 		</div>
 	</div>
 
