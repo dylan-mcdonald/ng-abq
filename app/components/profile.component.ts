@@ -17,11 +17,6 @@ export class ProfileComponent implements OnInit {
 	constructor(private profileService: ProfileService, private router: Router, private route: ActivatedRoute) {}
 
 	ngOnInit(): void {
-		this.route.params.forEach((params : Params) => {
-			let profileId = +params["profileId"];
-			this.profileService.getProfile(profileId)
-				.subscribe(profile => this.profile = profile);
-		});
 		this.reloadProfiles();
 	}
 

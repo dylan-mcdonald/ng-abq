@@ -17,11 +17,6 @@ export class ImageComponent implements OnInit {
 	constructor(private imageService: ImageService, private router: Router, private route: ActivatedRoute) {}
 
 	ngOnInit(): void {
-		this.route.params.forEach((params : Params) => {
-			let imageId = +params["imageId"];
-			this.imageService.getImage(imageId)
-				.subscribe(image => this.image = image);
-		});
 		this.reloadImages();
 	}
 

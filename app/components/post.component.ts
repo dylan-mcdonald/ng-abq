@@ -17,11 +17,6 @@ export class PostComponent implements OnInit {
 	constructor(private postService: PostService, private router: Router, private route: ActivatedRoute) {}
 
 	ngOnInit(): void {
-		this.route.params.forEach((params : Params) => {
-			let postId = +params["postId"];
-			this.postService.getPost(postId)
-				.subscribe(post => this.post = post);
-		});
 		this.reloadPosts();
 	}
 

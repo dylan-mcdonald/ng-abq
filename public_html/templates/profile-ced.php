@@ -22,12 +22,13 @@
 
 <h1>All Profiles by Member {{ profile.profileProfileUserName }}</h1>
 <table class="table table-bordered table-responsive table-striped table-word-wrap">
-	<tr><th>Id</th><th>Submitter</th><th>UserName</th><th>Submitted</th><th>Edit</th><th>Delete</th></tr>
+	<tr><th>Id</th><th>First Name</th><th>Last Name</th><th>Username</th><th>Email</th><th>Edit</th><th>Delete</th></tr>
 	<tr *ngFor="let profile of profiles">
 		<td>{{ profile.profileId }}</td>
-		<td>{{ profile.profileProfileUserName }}</td>
+		<td>{{ profile.profileNameFirst }}</td>
+		<td>{{ profile.profileNameLast }}</td>
 		<td>{{ profile.profileUserName }}</td>
-		<td>{{ profile.profileDate.date | date: 'mm-dd-y @ HH:mm' }}</td>
+		<td>{{ profile.profileEmail }}</td>
 		<td><a class="btn btn-warning" (click)="switchProfile(profile)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 		<td><a class="btn btn-warning" (click)="switchProfile(profile);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>

@@ -16,11 +16,6 @@ export class LinkComponent implements OnInit {
 	constructor(private linkService: LinkService, private route: ActivatedRoute) {}
 
 	ngOnInit(): void {
-		this.route.params.forEach((params : Params) => {
-		let linkId = +params["linkId"];
-		this.linkService.getLink(linkId)
-		.subscribe(link => this.link = link);
-		});
 		this.reloadLinks();
 	}
 
