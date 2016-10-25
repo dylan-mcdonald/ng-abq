@@ -135,7 +135,9 @@ private $eventDate;
 
 		// store the event date
 		try {
+
 			$newEventDate = $this->validateDateTime($newEventDate);
+
 		} catch(\InvalidArgumentException $invalidArgument) {
 			throw(new \InvalidArgumentException($invalidArgument->getMessage(), 0, $invalidArgument));
 		} catch(\RangeException $range) {
@@ -226,9 +228,13 @@ private $eventDate;
             if($row !== false) {
                 $event = new event($row["eventId"], $row["eventProfileId"], $row["eventName"], \DateTime::createFromFormat("Y-m-d H:i:s", $row["eventDate"]));
             }
+            $preFormattedDate = $event->eventDate;
+	        $postFormattedDate = $preFormattedDate->format ("Y-m-d H:i:s");
+	        $event->eventDate = $postFormattedDate;
         } catch(\Exception $exception) {
             throw(new \PDOException($exception->getMessage(), 0, $exception));
         }
+
         return ($event);
 
     }

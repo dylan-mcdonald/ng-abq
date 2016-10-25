@@ -27,10 +27,9 @@ export class EventService extends BaseService {
 			.catch(this.handleError));
 	}
 
-	getEvent(id: number) : Observable<Event> {
-		console.log(id);
-
-		return(this.http.get(this.eventUrl + id)
+	getEvent(eventid: number) : Observable<Event> {
+		console.log(eventid);
+		return(this.http.get(this.eventUrl + eventid)
 			.map(this.extractData)
 			.catch(this.handleError));
 		}

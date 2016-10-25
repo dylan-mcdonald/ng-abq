@@ -28,6 +28,11 @@ try {
 	$id        = filter_input( INPUT_GET, "id", FILTER_VALIDATE_INT );
 	$profileId = filter_input( INPUT_GET, "profileId", FILTER_VALIDATE_INT );
 
+	//make sure the id is valid for methods that require it
+	if(($method === "DELETE" || $method === "PUT") && (empty($id) === true || $id < 0)) {
+		throw(new InvalidArgumentException("id cannot be empty or negative", 405));
+	}
+
 	if ( $method === "GET" ) {
 		//set XSRF cookie
 		setXsrfCookie();
@@ -39,7 +44,6 @@ try {
 			}
 		} else if ( empty( $profileId ) === false ) {
 			$events = Beta\Event::getEventByEventProfileId( $pdo, $profileId )->toArray();
-
 			if ( $events !== null ) {
 				$reply->data = $events;
 			}
@@ -57,20 +61,24 @@ try {
 
 		if ( $method === "PUT" ) {
 
+			//make sure link content is available
+			if(empty($requestObject->eventName) === true) {
+				throw(new \InvalidArgumentException ("no content for name.", 405));
+			}
+
+			//make sure link content is available
+			if(empty($requestObject->eventDate) === true) {
+				throw(new \InvalidArgumentException ("no content for date.", 405));
+			}
+
 			$event = Beta\Event::getEventByEventId( $pdo, $id );
 			if ( $event === null ) {
 				throw( new RuntimeException( "", 404 ) );
 			}
-			if ( empty( $requestObject->eventProfileId ) !== true ) {
-				// put the new event content into the feedback
-				$event->setEventProfileId( $requestObject->eventProfileId );
-			}
-			if ( empty( $requestObject->eventName ) !== true ) {
-				// put the new event content into the feedback
-				$event->setEventName( $requestObject->eventName );
-			}
-var_dump($event);
-			// update link
+			$event->setEventName($requestObject->eventName);
+			$event->setEventDate($requestObject->eventDate);
+
+			// update event
 			$event->update( $pdo );
 
 			// update reply
