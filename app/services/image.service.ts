@@ -15,7 +15,7 @@ export class ImageService extends BaseService {
 
 	deleteImage(imageId: number) : Observable<Status> {
 		return(this.http.delete(this.imageUrl + imageId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

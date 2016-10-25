@@ -15,7 +15,7 @@ export class OauthIdentityService extends BaseService {
 
 	deleteOauthIdentity(oauthIdentityId: number) : Observable<Status> {
 		return(this.http.delete(this.oauthIdentityUrl + oauthIdentityId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

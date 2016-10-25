@@ -17,7 +17,7 @@ export class EventService extends BaseService {
 
 	deleteEvent(eventId: number) : Observable<Status> {
 		return(this.http.delete(this.eventUrl + eventId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

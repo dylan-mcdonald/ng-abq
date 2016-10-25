@@ -15,7 +15,7 @@ export class ProfileService extends BaseService {
 
 	deleteProfile(profileId: number) : Observable<Status> {
 		return(this.http.delete(this.profileUrl + profileId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

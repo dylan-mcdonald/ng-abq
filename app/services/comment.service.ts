@@ -15,7 +15,7 @@ export class CommentService extends BaseService {
 
 	deleteComment(commentId: number) : Observable<Status> {
 		return(this.http.delete(this.commentUrl + commentId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

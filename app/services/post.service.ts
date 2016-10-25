@@ -15,7 +15,7 @@ export class PostService extends BaseService {
 
 	deletePost(postId: number) : Observable<Status> {
 		return(this.http.delete(this.postUrl + postId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 

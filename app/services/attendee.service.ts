@@ -15,7 +15,7 @@ export class AttendeeService extends BaseService {
 
 	deleteAttendee(attendeeId: number) : Observable<Status> {
 		return(this.http.delete(this.attendeeUrl + attendeeId)
-			.map(this.extractData)
+			.map(this.extractMessage)
 			.catch(this.handleError));
 	}
 
