@@ -27,7 +27,7 @@
 		<td>{{ post.postId }}</td>
 		<td>{{ post.postProfileUserName }}</td>
 		<td>{{ post.postSubmission }}</td>
-		<td>{{ post.postTime.date | date: 'mm-dd-y @ HH:mm' }}</td>
+		<td>{{ post.postTime.date | date: 'MM-dd-yyyy @ HH:mm' }}</td>
 		<td><a class="btn btn-warning" (click)="switchPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 		<td><a class="btn btn-warning" (click)="switchPost(post);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>

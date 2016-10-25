@@ -15,7 +15,7 @@
 		<td>{{ link.linkId }}</td>
 		<td>{{ link.linkProfileUserName }}</td>
 		<td>{{ link.linkUrl }}</td>
-		<td>{{ link.linkDate.date | date: 'mm-dd-y' }}</td>
+		<td>{{ link.linkDate.date | date: 'MM-dd-yyyy' }}</td>
 	</tr>
 
 </table>

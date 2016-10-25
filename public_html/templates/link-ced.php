@@ -58,7 +58,7 @@
 		<td>{{ link.linkId }}</td>
 		<td>{{ link.linkProfileUserName }}</td>
 		<td>{{ link.linkUrl }}</td>
-		<td>{{ link.linkDate.date | date: 'mm-dd-y @ HH:mm' }}</td>
+		<td>{{ link.linkDate.date | date: 'MM-dd-yyyy @ HH:mm' }}</td>
 		<td><a class="btn btn-warning" (click)="switchLink(link)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 		<td><a class="btn btn-warning" (click)="deleteLink(link);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>

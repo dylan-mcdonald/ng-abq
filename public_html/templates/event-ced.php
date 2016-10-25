@@ -74,7 +74,7 @@
 		<td>{{ event.eventId }}</td>
 		<td>{{ event.eventProfileId }}</td>
 		<td>{{ event.eventName }}</td>
-		<td>{{ event.eventDate.date | date: 'MMM-dd-y @ HH:mm' }}</td>
+		<td>{{ event.eventDate.date | date: 'MMM-dd-yyyy @ HH:mm' }}</td>
 		<td><a class="btn btn-warning" (click)="switchEvent(event)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 		<td><a class="btn btn-warning" (click)="deleteEvent(event);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>
