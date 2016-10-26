@@ -51,7 +51,6 @@ export class ProfileCedComponent implements OnInit {
 
 	createProfile(): void {
 		console.log("create");
-		this.profile.profileId = null;
 		this.profileService.createProfile(this.profile)
 			.subscribe(status => {
 				this.status = status;

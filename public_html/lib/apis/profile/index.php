@@ -112,17 +112,6 @@ try {
 			  throw new \InvalidArgumentException("Profile username must exist.", 405);
 		  }
 
-		  $profile = Beta\Profile::getProfileByProfileId($pdo, $id);
-		  if ($profile === null) {
-			  throw new \RuntimeException("Profile does not exist.", 404);
-		  }
-
-		  $profile->setProfileAdmin($requestObject->profileAdmin);
-		  $profile->setProfileNameFirst($requestObject->profileNameFirst);
-		  $profile->setProfileNameLast($requestObject->profileNameLast);
-		  $profile->setProfileEmail($requestObject->profileEmail);
-		  $profile->setProfileUserName($requestObject->profileUserName);
-
 		  // create new profile and insert into the database
 		  $profile = new Beta\Profile(null, $requestObject->profileAdmin, $requestObject->profileNameFirst, $requestObject->profileNameLast, $requestObject->profileEmail, $requestObject->profileUserName, $requestObject->profileSalt, $requestObject->profileHash, $requestObject->profileActivationToken);
 		  $profile->insert($pdo);
