@@ -79,7 +79,7 @@ try {
 
 			$reply->message = "Post updated successfully.";
 		} else if ($method === "POST") {
-			$post = new Beta\Post(null, $requestObject->postProfileUserName, $requestObject->postSubmission, $requestObject->postTime);
+			$post = new Beta\Post(null, $requestObject->postProfileUserName, $requestObject->postSubmission, null);
 			$post->insert($pdo);
 
 			$reply->message = "Post successfully posted.";
