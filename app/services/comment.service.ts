@@ -26,7 +26,14 @@ export class CommentService extends BaseService {
 	}
 
 	getComment(commentId: number) : Observable<Comment> {
-		return(this.http.get(this.commentUrl + commentId)
+	return(this.http.get(this.commentUrl + commentId)
+		.map(this.extractData)
+		.catch(this.handleError));
+}
+
+	getComments(postId: number) : Observable<Comment[]> {
+		console.log("postId" ,postId);
+		return(this.http.get(this.commentUrl + "?postId=" + postId)
 			.map(this.extractData)
 			.catch(this.handleError));
 	}

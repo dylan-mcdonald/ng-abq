@@ -30,7 +30,6 @@ export class EventCedComponent implements OnInit {
 
 	switchEvent(event: Event): void {
 		this.edited = true;
-		console.log("edit eventId",event.eventId);
 		this.eventService.getEvent(event.eventId)
 			.subscribe(event => this.event = event);
 	}

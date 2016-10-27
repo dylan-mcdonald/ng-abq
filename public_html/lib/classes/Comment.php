@@ -333,8 +333,8 @@ class Comment implements \JsonSerializable {
 		return $comment;
 	}
 
-	public static function getCommentByCommentPostId(\PDO $pdo, int $commentPostId) {
-		if ($commentPostId <= 0) {
+	public static function getCommentByCommentPostId(\PDO $pdo, int $postId) {
+		if ($postId <= 0) {
 			throw new \PDOException("Not a valid post ID.");
 		}
 
@@ -343,7 +343,7 @@ class Comment implements \JsonSerializable {
 		$statement = $pdo->prepare($query);
 
 		// Bind member variables to query
-		$parameters = ["commentPostId" => $commentPostId];
+		$parameters = ["commentPostId" => $postId];
 		$statement->execute($parameters);
 
 		// Build an array of matches
