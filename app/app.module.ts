@@ -5,6 +5,7 @@ import {HttpModule} from "@angular/http";
 import {ReCaptchaModule} from 'angular2-recaptcha/angular2-recaptcha';
 import {AppComponent} from "./app.component";
 import {allAppComponents, appRoutingProviders, routing} from "./app.routes";
+import {CommentService} from "./services/comment.service";
 import {EventService} from "./services/event.service";
 import {ImageService} from "./services/image.service";
 import {LinkService} from "./services/link.service";
@@ -18,6 +19,6 @@ const moduleDeclarations = [AppComponent];
 	imports:      [BrowserModule, FormsModule, HttpModule, ReCaptchaModule, routing],
 	declarations: [...moduleDeclarations, ...allAppComponents],
 	bootstrap:    [AppComponent],
-	providers:    [appRoutingProviders, EventService, ImageService, LinkService, PostService, ProfileService]
+	providers:    [appRoutingProviders, EventService, ImageService, LinkService, PostService, ProfileService, CommentService]
 })
 export class AppModule {}

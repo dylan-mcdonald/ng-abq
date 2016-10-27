@@ -1,7 +1,9 @@
 import {Component, OnInit, ViewChild} from "@angular/core";
 import {Router} from "@angular/router";
 import {PostService} from "../services/post.service";
+import {CommentService} from "../services/comment.service";
 import {Post} from "../classes/post";
+import {Comment} from "../classes/comment";
 import {Status} from "../classes/status";
 
 @Component({
@@ -14,18 +16,26 @@ export class PostOrCommentComponent implements OnInit {
 	edited: boolean = false;
 	posts: Post[] = [];
 	post: Post = new Post(0, "", "", "");
+	comments: Comment[] = [];
+	comment: Comment = new Comment(0, "", 0, "", "");
 	status: Status = null;
 
-	constructor(private postService: PostService, private router: Router) {}
+	constructor(private postService: PostService, private commentService: CommentService, private router: Router) {}
 
 	ngOnInit() : void {
 		this.reloadPosts();
+		// this.reloadComments();
 	}
 
 	reloadPosts() : void {
 		this.postService.getAllPosts()
 			.subscribe(posts => this.posts = posts);
+		console.log(this.posts);
 	}
+	// reloadComments() : void {
+	// 	this.commentService.getAllComments()
+	// 		.subscribe(comments => this.comments = comments);
+	// }
 
 	switchPost(post: Post): void {
 		this.edited = true;
@@ -57,6 +67,7 @@ export class PostOrCommentComponent implements OnInit {
 				this.status = status;
 				if(status.status === 200) {
 					this.reloadPosts();
+					// this.reloadComments();
 					this.addPostForm.reset();
 				}
 			});
@@ -69,6 +80,7 @@ export class PostOrCommentComponent implements OnInit {
 				this.status = status;
 				if(status.status === 200) {
 					this.reloadPosts();
+					// this.reloadComments();
 					this.addPostForm.reset();
 				}
 			});

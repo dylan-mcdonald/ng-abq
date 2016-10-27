@@ -57,15 +57,21 @@
 	{{ status.message }}
 </div>
 
-<h1>All Posts by Member {{ post.postPostUserName }}</h1>
+<h1>All Posts by Member {{ post.postProfileUserName }}</h1>
 <table class="table table-bordered table-responsive table-striped table-word-wrap">
-	<tr><th>Id</th><th>Submitter</th><th>UserName</th><th>Submitted</th><th>Edit</th><th>Delete</th></tr>
+	<tr><th>Id</th><th>Submitter</th><th>Post</th><th>Submitted</th><th>Edit</th><th>Delete</th></tr>
 	<tr *ngFor="let post of posts">
 		<td>{{ post.postId }}</td>
 		<td>{{ post.postProfileUserName }}</td>
 		<td>{{ post.postSubmission }}</td>
 		<td>{{ post.postTime.date | date: 'MM-dd-yyyy @ HH:mm' }}</td>
+
 		<td><a class="btn btn-warning" (click)="switchPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></a></td>
 		<td><a class="btn btn-warning" (click)="deletePost(post);"><i class="fa fa-ban" aria-hidden="true"></i></a></td>
 	</tr>
+<!--	<tr $ngFor="let comment of comments">-->
+<!--		<td *ngIf="comment.commentPostId === post.postId">{{ comment.commentProfileUserName }}</td>-->
+<!--		<td *ngIf="comment.commentPostId === post.postId">{{ comment.commentSubmission }}</td>-->
+<!--	</tr>-->
+
 </table>
